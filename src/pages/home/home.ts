@@ -38,6 +38,7 @@ import { FeedbackProvider } from '../../providers/feedback/feedback';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import {NewBoxPage} from "../mira/mirabox/newBox/newBox";
 
 @Component({
   selector: 'page-home',
@@ -322,6 +323,9 @@ export class HomePage {
     this.navCtrl.push(WalletDetailsPage, { walletId: wallet.credentials.walletId });
   }
 
+  public goToMiraboxAdd():void{
+    this.navCtrl.push(NewBoxPage);
+  }
   public openNotificationModal(n: any) {
     let wallet = this.profileProvider.getWallet(n.walletId);
 

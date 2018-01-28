@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>New MiraBox</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <ion-list>
+    <ion-item-divider>
+      <ion-row>
+        <ion-col class="title">
+          <span translate>Select box type</span>
+        </ion-col>
+      </ion-row>
+    </ion-item-divider>
+    <div>
+      <button ion-item (click)="createSimpleMiraBox()">
+        <ion-icon item-start>
+          <img src="assets/img/mirabox/nominalbox.svg" class="icon-services" />
+        </ion-icon>
+        <span>NominalBox</span>
+      </button>
+      <button ion-item (click)="createMultiMiraBox()">
+      <ion-icon item-start>
+        <img src="assets/img/mirabox/multibox.svg" class="icon-services" />
+      </ion-icon>
+      <span>MultiBox</span>
+    </button>
+      <button ion-item (click)="createSmartMiraBox()">
+      <ion-icon item-start>
+        <img src="assets/img/mirabox/smartbox.svg" class="icon-services" />
+      </ion-icon>
+      <span>SmartBox</span>
+    </button>
+    </div>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ miraBoxType }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <ion-list>
+    <ion-item-divider>
+      <ion-row>
+        <ion-col class="title">
+          <span translate>{{ miraBoxType }} functions</span>
+        </ion-col>
+      </ion-row>
+    </ion-item-divider>
+    <div>
+      <button ion-item (click)="generatePrivateKey()">
+        <ion-icon item-start>
+          <img *ngIf="miraBoxType == 'Nominal Box'" src="assets/img/mirabox/nominalbox.svg" class="icon-services" />
+          <img *ngIf="miraBoxType == 'Multi Box'" src="assets/img/mirabox/multibox.svg" class="icon-services" />
+          <img *ngIf="miraBoxType == 'Smart Box'" src="assets/img/mirabox/smartbox.svg" class="icon-services" />
+        </ion-icon>
+        <span>Generate private key!</span>
+      </button>
+    </div>
+  </ion-list>
+</ion-content>

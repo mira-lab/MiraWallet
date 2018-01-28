@@ -54,6 +54,10 @@ import { TxpDetailsPage } from '../pages/txp-details/txp-details';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { SuccessModalPage } from '../pages/success/success';
 
+//Mirabox Pages
+import {NewBoxPage} from "../pages/mira/mirabox/newBox/newBox";
+import {NewNominalBoxPage} from "../pages/mira/mirabox/newBox/newNominalBox/newNominalBox"
+
 // Integrations: Amazon
 import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
 import { AmazonCardsPage } from '../pages/integrations/amazon/amazon-cards/amazon-cards';
@@ -301,6 +305,12 @@ let pages: any = [
   WalletActivityPage,
   WalletSelectorPage
 ];
+
+//MiraLab Pages
+pages = pages.concat([
+  NewBoxPage,
+  NewNominalBoxPage,
+]);
 
 let providers: any = [
   AddressProvider,
