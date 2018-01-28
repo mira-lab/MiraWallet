@@ -24,6 +24,7 @@
   "scripts": {
     "postinstall": "sed -i  -e \"s/.*require(...\\/...);//g\" node_modules/asn1.js-rfc5280/index.js;",
     "start": "ionic serve --no-open",
+    "watch": "ionic-app-scripts watch",
     "clean": "trash platforms && trash plugins && trash config.xml",
     "clean:copay": "npm run clean && npm run apply:copay && ionic cordova prepare && npm run fix:fcm",
     "clean:bitpay": "npm run clean && npm run apply:bitpay && ionic cordova prepare && npm run fix:fcm",
