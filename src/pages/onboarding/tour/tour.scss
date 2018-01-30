@@ -1,7 +1,25 @@
 page-tour {
+
+  /* ONEGIN FIXES */
+  color: white !important;
+  background: $blueFontColor !important;
+  background-image: linear-gradient(to bottom, $blueFontColor 0%, $purpleFontColor 100%) !important;
+
+  /* Remove white bg Color*/
+  .content-ios
+  {
+    background: none;
+  }
+
+
+  /* White Back Button */
+
+
+
+
   ion-header {
     .toolbar-title, ion-icon {
-      color: color($colors, primary);
+      color: white;
     }
     .toolbar-background {
       background-color: transparent;
@@ -9,6 +27,13 @@ page-tour {
   }
   .bottom-absolute {
     padding: 15px 15px 5vh 15px;
+
+    >div
+    {
+      font-weight: 300 !important;
+      color: white !important;
+    }
+
   }
   .slide-zoom {
     height: inherit;
@@ -17,6 +42,19 @@ page-tour {
   .swiper-pagination-bullet-active {
     background: color($colors, primary);
   }
+
+  h1
+  {
+    color: white !important;
+  }
+
+  .bts-info
+  {
+    color: white !important;
+    font-size: 1.6em;
+  }
+
+
   p {
     line-height: 1.6;
     font-size: 18px;

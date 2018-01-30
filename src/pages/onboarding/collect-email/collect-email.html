@@ -8,7 +8,7 @@
 
 </ion-header>
 
-<ion-content>
+<ion-content class="miraContent">
   <h1 translate>Wallet Created</h1>
 
   <div *ngIf="!showConfirmForm">
@@ -27,7 +27,7 @@
           <ion-checkbox formControlName="accept" checked="true"></ion-checkbox>
         </ion-item>
 
-        <button ion-button block type="submit" [disabled]="!emailForm.valid" translate>Continue &rarr;</button>
+        <button ion-button block type="submit" [disabled]="!emailForm.valid" class="miraMainButton" translate>Continue &rarr;</button>
       </form>
     </div>
   </div>
