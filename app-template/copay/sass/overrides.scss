@@ -2,8 +2,6 @@
  * Copay Distribution SCSS overrides
  */
 
-
-
 // Named Color Variables
 // --------------------------------------------------
 // Named colors makes it easy to reuse colors on various components.
@@ -17,3 +15,99 @@ $color-secondary: #31465b;
 $icon-border-radius: 3px;
 $toolbar-background: #192c3a;
 $toolbar-scanner: rgba(25, 44, 58, 0.8);
+
+
+
+
+/* ONEGIN Fixes*/
+/* Main Colors */
+$blueFontColor:                                      #2a45c2;
+$purpleFontColor:                                    #a000b9;
+
+$v-onboarding-gradient-top-color:                    $blueFontColor;
+$v-onboarding-gradient-bottom-color:                 $purpleFontColor;
+
+
+/* Change Buttons */
+.miraMainButton
+{
+  background: rgba(255, 255, 255, 0.1) !important;
+  font-weight: 500 !important;
+}
+
+.miraSecButton
+{
+  border: none !important;
+  font-family: 'Roboto', sans-serif !important;
+  color: white !important;
+  font-weight: 300 !important;
+}
+
+
+
+ion-item
+{
+  color: white !important;
+  border: none !important;
+  background: transparent !important;
+  overflow: inherit !important;
+
+  .item-inner
+  {
+    overflow: inherit !important;
+    border: none !important;
+  }
+
+  h2, p
+  {
+    color: white !important;
+  }
+
+  p
+  {
+    font-weight: 300 !important;
+  }
+
+
+  ion-label
+  {
+    white-space: inherit !important;
+  }
+
+}
+
+
+.miraContent
+{
+  color: white;
+  background: $blueFontColor;
+  background-image: linear-gradient(to bottom, $blueFontColor 0%, $purpleFontColor 100%);
+
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+
+
+  h1, p
+  {
+    color: white !important;
+  }
+}
+
+
+
+.white-bottom
+{
+  background: white !important;
+  color: black !important;
+
+  ion-label
+  {
+    color: black !important;
+    font-weight: 300 !important;
+  }
+  .link
+  {
+    font-size: inherit !important;
+  }
+}
