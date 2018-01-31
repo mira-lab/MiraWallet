@@ -56,7 +56,10 @@ import { SuccessModalPage } from '../pages/success/success';
 
 //Mirabox Pages
 import {NewBoxPage} from "../pages/mira/mirabox/newBox/newBox";
-import {NewNominalBoxPage} from "../pages/mira/mirabox/newBox/newNominalBox/newNominalBox"
+import {NewNominalBoxPage} from "../pages/mira/mirabox/newBox/newNominalBox/newNominalBox";
+import { SelectCryptocurrency } from "../pages/mira/mirabox/newBox/nominalBoxWizard/selectCryptocurrency/selectCryptocurrency";
+import { CreatePassword } from "../pages/mira/mirabox/newBox/nominalBoxWizard/createPassword/createPassword";
+import { NominalBoxViewer} from "../pages/mira/mirabox/miraboxViewer/nominalBoxViewer/nominalBoxViewer";
 
 // Integrations: Amazon
 import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
@@ -197,7 +200,6 @@ import { TxFormatProvider } from '../providers/tx-format/tx-format';
 import { FilterProvider } from '../providers/filter/filter';
 import { WalletProvider } from '../providers/wallet/wallet';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
-
 /* Directives */
 import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboard';
 import { LongPress } from '../directives/long-press/long-press';
@@ -310,6 +312,9 @@ let pages: any = [
 pages = pages.concat([
   NewBoxPage,
   NewNominalBoxPage,
+  SelectCryptocurrency,
+  CreatePassword,
+  NominalBoxViewer,
 ]);
 
 let providers: any = [
@@ -370,7 +375,7 @@ let providers: any = [
   {
     provide: ErrorHandler,
     useClass: IonicErrorHandler
-  }
+  },
 ];
 
 let pipes = [
