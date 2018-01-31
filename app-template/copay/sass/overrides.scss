@@ -44,6 +44,15 @@ $v-onboarding-gradient-bottom-color:                 $purpleFontColor;
 }
 
 
+/* Fix White BG on onboarding */
+.content-md 
+{
+    color: inherit !important;
+    background-color: !important;
+
+}
+
+
 
 ion-item
 {
