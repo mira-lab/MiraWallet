@@ -1,22 +1,57 @@
 import {Component} from '@angular/core';
-import {NavController} from "ionic-angular";
 import {BwcProvider} from "../../../../../providers/bwc/bwc";
+import {MiraBoxWalletKeyPair, MiraBoxKeyPair, MiraBoxWalletType} from "../../../../../mira/mira";
+import {MiraBoxProvider} from "../../../../../providers/mirabox/mirabox";
+import {MiraStorageProvider} from "../../../../../providers/mirabox/mirastorage";
+
 
 @Component({
   selector: 'page-mirabox-new-nominal',
   templateUrl: 'newNominalBox.html'
 })
 export class NewNominalBoxPage {
-  constructor(private bwcProvider: BwcProvider) {
+  constructor(private bwcProvider: BwcProvider,
+              private miraBoxProvider: MiraBoxProvider,
+              private miraStorageProvider: MiraStorageProvider) {
   }
+
+  public walletType: MiraBoxWalletType = MiraBoxWalletType.BTC;
+  public walletName: string = 'wallet name';
+  public boxPassword: string;
+  public boxDescription: string = "box description";
 
   public createBox() {
-    let privateKey = this.generatePrivateKey();
-    console.log(`creating box for BTC private key ${privateKey}`);
+    let self = this;
+    let walletKeyPair: MiraBoxWalletKeyPair = this.generateWalletKeyPair();
+    this.miraBoxProvider.createNominalMiraBox(
+      this.walletType,
+      this.walletName,
+      walletKeyPair,
+      this.boxDescription,
+      {
+        name: "test user",
+        publicKey: "user public key"
+      }
+    )
+      .then(function (miraBoxKeyPair: MiraBoxKeyPair) {
+        return self.miraStorageProvider.storeMiraBox(miraBoxKeyPair.miraBox)
+          .then(function () {
+            return self.miraStorageProvider.storeMiraKey(miraBoxKeyPair.miraKey);
+          });
+      })
+      .then(function () {
+        console.log('Successfully stored in storage');
+      });
+
   }
 
-  public generatePrivateKey(): string {
-    let bitcore = this.bwcProvider.getBitcore();
-    return bitcore.PrivateKey();
+  public generateWalletKeyPair(): MiraBoxWalletKeyPair {
+    let bitCore = this.bwcProvider.getBitcore();
+    let hdPrivateKey = new bitCore.HDPrivateKey();
+    let hdPublicKey = hdPrivateKey.hdPublicKey;
+    return {
+      privateKey: hdPrivateKey.toString(),
+      publicKey: hdPublicKey.toString()
+    };
   }
 }
