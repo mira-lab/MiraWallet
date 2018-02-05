@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Cryptocurrency</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content no-bounce>
+  <ion-list>
+    <ion-item-divider>
+      <ion-row>
+        <ion-col class="title">
+          <span translate>Select Cryptocurrency:</span>
+        </ion-col>
+      </ion-row>
+    </ion-item-divider>
+    <div>
+      <button ion-item (click)="gotoBTC()">
+        <ion-icon item-start>
+          <img src="assets/img/icon-bitcoin.svg" class="icon-services" />
+        </ion-icon>
+        <span>BTC</span>
+      </button>
+      <button ion-item (click)="gotoBTC()">
+        <ion-icon item-start>
+          <img src="assets/img/bitcoin-cash-logo.svg" class="icon-services" />
+        </ion-icon>
+        <span>BCH</span>
+      </button>
+      <button ion-item (click)="gotoBTC()">
+        <ion-icon item-start>
+          <img src="assets/img/icon-bitcoin.svg" class="icon-services" />
+        </ion-icon>
+        <span>Test BTC</span>
+      </button>
+      <button ion-item (click)="gotoBTC()">
+        <ion-icon item-start>
+          <img src="assets/img/bitcoin-cash-logo.svg" class="icon-services" />
+        </ion-icon>
+        <span>Test BCH</span>
+      </button>
+    </div>
+  </ion-list>
+</ion-content>

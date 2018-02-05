@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>*NominalBoxName*</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content no-bounce>
+  <ion-list>
+    <ion-item>
+      <ion-label>1. Title</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>2. ...</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>3. Owner ?</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Balance: 0.0002 BTC</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Status: *status*</ion-label>
+    </ion-item>
+    <ion-item>
+      <button ion-item (click)="doSomething()">
+        <ion-icon item-start>
+          <img src="assets/img/icon-bitcoin.svg" class="icon-services" />
+        </ion-icon>
+        <span>Archive</span>
+      </button>
+    </ion-item>
+    <ion-item>
+      <button ion-item (click)="doSomething()">
+        <ion-icon item-start>
+          <img src="assets/img/icon-bitcoin.svg" class="icon-services" />
+        </ion-icon>
+        <span>Fill with coin</span>
+      </button>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <button ion-button block class="button-footer" (click)="doSomething()">Download</button>
+</ion-footer>
