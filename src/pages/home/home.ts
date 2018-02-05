@@ -39,6 +39,8 @@ import { FeedbackProvider } from '../../providers/feedback/feedback';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import {NewBoxPage} from "../mira/mirabox/newBox/newBox";
+import {MiraStorageProvider} from "../../providers/mirabox/mirastorage";
+import {MiraBox} from "../../mira/mira";
 
 @Component({
   selector: 'page-home',
@@ -48,6 +50,7 @@ export class HomePage {
   public wallets: any;
   public walletsBtc: any;
   public walletsBch: any;
+  public miraBoxListShort: MiraBox[];
   public cachedBalanceUpdateOn: string;
   public recentTransactionsEnabled: boolean;
   public txps: any;
@@ -95,6 +98,7 @@ export class HomePage {
     private nextStepsProvider: NextStepsProvider,
     private persistenceProvider: PersistenceProvider,
     private feedbackProvider: FeedbackProvider,
+    private miraStorageProvider:MiraStorageProvider
   ) {
     this.cachedBalanceUpdateOn = '';
     this.isNW = this.platformProvider.isNW;
@@ -245,7 +249,12 @@ export class HomePage {
     let wallets: Array<any> = [];
     let foundMessage = false;
     this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
-    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
+    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch'});
+    let self = this;
+    this.miraStorageProvider.getMiraBoxList()
+      .then(function (miraBoxList: Set<MiraBox>) {
+        self.miraBoxListShort = Array.from(miraBoxList).slice(0, 5);
+      });
 
     _.each(this.walletsBtc, (wBtc) => {
       wallets.push(wBtc);
@@ -323,9 +332,14 @@ export class HomePage {
     this.navCtrl.push(WalletDetailsPage, { walletId: wallet.credentials.walletId });
   }
 
-  public goToMiraboxAdd():void{
+  public goToMiraBoxView(miraBoxGuid: string): void {
+    console.log(miraBoxGuid);
+  }
+
+  public goToMiraboxAdd(): void {
     this.navCtrl.push(NewBoxPage);
   }
+
   public openNotificationModal(n: any) {
     let wallet = this.profileProvider.getWallet(n.walletId);
 

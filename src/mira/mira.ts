@@ -4,7 +4,9 @@ export enum MiraBoxWalletType {
 }
 
 export enum MiraBoxType {
-  Nominal = 'nominal'
+  Nominal = 'nominal',
+  Multi = 'multi',
+  Smart = 'smart'
 }
 
 interface MiraBoxEncodedWalletJsonInterface {
@@ -132,7 +134,7 @@ export class MiraBox {
   }
 
   generateGuid(): MiraBox {
-    if (this.guid.length) {
+    if (this.guid) {
       throw 'Cannot reset guid';
     }
     return this.setGuid(MiraBox.genGuid());
@@ -156,6 +158,26 @@ export class MiraBox {
 
   getGuid() {
     return this.guid;
+  }
+
+  getType(): MiraBoxType {
+    return this.type;
+  }
+
+  getCreator(): MiraBoxCreator {
+    return this.creator;
+  }
+
+  getWallet(): EncodedWallet {
+    return this.wallet;
+  }
+
+  getDescription(): string {
+    return this.description;
+  }
+
+  getVersion(): string {
+    return this.version;
   }
 
   static fromJsonObj(jsonObj: MiraBoxJsonInterface): MiraBox {

@@ -3,6 +3,7 @@ import {BwcProvider} from "../../../../../providers/bwc/bwc";
 import {MiraBoxWalletKeyPair, MiraBoxKeyPair, MiraBoxWalletType} from "../../../../../mira/mira";
 import {MiraBoxProvider} from "../../../../../providers/mirabox/mirabox";
 import {MiraStorageProvider} from "../../../../../providers/mirabox/mirastorage";
+import {NavController} from "ionic-angular";
 
 
 @Component({
@@ -12,11 +13,12 @@ import {MiraStorageProvider} from "../../../../../providers/mirabox/mirastorage"
 export class NewNominalBoxPage {
   constructor(private bwcProvider: BwcProvider,
               private miraBoxProvider: MiraBoxProvider,
-              private miraStorageProvider: MiraStorageProvider) {
+              private miraStorageProvider: MiraStorageProvider,
+              private navCtrl: NavController) {
   }
 
   public walletType: MiraBoxWalletType = MiraBoxWalletType.BTC;
-  public walletName: string = 'wallet name';
+  public walletName: string = 'miraBox name';
   public boxPassword: string;
   public boxDescription: string = "box description";
 
@@ -41,6 +43,7 @@ export class NewNominalBoxPage {
       })
       .then(function () {
         console.log('Successfully stored in storage');
+        self.navCtrl.popAll();
       });
 
   }
