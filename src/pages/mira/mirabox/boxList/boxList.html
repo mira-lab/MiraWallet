@@ -1,0 +1,11 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Box list</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <mirabox-list-item *ngFor="let miraBox of miraBoxList" [miraBox]="miraBox"></mirabox-list-item>
+  </ion-list>
+</ion-content>

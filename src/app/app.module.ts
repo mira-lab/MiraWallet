@@ -207,6 +207,8 @@ import { LongPress } from '../directives/long-press/long-press';
 import { NoLowFee } from '../directives/no-low-fee/no-low-fee'
 import {MiraBoxProvider} from "../providers/mirabox/mirabox";
 import {MiraStorageProvider} from "../providers/mirabox/mirastorage";
+import {MiraBoxListItem} from "../pages/mira/mirabox/boxListItem/boxListItem";
+import {BoxListPage} from "../pages/mira/mirabox/boxList/boxList";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -318,6 +320,8 @@ pages = pages.concat([
   SelectCryptocurrency,
   CreatePassword,
   NominalBoxViewer,
+  BoxListPage,
+  MiraBoxListItem,
 ]);
 
 let providers: any = [

@@ -156,21 +156,22 @@ export class MiraStorageProvider {
     return this.getMiraBoxGuidSet()
       .then(function (guidSet: Set<string>) {
         let guidList: string[] = Array.from(guidSet);
-        let miraBoxSetPromise: Promise<MiraBox|void>[] = [];
+        let miraBoxSetPromise: Promise<MiraBox | void>[] = [];
         for (let guid of guidList) {
 
-          let miraBoxPromise: Promise<MiraBox|void>;
+          let miraBoxPromise: Promise<MiraBox | void>;
           miraBoxPromise = self.getMiraBox(guid)
             .catch(function (reason) {
-              console.log(reason);
+              console.error(reason);
             });
 
           miraBoxSetPromise.push(miraBoxPromise);
         }
-        return Promise.all(miraBoxSetPromise).then(function (miraBoxList:MiraBox[]) {
-          return new Set<MiraBox>(miraBoxList.filter(function (miraBox) {
+        return Promise.all(miraBoxSetPromise).then(function (miraBoxList: MiraBox[]) {
+          miraBoxList = miraBoxList.filter(function (miraBox) {
             return miraBox;
-          }));
+          });
+          return new Set<MiraBox>(miraBoxList);
         });
       });
   }
