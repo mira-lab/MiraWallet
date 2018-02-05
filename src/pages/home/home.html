@@ -253,32 +253,18 @@
           <span translate>MiraBoxes</span>
         </ion-col>
         <ion-col class="icons-add-reorder" text-right>
-          <!--<div class="reorder-icon" (click)="reorderBch()" *ngIf="walletsBch.length > 1">
-            <ion-icon name="reorder"></ion-icon>
-          </div>-->
           <div class="add-icon" (click)="goToMiraboxAdd()">
             <ion-icon name="add"></ion-icon>
           </div>
-        </ion-col><!--
-        <ion-col text-right class="icons-add-reorder" *ngIf="showReorderBch" (click)="reorderBch()">
-          {{'Done'|translate}}
-        </ion-col>-->
+        </ion-col>
       </ion-row>
     </ion-item-divider>
 
     <ion-list>
-      <button ion-item *ngFor="let miraBox of miraBoxListShort" (click)="goToMiraBoxView(miraBox.getGuid())">
-        <ion-icon item-start>
-          <img *ngIf="miraBox.getType()=='nominal'"
-               src="assets/img/mirabox/nominalbox.svg" class="icon-services"/>
-          <img *ngIf="miraBox.getType()=='multi'"
-               src="assets/img/mirabox/multybox.svg" class="icon-services"/>
-          <img *ngIf="miraBox.getType()=='smart'"
-               src="assets/img/mirabox/smartbox.svg" class="icon-services"/>
-        </ion-icon>
-        <span>{{miraBox.getDescription()}}</span>
-      </button>
+      <mirabox-list-item *ngFor="let miraBox of miraBoxListShort" [miraBox]="miraBox"></mirabox-list-item>
     </ion-list>
+
+    <button ion-item (click)="gotoAllBoxes()">View all</button>
   </ion-list>
   <!-- -->
   <ion-list *ngIf="nextStepsItems && nextStepsItems.length>0">

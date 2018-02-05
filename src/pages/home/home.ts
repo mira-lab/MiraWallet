@@ -41,6 +41,7 @@ import * as moment from 'moment';
 import {NewBoxPage} from "../mira/mirabox/newBox/newBox";
 import {MiraStorageProvider} from "../../providers/mirabox/mirastorage";
 import {MiraBox} from "../../mira/mira";
+import {BoxListPage} from "../mira/mirabox/boxList/boxList";
 
 @Component({
   selector: 'page-home',
@@ -332,8 +333,8 @@ export class HomePage {
     this.navCtrl.push(WalletDetailsPage, { walletId: wallet.credentials.walletId });
   }
 
-  public goToMiraBoxView(miraBoxGuid: string): void {
-    console.log(miraBoxGuid);
+  public gotoAllBoxes(): void {
+    this.navCtrl.push(BoxListPage);
   }
 
   public goToMiraboxAdd(): void {
