@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>New Nominal Box</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>Select your wallet</ion-label>
+      <ion-select>
+        <ion-option value="1">Wallet 1</ion-option>
+        <ion-option value="2">Wallet 2</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Select amount</ion-label>
+      <ion-input type="number"></ion-input>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <button ion-button block class="button-footer" (click)="createBox()">Create Box
+  </button>
+</ion-footer>
