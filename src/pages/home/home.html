@@ -249,7 +249,7 @@
     <ion-item-divider>
       <ion-row>
         <ion-col class="title">
-          <img src="assets/img/mirabox/nominalbox.svg" alt="MiraBoxes" width="22" />
+          <img src="assets/img/mirabox/nominalbox.svg" alt="MiraBoxes" width="22"/>
           <span translate>MiraBoxes</span>
         </ion-col>
         <ion-col class="icons-add-reorder" text-right>
@@ -265,73 +265,21 @@
         </ion-col>-->
       </ion-row>
     </ion-item-divider>
-<!--
-    <ion-list reorder="{{showReorderBch}}" (ionItemReorder)="reorderWalletsBch($event)">
-      <button ion-item *ngFor="let wallet of walletsBch" (click)="goToWalletDetails(wallet)">
+
+    <ion-list>
+      <button ion-item *ngFor="let miraBox of miraBoxListShort" (click)="goToMiraBoxView(miraBox.getGuid())">
         <ion-icon item-start>
-          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-               class="icon-wallet" />
-          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-               class="icon-wallet" />
+          <img *ngIf="miraBox.getType()=='nominal'"
+               src="assets/img/mirabox/nominalbox.svg" class="icon-services"/>
+          <img *ngIf="miraBox.getType()=='multi'"
+               src="assets/img/mirabox/multybox.svg" class="icon-services"/>
+          <img *ngIf="miraBox.getType()=='smart'"
+               src="assets/img/mirabox/smartbox.svg" class="icon-services"/>
         </ion-icon>
-        <h2>{{wallet.credentials.walletName}}</h2>
-        <p>
-          <span *ngIf="!wallet.isComplete()" translate>
-            Incomplete
-          </span>
-          <span *ngIf="wallet.isComplete()">
-            <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
-              + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '')
-              : '')}}
-            </span>
-            <span *ngIf="wallet.scanning" translate>Scanning funds</span>
-            <span *ngIf="wallet.balanceHidden && !wallet.scanning">[{{'Balance Hidden' | translate}}]</span>
-            <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
-            <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
-                      name="timer"></ion-icon>
-            <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
-          </span>
-        </p>
+        <span>{{miraBox.getDescription()}}</span>
       </button>
-    </ion-list>-->
+    </ion-list>
   </ion-list>
-  <!-- todo MiraBox List-->
-  <!--
-  <ion-list>
-    <ion-item-divider>
-      <ion-row>
-        <ion-col class="title">
-          <span translate>Create MiraBox</span>
-        </ion-col>
-        <ion-col text-right (click)="hideMiraBox = !hideMiraBox">
-          <ion-icon *ngIf="hideMiraBox" name="arrow-down"></ion-icon>
-          <ion-icon *ngIf="!hideMiraBox" name="arrow-up"></ion-icon>
-        </ion-col>
-      </ion-row>
-    </ion-item-divider>
-    <div *ngIf="!hideMiraBox">
-      <button ion-item (click)="goToMirabox('Nominal Box')">
-        <ion-icon item-start>
-          <img src="assets/img/mirabox/nominalbox.svg" class="icon-services" />
-        </ion-icon>
-        <span>Nominal Box</span>
-      </button>
-      <button ion-item (click)="goToMirabox('Multi Box')">
-        <ion-icon item-start>
-          <img src="assets/img/mirabox/multibox.svg" class="icon-services" />
-        </ion-icon>
-        <span>Multi Box</span>
-      </button>
-      <button ion-item (click)="goToMirabox('Smart Box')">
-        <ion-icon item-start>
-          <img src="assets/img/mirabox/smartbox.svg" class="icon-services" />
-        </ion-icon>
-        <span>Smart Box</span>
-      </button>
-    </div>
-  </ion-list>
-  -->
   <!-- -->
   <ion-list *ngIf="nextStepsItems && nextStepsItems.length>0">
     <ion-item-divider>

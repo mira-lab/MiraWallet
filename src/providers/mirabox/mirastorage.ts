@@ -86,7 +86,7 @@ export class MiraStorageProvider {
   }
 
   public getMiraBox(miraBoxGuid: string): Promise<MiraBox> {
-    return this.storage.get(miraBoxGuid)
+    return this.storage.get(Keys.MIRA_BOX(miraBoxGuid))
       .then((miraBoxJson: any) => {
         return MiraBox.fromJsonObj(miraBoxJson);
       });
@@ -145,9 +145,34 @@ export class MiraStorageProvider {
   }
 
   public getMiraKey(miraBoxGuid: string): Promise<MiraKey> {
-    return this.storage.get(miraBoxGuid)
+    return this.storage.get(Keys.MIRA_KEY(miraBoxGuid))
       .then((miraKeyJson: any) => {
         return MiraKey.fromJsonObj(miraKeyJson);
       });
   }
+
+  public getMiraBoxList(): Promise<Set<MiraBox>> {
+    let self = this;
+    return this.getMiraBoxGuidSet()
+      .then(function (guidSet: Set<string>) {
+        let guidList: string[] = Array.from(guidSet);
+        let miraBoxSetPromise: Promise<MiraBox|void>[] = [];
+        for (let guid of guidList) {
+
+          let miraBoxPromise: Promise<MiraBox|void>;
+          miraBoxPromise = self.getMiraBox(guid)
+            .catch(function (reason) {
+              console.log(reason);
+            });
+
+          miraBoxSetPromise.push(miraBoxPromise);
+        }
+        return Promise.all(miraBoxSetPromise).then(function (miraBoxList:MiraBox[]) {
+          return new Set<MiraBox>(miraBoxList.filter(function (miraBox) {
+            return miraBox;
+          }));
+        });
+      });
+  }
+
 }
