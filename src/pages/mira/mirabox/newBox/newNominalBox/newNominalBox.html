@@ -7,15 +7,23 @@
 <ion-content>
   <ion-list>
     <ion-item>
-      <ion-label>Select your wallet</ion-label>
-      <ion-select>
-        <ion-option value="1">Wallet 1</ion-option>
-        <ion-option value="2">Wallet 2</ion-option>
+      <ion-label>Wallet type</ion-label>
+      <ion-select [(ngModel)]="walletType">
+        <ion-option value="btc" [selected]="">BTC</ion-option>
+        <ion-option value="bch">BCH</ion-option>
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label>Select amount</ion-label>
-      <ion-input type="number"></ion-input>
+      <ion-label>Wallet name</ion-label>
+      <ion-input type="text" [value]="walletName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Box password</ion-label>
+      <ion-input type="password" [value]="boxPassword"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Box description</ion-label>
+      <ion-input type="text" [value]="boxDescription"></ion-input>
     </ion-item>
   </ion-list>
 </ion-content>

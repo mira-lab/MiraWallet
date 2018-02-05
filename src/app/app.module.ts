@@ -200,10 +200,13 @@ import { TxFormatProvider } from '../providers/tx-format/tx-format';
 import { FilterProvider } from '../providers/filter/filter';
 import { WalletProvider } from '../providers/wallet/wallet';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
+import { ParityProvider } from '../providers/secret-store/secret-store'
 /* Directives */
 import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboard';
 import { LongPress } from '../directives/long-press/long-press';
 import { NoLowFee } from '../directives/no-low-fee/no-low-fee'
+import {MiraBoxProvider} from "../providers/mirabox/mirabox";
+import {MiraStorageProvider} from "../providers/mirabox/mirastorage";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -376,6 +379,9 @@ let providers: any = [
     provide: ErrorHandler,
     useClass: IonicErrorHandler
   },
+  ParityProvider,
+  MiraBoxProvider,
+  MiraStorageProvider
 ];
 
 let pipes = [
