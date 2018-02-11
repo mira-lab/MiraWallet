@@ -23,24 +23,25 @@
       <ion-label>Status: *status*</ion-label>
     </ion-item>
     <ion-item>
-      <button ion-item (click)="doSomething()">
+      <button ion-item (click)="shareviaEmail()">
         <ion-icon item-start>
           <img src="assets/img/icon-bitcoin.svg" class="icon-services" />
         </ion-icon>
-        <span>Archive</span>
+        <span>Share via Email!</span>
       </button>
     </ion-item>
     <ion-item>
-      <button ion-item (click)="doSomething()">
+      <button ion-item (click)="sheetShare()">
         <ion-icon item-start>
           <img src="assets/img/icon-bitcoin.svg" class="icon-services" />
         </ion-icon>
-        <span>Fill with coin</span>
+        <span>Share...</span>
       </button>
     </ion-item>
   </ion-list>
 </ion-content>
 
 <ion-footer>
-  <button ion-button block class="button-footer" (click)="doSomething()">Download</button>
+  <a *ngIf="!isCordova" ion-button block id="not-cordova-download" class="button-footer" (click)="notCordovaDownload()">Download</a>
+  <button *ngIf="isCordova" ion-button block class="button-footer" (click)="multiPlatformDownload()">Download</button>
 </ion-footer>

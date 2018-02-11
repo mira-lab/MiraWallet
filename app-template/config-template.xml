@@ -34,7 +34,7 @@
     <preference name="loadUrlTimeoutValue" value="60000" />
 
     <!-- Android Version: Marshmallow 6.0 (API Level 23) or higher -->
-    <preference name="android-minSdkVersion" value="23" />
+    <preference name="android-minSdkVersion" value="22" />
 
     <!-- Supported Platforms -->
     <engine name="android" spec="6.4.0" />

@@ -210,6 +210,7 @@ import {MiraStorageProvider} from "../providers/mirabox/mirastorage";
 import {MiraboxImportProvider} from "../providers/mirabox/miraboximport";
 import {MiraBoxListItem} from "../pages/mira/mirabox/boxListItem/boxListItem";
 import {BoxListPage} from "../pages/mira/mirabox/boxList/boxList";
+import {MiraBoxExportProvider} from "../providers/mirabox/mirabox-export";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -388,8 +389,9 @@ let providers: any = [
   },
   ParityProvider,
   MiraBoxProvider,
-  MiraStorageProvider,
   MiraboxImportProvider,
+  MiraStorageProvider,
+  MiraBoxExportProvider,
 ];
 
 let pipes = [
