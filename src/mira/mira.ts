@@ -1,4 +1,5 @@
 import * as Message from 'bitcore-message';
+import * as BWC from 'bitcore-wallet-client';
 
 export enum MiraBoxWalletType {
   BTC = 'btc',
@@ -132,10 +133,8 @@ export class MiraBox {
   }
 
   validateSignature() {
-    let publicKey = this.creator.publicKey;
-    //tododaniil
-    let address = '';//todo extract from public key
-
+    let xpublicKey = BWC.Bitcore.PublicKey.fromString(this.creator.publicKey);
+    let address = xpublicKey.toAddress('livenet');
     return Message(this.miraBoxStringValue).verify(address, this.miraBoxSignature);
   }
 
