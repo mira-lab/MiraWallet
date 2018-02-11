@@ -4,19 +4,19 @@ import {File} from "@ionic-native/file";
 import {SocialSharing} from "@ionic-native/social-sharing";
 
 @Injectable()
-export class MiraBoxExportProvider{
-  public miraBoxPath: string;
+export class MiraBoxExportProvider {
+  miraBoxPath: string;
+
   constructor(private platform: Platform,
-              private file:File,
-              private socialSharing: SocialSharing){
-
-
+              private file: File,
+              private socialSharing: SocialSharing) {
   }
+
   //TODO Change to mirabox format from txt
-  public createFile(){
-    var self = this;
-    var exportDirectory = "";
-    var filename = "example.txt";
+  public createFile(fileContent: string) {
+    let self = this;
+    let exportDirectory = "";
+    let filename = "example.txt";
     //data = JSON.stringify(data, null, '\t');
     if (this.file.documentsDirectory !== null) {
       // iOS, OSX
@@ -32,42 +32,27 @@ export class MiraBoxExportProvider{
       exportDirectory = this.file.dataDirectory;
     }
     window.resolveLocalFileSystemURL(exportDirectory, function (directoryEntry) {
-      console.log("Got directoryEntry. Attempting to create file:" + filename);
       directoryEntry.filesystem.root.getFile(filename, {create: true}, function (fileEntry) {
-        console.log("Got fileEntry for: " + filename);
         fileEntry.createWriter(function (fileWriter) {
           fileWriter.onwriteend = function () {
             self.miraBoxPath = fileEntry.toURL();
-            console.log("File save location:" + self.miraBoxPath);
-          }
-          console.log("Got fileWriter");
-          // make your callback to write to the file here...
-          var blob = new Blob(["test text"], { type: 'application/json' });
+          };
+          let blob = new Blob([fileContent], {type: 'application/text'});
           fileWriter.write(blob);
-
-          }, (err) => {console.log("Error! "+err);});
-        }, (err) => {console.log("Error! "+err);});
-    }, (err) => {console.log("Error! "+err);});
-  }
-  //TODO: check if mirabox exists
-  public miraBoxEmailSharing(){
-    if(this.miraBoxPath) {
-      this.socialSharing.canShareViaEmail().then(() => {
-        // Sharing via email is possible
-        this.socialSharing.shareViaEmail('Mirabox message', 'Mirabox', ['examle@gmail.com'], null, null, this.miraBoxPath).then(() => {
-          console.log("Ok!")
-          // Success!
-        }).catch(() => {
-          // Error!
+        }, (err) => {
+          console.log("Error! " + err);
         });
-      }).catch(() => {
-        console.log("cant share")
-        // Sharing via email is not possible
+      }, (err) => {
+        console.log("Error! " + err);
       });
-    }
+    }, (err) => {
+      console.log("Error! " + err);
+    });
   }
-  public miraBoxTelegramSharing(){
-    if(this.miraBoxPath)
-      this.socialSharing.share("MiraBox", "Mirabox",this.miraBoxPath);
+
+  //tododaniil
+  public ShareSocial() {
+    if (this.miraBoxPath)
+      this.socialSharing.share("MiraBox", "Mirabox", this.miraBoxPath);
   }
 }

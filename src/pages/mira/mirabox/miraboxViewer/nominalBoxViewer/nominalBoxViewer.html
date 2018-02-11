@@ -18,7 +18,7 @@
     <ion-item-divider color="light">Wallet info</ion-item-divider>
     <ion-item>
       <ion-label>Name</ion-label>
-      <ion-label>{{miraBox.getWallet().name}}</ion-label>
+      <ion-label>{{miraBox.getBoxItems()[0].meta.name}}</ion-label>
     </ion-item>
     <ion-item>
       <ion-label>Address</ion-label>
@@ -60,6 +60,5 @@
 </ion-content>
 
 <ion-footer>
-  <a *ngIf="!isCordova" ion-button block id="not-cordova-download" class="button-footer" (click)="notCordovaDownload()">Download</a>
-  <button *ngIf="isCordova" ion-button block class="button-footer" (click)="multiPlatformDownload()">Download</button>
+  <a ion-button block class="button-footer" id="download-button" (click)="download()">Download</a>
 </ion-footer>

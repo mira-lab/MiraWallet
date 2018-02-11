@@ -1,59 +1,57 @@
 import {Injectable} from "@angular/core";
 import {EncryptedResult, EthereumAccount, ParityNode, ParityProvider} from "../secret-store/secret-store";
-import {
-  MiraBoxCreator, MiraBoxWalletKeyPair, MiraBoxKeyPair, MiraBox, MiraKey, EncodedWallet,
-  MiraBoxWalletType, MiraBoxType
-} from "../../mira/mira";
+import {MiraBoxCreator, MiraBox, MiraBoxWalletType, MiraBoxType, MiraBoxItem} from "../../mira/mira";
+import {BwcProvider} from "../bwc/bwc";
 
 const ethKey = require('keythereum');
 const ethUtil = require('ethereumjs-util');
 
+export enum BtcNetwork {
+  Live = 'livenet',
+  Test = 'testnet'
+}
+
+interface EncryptedGeneratedWallet {
+  decryptedWallet: {
+    xPubKey: string
+  },
+  encryptedWallet: object,
+  password: string
+}
+
 @Injectable()
 export class MiraBoxProvider {
+
+  readonly BWS_INSTANCE_URL = 'https://bws.bitpay.com/bws/api';
+
   private parityNode = new ParityNode(
     'http://94.130.94.162',
     8545,
     8083);
-
+/*
   private ethereumAccount = new EthereumAccount(
     '0x00a329c0648769a73afac7f9381e08fb43dbea72',
     ''
   );
+*/
+
+  private ethereumAccount = new EthereumAccount(
+    '0xd6e43ece2cb09626c0400f3f5e65872aedef7ce0',
+    'password'
+  );
+
+/*
+  private ethereumAccount = new EthereumAccount(
+    '0x00a329c0648769a73afac7f9381e08fb43dbea72',
+    'password'
+  );
+*/
+
 
   private NODE_T = 0;
 
-  constructor(private parityProvider: ParityProvider) {
-  }
-
-  public createNominalMiraBox(walletType: MiraBoxWalletType,
-                              walletName: string,
-                              walletKeyPair: MiraBoxWalletKeyPair,
-                              boxDescription: string,
-                              boxCreator: MiraBoxCreator): Promise<MiraBoxKeyPair> {
-    let self=this;
-    return new Promise<MiraBoxKeyPair>(function (resolve) {
-      self.createEncodedWallet(
-        walletType,
-        walletName,
-        walletKeyPair,
-        (encodedWallet: EncodedWallet, walletKey: string) => {
-          let miraBox: MiraBox = new MiraBox(
-            MiraBoxType.Nominal,
-            boxCreator,
-            encodedWallet,
-            boxDescription);
-
-          miraBox.generateGuid();
-
-          let miraKey: MiraKey = new MiraKey(miraBox.getGuid(), walletKey);
-
-          resolve({
-            miraBox: miraBox,
-            miraKey: miraKey
-          })
-        }
-      );
-    });
+  constructor(private parityProvider: ParityProvider,
+              private bwcProvider: BwcProvider) {
   }
 
   async getEthereumAccountPrivateKeyPromise(parityNode: ParityNode,
@@ -74,38 +72,126 @@ export class MiraBoxProvider {
     return ethAccount.getPrivateKey();
   }
 
-  private encodeKeyWithSecretStorePromise(walletPrivateKey: string): Promise<EncryptedResult> {
+  private encodeWalletPasswordWithSecretStore(walletPassword: string): Promise<EncryptedResult> {
     let self = this;
 
-    let tmp = walletPrivateKey + new Date().toISOString();
-    let miraBoxSecretId: string = ethUtil.sha3(tmp).toString('hex');
+    let hash: string = MiraBoxProvider.generateHash(walletPassword);
 
     return this.getEthereumAccountPrivateKeyPromise(this.parityNode, this.ethereumAccount)
       .then(ethereumPrivateKey => {
-        console.log(ethereumPrivateKey);
+        self.ethereumAccount.setPrivateKey(ethereumPrivateKey);
         return self.parityProvider.secretStore.encodePromise(
           self.parityNode,
           self.ethereumAccount,
-          miraBoxSecretId,
-          walletPrivateKey,
+          hash,
+          walletPassword,
           self.NODE_T)
       });
   }
 
-  private createEncodedWallet(walletType: MiraBoxWalletType,
-                              walletName: string,
-                              walletKeyPair: MiraBoxWalletKeyPair,
-                              onComplete: (encodedWallet: EncodedWallet,
-                                           walletKey: string) => void) {
-    this.encodeKeyWithSecretStorePromise(walletKeyPair.privateKey)
-      .then((encodeResult: EncryptedResult) => {
-        let encodedWallet = new EncodedWallet(
-          walletType,
-          walletName,
-          walletKeyPair.publicKey,
-          encodeResult.encrypted);
+  createNominalMiraBox(walletType: MiraBoxWalletType,
+                       walletName: string,
+                       copayerName: string,
+                       boxDescription: string,
+                       boxCreator: MiraBoxCreator,
+                       walletMeta: object = {}): Promise<MiraBox> {
+    let self=this;
 
-        onComplete(encodedWallet, encodeResult.storageId);
+    let createWalletPromise: Promise<EncryptedGeneratedWallet>;
+
+    switch (walletType) {
+      //to implement differentTypes of wallets
+      case MiraBoxWalletType.BTC:
+      case MiraBoxWalletType.BCH:
+      default:
+        createWalletPromise = this.generateNewEncodedBtcWallet(walletName, copayerName);
+    }
+    return createWalletPromise.then(function (encryptedWallet: EncryptedGeneratedWallet) {
+      return self.encodeWalletPasswordWithSecretStore(encryptedWallet.password)
+        .then(function (encryptedPasswordResult: EncryptedResult) {
+          let boxItem: MiraBoxItem = {
+            data: encryptedWallet.encryptedWallet,
+            hash: encryptedPasswordResult.storageId,
+            key: encryptedPasswordResult.encrypted,
+            headers: {
+              type: walletType,
+              pubType: 'xpub',
+              pub: encryptedWallet.decryptedWallet.xPubKey
+            },
+            meta: walletMeta
+          };
+
+          return new MiraBox(
+            MiraBoxType.Nominal,
+            boxCreator,
+            [boxItem],
+            boxDescription
+          );
+        });
+    });
+  }
+
+
+  private static generateHash(data: string) {
+    return ethUtil.sha3(data + new Date().toISOString())
+      .toString('hex');
+  }
+
+  generateNewEncodedBtcWallet(walletName: string,
+                              copayerName: string,
+                              network: BtcNetwork = BtcNetwork.Live): Promise<EncryptedGeneratedWallet> {
+    let self = this;
+    return new Promise(function (resolve, reject) {
+      let client = new self.bwcProvider.Client({
+        baseUrl: self.BWS_INSTANCE_URL,
+        verbose: false,
       });
+      client.createWallet(
+        walletName,
+        copayerName,
+        1, 1,
+        {network: network},
+        function (err, secret) {
+          if (err) {
+            return reject(err);
+          }
+          //Exporting wallet
+          let exportedWallet = client.export();
+
+          //AES encrypting it with generated password
+          let encryptPassword = self.generatePassword(16);
+          let encryptedWallet = self.bwcProvider.getSJCL().encrypt(encryptPassword, exportedWallet, {iter: 10000}
+          );
+          resolve({
+            decryptedWallet: JSON.parse(exportedWallet),
+            encryptedWallet: encryptedWallet,
+            password: encryptPassword
+          });
+        });
+    });
+  }
+
+  private static getRandomByte() {
+    let result = new Uint8Array(1);
+    window.crypto.getRandomValues(result);
+    return result[0];
+  }
+
+  private generatePassword(length: number) {
+    let _pattern = /[a-zA-Z0-9_\-]/;
+    return Array.apply(
+      null,
+      {'length': length}
+    )
+      .map(() => {
+        let result;
+        while (true) {
+          result = String.fromCharCode(MiraBoxProvider.getRandomByte());
+          if (_pattern.test(result)) {
+            return result;
+          }
+        }
+      }, this)
+      .join('');
   }
 }

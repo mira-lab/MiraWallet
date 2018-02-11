@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
 import {BwcProvider} from "../../../../../providers/bwc/bwc";
-import {MiraBoxWalletKeyPair, MiraBoxKeyPair, MiraBoxWalletType} from "../../../../../mira/mira";
+import {MiraBoxWalletType, MiraBox} from "../../../../../mira/mira";
 import {MiraBoxProvider} from "../../../../../providers/mirabox/mirabox";
 import {MiraStorageProvider} from "../../../../../providers/mirabox/mirastorage";
 import {NavController} from "ionic-angular";
+import {ProfileProvider} from "../../../../../providers/profile/profile";
 
 
 @Component({
@@ -14,7 +15,8 @@ export class NewNominalBoxPage {
   constructor(private bwcProvider: BwcProvider,
               private miraBoxProvider: MiraBoxProvider,
               private miraStorageProvider: MiraStorageProvider,
-              private navCtrl: NavController) {
+              private navCtrl: NavController,
+              private profileProvider: ProfileProvider) {
   }
 
   public walletType: MiraBoxWalletType = MiraBoxWalletType.BTC;
@@ -24,37 +26,32 @@ export class NewNominalBoxPage {
 
   public createBox() {
     let self = this;
-    let walletKeyPair: MiraBoxWalletKeyPair = this.generateWalletKeyPair();
     this.miraBoxProvider.createNominalMiraBox(
       this.walletType,
       this.walletName,
-      walletKeyPair,
+      '',//todo нам нужен хозяин кошелька??
       this.boxDescription,
       {
         name: "test user",
         publicKey: "user public key"
       }
     )
-      .then(function (miraBoxKeyPair: MiraBoxKeyPair) {
-        return self.miraStorageProvider.storeMiraBox(miraBoxKeyPair.miraBox)
-          .then(function () {
-            return self.miraStorageProvider.storeMiraKey(miraBoxKeyPair.miraKey);
-          });
+      .then(function (miraBox: MiraBox) {
+        //todo тут выбирается первый кошелек пользователя. сюда нужно протолкнуть выбранный пользователем
+        let walletsBtc = self.profileProvider.getWallets({coin: 'btc'});
+        let exportedWallet = JSON.parse(walletsBtc[0].export());
+        let HDPrivateKey = self.bwcProvider.getBitcore().HDPrivateKey;
+        let retrievedPrivateKey = new HDPrivateKey(exportedWallet.xPrivKey);
+        let derivedPrivateKey = retrievedPrivateKey.derive("m/0'");
+        let privateKey = derivedPrivateKey.privateKey;
+
+        miraBox.createSignature(privateKey);
+        return self.miraStorageProvider.storeMiraBox(miraBox);
       })
       .then(function () {
         console.log('Successfully stored in storage');
-        self.navCtrl.popAll();
+        return self.navCtrl.popAll();
       });
 
-  }
-
-  public generateWalletKeyPair(): MiraBoxWalletKeyPair {
-    let bitCore = this.bwcProvider.getBitcore();
-    let hdPrivateKey = new bitCore.HDPrivateKey();
-    let hdPublicKey = hdPrivateKey.hdPublicKey;
-    return {
-      privateKey: hdPrivateKey.toString(),
-      publicKey: hdPublicKey.toString()
-    };
   }
 }
