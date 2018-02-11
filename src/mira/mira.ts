@@ -1,3 +1,5 @@
+import * as Message from 'bitcore-message';
+
 export enum MiraBoxWalletType {
   BTC = 'btc',
   BCH = 'bch'
@@ -9,30 +11,13 @@ export enum MiraBoxType {
   Smart = 'smart'
 }
 
-interface MiraBoxEncodedWalletJsonInterface {
-  "wallet_type": MiraBoxWalletType,
-  "wallet_name": string,
-  "public_key": string,
-  "encoded_private_key": string
-}
-
 interface MiraBoxJsonInterface {
   'type': MiraBoxType,
   'version': string,
   'guid': string,
   'description': string,
   'creator': MiraBoxCreator,
-  'wallet': MiraBoxEncodedWalletJsonInterface
-}
-
-interface MiraKeyJsonInterface {
-  'guid': string,
-  'key': string
-}
-
-export interface MiraBoxKeyPair {
-  miraBox: MiraBox,
-  miraKey: MiraKey
+  'boxItems': MiraBoxItem[]
 }
 
 export interface MiraBoxCreator {
@@ -45,82 +30,32 @@ export interface MiraBoxWalletKeyPair {
   privateKey: string
 }
 
-export class EncodedWallet {
-  constructor(private walletType: MiraBoxWalletType,
-              private walletName: string,
-              private walletPublicKey: string,
-              private walletEncodedPrivateKey: string) {
-  }
-
-  getType(): string {
-    return this.walletType;
-  }
-
-  getName(): string {
-    return this.walletName;
-  }
-
-  getPublicKey(): string {
-    return this.walletPublicKey;
-  }
-
-  getEncodedPrivateKey(): string {
-    return this.walletEncodedPrivateKey;
-  }
-
-  toJsonObj(): MiraBoxEncodedWalletJsonInterface {
-    return {
-      "wallet_type": this.walletType,
-      "wallet_name": this.walletName,
-      "public_key": this.getPublicKey(),
-      "encoded_private_key": this.walletEncodedPrivateKey
-    };
-  }
-
-  static fromJsonObj(wallet: MiraBoxEncodedWalletJsonInterface): EncodedWallet {
-    return new EncodedWallet(
-      wallet.wallet_type,
-      wallet.wallet_name,
-      wallet.public_key,
-      wallet.encoded_private_key);
-  }
+export interface MiraBoxItem {
+  hash: string,
+  headers: {
+    type: string,
+    pubType: string,
+    pub: string
+  },
+  key: string,
+  meta: object,
+  data
 }
-
-export class MiraKey {
-  constructor(private boxGuid: string,
-              private boxKey: string) {
-  }
-
-  toJsonObj(): MiraKeyJsonInterface {
-    return {
-      guid: this.boxGuid,
-      key: this.boxKey
-    }
-  }
-
-  static fromJsonObj(jsonObj: MiraKeyJsonInterface): MiraKey {
-    return new MiraKey(jsonObj.guid, jsonObj.key);
-  }
-
-  getGuid() {
-    return this.boxGuid;
-  }
-
-  getKey() {
-    return this.boxKey;
-  }
-}
-
 
 export class MiraBox {
   private guid: string;
+  private miraBoxStringValue: string;
+  private miraBoxSignature: string = '';
 
   constructor(private type: MiraBoxType,
               private creator: MiraBoxCreator,
-              private wallet: EncodedWallet,
+              private boxItems: MiraBoxItem[],
               private description: string = '',
               private version: string = '1') {
+    this.generateGuid();
+    this.stringify();
   }
+
 
   private static genGuid(): string {
     function s4() {
@@ -133,10 +68,7 @@ export class MiraBox {
       s4() + '-' + s4() + s4() + s4();
   }
 
-  generateGuid(): MiraBox {
-    if (this.guid) {
-      throw 'Cannot reset guid';
-    }
+  private generateGuid(): MiraBox {
     return this.setGuid(MiraBox.genGuid());
   }
 
@@ -152,7 +84,7 @@ export class MiraBox {
       'guid': this.guid,
       'description': this.description,
       'creator': this.creator,
-      'wallet': this.wallet.toJsonObj()
+      'boxItems': this.boxItems
     };
   }
 
@@ -168,8 +100,8 @@ export class MiraBox {
     return this.creator;
   }
 
-  getWallet(): EncodedWallet {
-    return this.wallet;
+  getBoxItems(): MiraBoxItem[] {
+    return this.boxItems;
   }
 
   getDescription(): string {
@@ -180,13 +112,52 @@ export class MiraBox {
     return this.version;
   }
 
-  static fromJsonObj(jsonObj: MiraBoxJsonInterface): MiraBox {
+  private static fromJsonObj(jsonObj: MiraBoxJsonInterface): MiraBox {
     return new MiraBox(
       jsonObj.type,
       jsonObj.creator,
-      EncodedWallet.fromJsonObj(jsonObj.wallet),
+      jsonObj.boxItems,
       jsonObj.description,
       jsonObj.version)
-      .setGuid(jsonObj.guid);
+      .setGuid(jsonObj.guid)
+      .stringify();
+  }
+
+  static fromString(input: string): MiraBox {
+    let rows = input.split('\n');
+    let miraBoxObj = JSON.parse(rows[0]);
+    let miraBox = MiraBox.fromJsonObj(miraBoxObj);
+    miraBox.setSignature(rows[1]);
+    return miraBox;
+  }
+
+  validateSignature() {
+    let publicKey = this.creator.publicKey;
+    //tododaniil
+    let address = '';//todo extract from public key
+
+    return Message(this.miraBoxStringValue).verify(address, this.miraBoxSignature);
+  }
+
+  createSignature(privateKey) {
+    let message = new Message(this.miraBoxStringValue);
+    this.miraBoxSignature = message.sign(privateKey);
+  }
+
+  private stringify(): MiraBox {
+    this.miraBoxStringValue = JSON.stringify(this.toJsonObj());
+    return this;
+  }
+
+  toString(): string {
+    return `${this.miraBoxStringValue}\n${this.miraBoxSignature}`;
+  }
+
+  private getSignature(): string {
+    return this.miraBoxSignature;
+  }
+
+  private setSignature(string: string) {
+
   }
 }

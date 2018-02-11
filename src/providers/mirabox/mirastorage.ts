@@ -5,15 +5,12 @@ import {File} from "@ionic-native/file";
 import {Logger} from "../logger/logger";
 import {PlatformProvider} from "../platform/platform";
 import {IStorage} from "../persistence/storage/istorage";
-import {MiraBox, MiraKey} from "../../mira/mira";
+import {MiraBox} from "../../mira/mira";
 
 const Keys = {
   MIRA_BOX: (miraBoxGuid: string) => `mira-box-${miraBoxGuid}`,
   MIRA_BOX_REGISTRY: 'mira-box-registry',
-  MIRA_KEY: (miraBoxGuid: string) => `mira-key-${miraBoxGuid}`,
-  MIRA_KEY_REGISTRY: 'mira-key-registry'
 };
-
 
 @Injectable()
 export class MiraStorageProvider {
@@ -72,7 +69,7 @@ export class MiraStorageProvider {
 
   public storeMiraBox(miraBox: MiraBox): Promise<void> {
     let self = this;
-    return this.storage.set(Keys.MIRA_BOX(miraBox.getGuid()), miraBox.toJsonObj())
+    return this.storage.set(Keys.MIRA_BOX(miraBox.getGuid()), miraBox.toString())
       .then(function () {
         return self.addToMiraBoxGuidSet(miraBox.getGuid());
       });
@@ -87,67 +84,8 @@ export class MiraStorageProvider {
 
   public getMiraBox(miraBoxGuid: string): Promise<MiraBox> {
     return this.storage.get(Keys.MIRA_BOX(miraBoxGuid))
-      .then((miraBoxJson: any) => {
-        return MiraBox.fromJsonObj(miraBoxJson);
-      });
-  }
-
-  public getMiraKeyGuidSet(): Promise<Set<string>> {
-    return this.storage.get(Keys.MIRA_KEY_REGISTRY)
-      .then((guidArray: Array<string>) => {
-        return new Set<string>(guidArray);
-      });
-  }
-
-  private addToMiraKeyGuidSet(miraBoxGuid: string): Promise<void> {
-    let self = this;
-    return new Promise<void>(resolve => {
-      self.getMiraKeyGuidSet().then((set: Set<string>) => {
-        if (set.has(miraBoxGuid)) {
-          return resolve();
-        }
-        set.add(miraBoxGuid);
-        self.storeMiraKeyGuidSet(set).then(resolve);
-      });
-    });
-  }
-
-  private removeFromMiraKeyGuidSet(miraBoxGuid: string): Promise<void> {
-    let self = this;
-    return new Promise<void>(resolve => {
-      self.getMiraKeyGuidSet().then((set: Set<string>) => {
-        if (!set.has(miraBoxGuid)) {
-          return resolve();
-        }
-        set.delete(miraBoxGuid);
-        return self.storeMiraKeyGuidSet(set);
-      });
-    });
-  }
-
-  public storeMiraKeyGuidSet(guidSet: Set<string>): Promise<void> {
-    return this.storage.set(Keys.MIRA_KEY_REGISTRY, Array.from(guidSet));
-  }
-
-  public storeMiraKey(miraKey: MiraKey): Promise<void> {
-    let self = this;
-    return this.storage.set(Keys.MIRA_KEY(miraKey.getGuid()), miraKey.toJsonObj())
-      .then(function () {
-        return self.addToMiraKeyGuidSet(miraKey.getGuid());
-      });
-  }
-
-  public removeMiraKey(miraBoxGuid: string): Promise<void> {
-    let self = this;
-    return this.removeFromMiraKeyGuidSet(miraBoxGuid).then(function () {
-      return self.removeMiraKey(miraBoxGuid);
-    });
-  }
-
-  public getMiraKey(miraBoxGuid: string): Promise<MiraKey> {
-    return this.storage.get(Keys.MIRA_KEY(miraBoxGuid))
-      .then((miraKeyJson: any) => {
-        return MiraKey.fromJsonObj(miraKeyJson);
+      .then((miraBoxString: any) => {
+        return MiraBox.fromString(miraBoxString);
       });
   }
 
