@@ -1,4 +1,5 @@
 import * as Message from 'bitcore-message';
+import * as BWC from 'bitcore-wallet-client';
 
 export enum MiraBoxWalletType {
   BTC = 'btc',
@@ -132,11 +133,14 @@ export class MiraBox {
   }
 
   validateSignature() {
-    let publicKey = this.creator.publicKey;
-    //tododaniil
-    let address = '';//todo extract from public key
-
-    return Message(this.miraBoxStringValue).verify(address, this.miraBoxSignature);
+    try {
+      let xPublicKey = BWC.Bitcore.PublicKey.fromString(this.creator.publicKey);
+      let address = xPublicKey.toAddress('livenet');
+      return Message(this.miraBoxStringValue).verify(address, this.miraBoxSignature);
+    }
+    catch (e) {
+      return false;
+    }
   }
 
   createSignature(privateKey) {
@@ -157,7 +161,7 @@ export class MiraBox {
     return this.miraBoxSignature;
   }
 
-  private setSignature(string: string) {
-
+  private setSignature(signature: string) {
+    this.miraBoxSignature = signature;
   }
 }
