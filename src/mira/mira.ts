@@ -133,9 +133,14 @@ export class MiraBox {
   }
 
   validateSignature() {
-    let xpublicKey = BWC.Bitcore.PublicKey.fromString(this.creator.publicKey);
-    let address = xpublicKey.toAddress('livenet');
-    return Message(this.miraBoxStringValue).verify(address, this.miraBoxSignature);
+    try {
+      let xPublicKey = BWC.Bitcore.PublicKey.fromString(this.creator.publicKey);
+      let address = xPublicKey.toAddress('livenet');
+      return Message(this.miraBoxStringValue).verify(address, this.miraBoxSignature);
+    }
+    catch (e) {
+      return false;
+    }
   }
 
   createSignature(privateKey) {
@@ -156,7 +161,7 @@ export class MiraBox {
     return this.miraBoxSignature;
   }
 
-  private setSignature(string: string) {
-
+  private setSignature(signature: string) {
+    this.miraBoxSignature = signature;
   }
 }

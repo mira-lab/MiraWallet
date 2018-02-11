@@ -26,31 +26,36 @@ export class NewNominalBoxPage {
 
   public createBox() {
     let self = this;
+
+    //tododaniil
+    //todo тут выбирается первый кошелек пользователя. сюда нужно протолкнуть выбранный пользователем
+    let walletsBtc = self.profileProvider.getWallets({coin: 'btc'});
+    let exportedWallet = JSON.parse(walletsBtc[0].export());
+    let HDPrivateKey = self.bwcProvider.getBitcore().HDPrivateKey;
+    let retrievedPrivateKey = new HDPrivateKey(exportedWallet.xPrivKey);
+    let derivedPrivateKey = retrievedPrivateKey.derive("m/0'");
+    let privateKey = derivedPrivateKey.privateKey;
+    let publicKey = derivedPrivateKey.publicKey.toString();
+
     this.miraBoxProvider.createNominalMiraBox(
       this.walletType,
       this.walletName,
       '',//todo нам нужен хозяин кошелька??
       this.boxDescription,
       {
-        name: "test user",
-        publicKey: "user public key"
+        name: "test user",//todo нам нужен хозяин кошелька??
+        publicKey: publicKey
       }
     )
       .then(function (miraBox: MiraBox) {
-        //todo тут выбирается первый кошелек пользователя. сюда нужно протолкнуть выбранный пользователем
-        let walletsBtc = self.profileProvider.getWallets({coin: 'btc'});
-        let exportedWallet = JSON.parse(walletsBtc[0].export());
-        let HDPrivateKey = self.bwcProvider.getBitcore().HDPrivateKey;
-        let retrievedPrivateKey = new HDPrivateKey(exportedWallet.xPrivKey);
-        let derivedPrivateKey = retrievedPrivateKey.derive("m/0'");
-        let privateKey = derivedPrivateKey.privateKey;
-
         miraBox.createSignature(privateKey);
         return self.miraStorageProvider.storeMiraBox(miraBox);
       })
       .then(function () {
         console.log('Successfully stored in storage');
-        return self.navCtrl.popAll();
+        self.navCtrl.popAll().catch(e => {
+          console.log(e);
+        });
       });
 
   }

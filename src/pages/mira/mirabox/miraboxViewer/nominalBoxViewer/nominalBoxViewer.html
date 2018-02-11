@@ -8,6 +8,10 @@
   <ion-list>
     <ion-item-divider color="light">Box info</ion-item-divider>
     <ion-item>
+      <ion-label>Signature</ion-label>
+      <ion-label>{{miraBox.validateSignature()?'Valid':'Invalid'}}</ion-label>
+    </ion-item>
+    <ion-item>
       <ion-label>Creator</ion-label>
       <ion-label>{{miraBox.getCreator().name}}</ion-label>
     </ion-item>
