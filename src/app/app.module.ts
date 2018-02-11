@@ -15,7 +15,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { Toast } from '@ionic-native/toast';
 import { TouchID } from '@ionic-native/touch-id';
 import { FCM } from '@ionic-native/fcm';
-
+import { FileChooser } from '@ionic-native/file-chooser';
 /* Modules */
 import { MomentModule } from 'angular2-moment';
 import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
@@ -60,7 +60,7 @@ import {NewNominalBoxPage} from "../pages/mira/mirabox/newBox/newNominalBox/newN
 import { SelectCryptocurrency } from "../pages/mira/mirabox/newBox/nominalBoxWizard/selectCryptocurrency/selectCryptocurrency";
 import { CreatePassword } from "../pages/mira/mirabox/newBox/nominalBoxWizard/createPassword/createPassword";
 import { NominalBoxViewer} from "../pages/mira/mirabox/miraboxViewer/nominalBoxViewer/nominalBoxViewer";
-
+import { MiraboxImportPage } from "../pages/mira/mirabox/miraboxImport/miraboxImport";
 // Integrations: Amazon
 import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
 import { AmazonCardsPage } from '../pages/integrations/amazon/amazon-cards/amazon-cards';
@@ -207,6 +207,7 @@ import { LongPress } from '../directives/long-press/long-press';
 import { NoLowFee } from '../directives/no-low-fee/no-low-fee'
 import {MiraBoxProvider} from "../providers/mirabox/mirabox";
 import {MiraStorageProvider} from "../providers/mirabox/mirastorage";
+import {MiraboxImportProvider} from "../providers/mirabox/miraboximport";
 import {MiraBoxListItem} from "../pages/mira/mirabox/boxListItem/boxListItem";
 import {BoxListPage} from "../pages/mira/mirabox/boxList/boxList";
 
@@ -322,6 +323,7 @@ pages = pages.concat([
   NominalBoxViewer,
   BoxListPage,
   MiraBoxListItem,
+  MiraboxImportPage,
 ]);
 
 let providers: any = [
@@ -379,13 +381,15 @@ let providers: any = [
   DecimalPipe,
   PersistenceProvider,
   File,
+  FileChooser,
   {
     provide: ErrorHandler,
     useClass: IonicErrorHandler
   },
   ParityProvider,
   MiraBoxProvider,
-  MiraStorageProvider
+  MiraStorageProvider,
+  MiraboxImportProvider,
 ];
 
 let pipes = [
