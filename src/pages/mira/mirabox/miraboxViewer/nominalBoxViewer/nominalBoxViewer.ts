@@ -21,7 +21,7 @@ export class NominalBoxViewer {
 
   download() {
     if (this.platformProvider.isCordova) {
-      this.miraBoxExportProvider.createFile(this.miraBox.toString());
+      this.miraBoxExportProvider.createFile(this.miraBox.toString(), this.miraBox.getGuid());
     }
     else {
       let dataStr = "data:application/text;charset=utf-8," + this.miraBox.toString();
@@ -32,7 +32,7 @@ export class NominalBoxViewer {
   }
 
   public sheetShare() {
-    this.miraBoxExportProvider.ShareSocial();
+    this.miraBoxExportProvider.ShareSocial(this.miraBox.toString(), this.miraBox.getGuid());
   }
 
   public gotoFillWithCoin() {

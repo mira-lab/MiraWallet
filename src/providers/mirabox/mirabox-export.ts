@@ -13,10 +13,10 @@ export class MiraBoxExportProvider {
   }
 
   //TODO Change to mirabox format from txt
-  public createFile(fileContent: string) {
+  public createFile(fileContent: string, guid: string) {
     let self = this;
     let exportDirectory = "";
-    let filename = "example.txt";
+    let filename = guid+'.mbox';
     //data = JSON.stringify(data, null, '\t');
     if (this.file.documentsDirectory !== null) {
       // iOS, OSX
@@ -51,8 +51,27 @@ export class MiraBoxExportProvider {
   }
 
   //tododaniil
-  public ShareSocial() {
-    if (this.miraBoxPath)
-      this.socialSharing.share("MiraBox", "Mirabox", this.miraBoxPath);
+  public ShareSocial(fileContent:string, guid: string) {
+    let self = this;
+    window.resolveLocalFileSystemURL(this.file.cacheDirectory, function (directoryEntry) {
+      directoryEntry.filesystem.root.getFile(guid+'.mbox', {create: true}, function (fileEntry) {
+        fileEntry.createWriter(function (fileWriter) {
+          fileWriter.onwriteend = function () {
+            self.socialSharing.share("Congratulations! You recieved Mirabox!", "Mirabox", fileEntry.toURL())
+              .then(()=>{
+                fileEntry.remove(()=> {console.log('Successfully removed Mirabox!')}, (err)=>{console.log("Error with removing Mirabox: " +err);})
+              }, (err)=>{console.log("Most likely user cancelled sharing: "+err); })
+          };
+          let blob = new Blob([fileContent], {type: 'application/text'});
+          fileWriter.write(blob);
+        }, (err) => {
+          console.log("Error! " + err);
+        });
+      }, (err) => {
+        console.log("Error! " + err);
+      });
+    }, (err) => {
+      console.log("Error! " + err);
+    });
   }
 }
