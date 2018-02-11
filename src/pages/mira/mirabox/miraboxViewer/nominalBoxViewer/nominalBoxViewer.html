@@ -1,26 +1,44 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>*NominalBoxName*</ion-title>
+    <ion-title>Nominal box</ion-title>
   </ion-navbar>
 </ion-header>
 
-
-<ion-content no-bounce>
+<ion-content>
   <ion-list>
+    <ion-item-divider color="light">Box info</ion-item-divider>
     <ion-item>
-      <ion-label>1. Title</ion-label>
+      <ion-label>Creator</ion-label>
+      <ion-label>{{miraBox.getCreator().name}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>2. ...</ion-label>
+      <ion-label>Description</ion-label>
+      <ion-label>{{miraBox.getDescription()}}</ion-label>
+    </ion-item>
+    <ion-item-divider color="light">Wallet info</ion-item-divider>
+    <ion-item>
+      <ion-label>Name</ion-label>
+      <ion-label>{{miraBox.getWallet().name}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>3. Owner ?</ion-label>
+      <ion-label>Address</ion-label>
+      <ion-label>ToDo</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Balance: 0.0002 BTC</ion-label>
+      <ion-label>Status</ion-label>
+      <ion-label>ToDo</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Status: *status*</ion-label>
+      <ion-label>Balance</ion-label>
+      <ion-label>ToDo</ion-label>
+    </ion-item>
+    <ion-item>
+      <button ion-item (click)="gotoFillWithCoin()">
+        <ion-icon item-start>
+          <img src="assets/img/icon-bitcoin.svg" class="icon-services" />
+        </ion-icon>
+        <span>Fill with coin</span>
+      </button>
     </ion-item>
     <ion-item>
       <button ion-item (click)="shareviaEmail()">

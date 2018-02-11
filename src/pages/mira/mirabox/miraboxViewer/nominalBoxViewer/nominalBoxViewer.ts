@@ -1,6 +1,10 @@
 import {Component} from '@angular/core';
 import {PlatformProvider} from "../../../../../providers/platform/platform";
 import {MiraBoxExportProvider} from "../../../../../providers/mirabox/mirabox-export";
+import {NavParams} from "ionic-angular";
+import {EncodedWallet, MiraBox} from "../../../../../mira/mira";
+import {BwcProvider} from "../../../../../providers/bwc/bwc";
+
 
 @Component({
   selector: 'nominalBoxViewer.scss',
@@ -8,9 +12,13 @@ import {MiraBoxExportProvider} from "../../../../../providers/mirabox/mirabox-ex
 })
 export class NominalBoxViewer {
   public isCordova: boolean;
+  public miraBox: MiraBox;
+
   constructor(private platformProvider: PlatformProvider,
-              private miraBoxExportProvider: MiraBoxExportProvider){
+              private miraBoxExportProvider: MiraBoxExportProvider,
+              private navParams: NavParams){
     this.isCordova = this.platformProvider.isCordova;
+    this.miraBox = navParams.data;
   }
   public notCordovaDownload(){
     //Uncomment for json:
@@ -42,5 +50,9 @@ private downloadObjectAsJson(exportObj, exportName){
   }
   public sheetShare(){
     this.miraBoxExportProvider.miraBoxTelegramSharing();
+  }
+
+  public gotoFillWithCoin(){
+    //todo
   }
 }
