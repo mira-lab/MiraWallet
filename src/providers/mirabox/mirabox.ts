@@ -137,6 +137,10 @@ export class MiraBoxProvider {
       .toString('hex');
   }
 
+  private async generateEthAddress(parityNode: ParityNode, privateKey: string, password: string) {
+      await this.parityProvider.accounts.newAccountFromSecret(parityNode, privateKey, password);
+  }
+
   generateNewEncodedBtcWallet(walletName: string,
                               copayerName: string,
                               network: BtcNetwork = BtcNetwork.Live): Promise<EncryptedGeneratedWallet> {
@@ -161,10 +165,15 @@ export class MiraBoxProvider {
           //AES encrypting it with generated password
           let encryptPassword = self.generatePassword(16);
           let encryptedWallet = self.bwcProvider.getSJCL().encrypt(encryptPassword, exportedWallet);
+
+          //generate secret-store credential with the same privateKey & empty pwd (MAYBE encryptPassword USE?)
+          let ethAddress = self.generateEthAddress(this.parityNode, exportedWallet.xPrivKey, '');
+
           resolve({
             decryptedWallet: JSON.parse(exportedWallet),
             encryptedWallet: encryptedWallet,
             password: encryptPassword
+            // ethAddress: ethAddress
           });
         });
     });

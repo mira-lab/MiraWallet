@@ -243,6 +243,30 @@ class ParityAccounts {
           });
     });
   }
+
+  public newAccountFromSecret(parityNode: ParityNode, privateKey: string, password: string): Promise<object> {
+    let _this = this;
+    return new Promise(function (resolve, reject) {
+      _this.httpClient.post(
+        `${parityNode.getNodeAddress()}:${parityNode.getRpcPort()}`,
+        {
+          'method': 'parity_newAccountFromSecret',
+          'params': [
+            privateKey,
+            password
+          ],
+          'id': 1,
+          'jsonrpc': '2.0'
+        })
+        .subscribe(
+          function (data: any) {
+            resolve(data.result);
+          },
+          (httpErrorResponse: HttpErrorResponse) => {
+            reject(httpErrorResponse);
+          });
+    });
+  }
 }
 
 @Injectable()
