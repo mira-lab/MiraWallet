@@ -157,10 +157,6 @@ export class MiraBox {
     return `${this.miraBoxStringValue}\n${this.miraBoxSignature}`;
   }
 
-  private getSignature(): string {
-    return this.miraBoxSignature;
-  }
-
   private setSignature(signature: string) {
     this.miraBoxSignature = signature;
   }

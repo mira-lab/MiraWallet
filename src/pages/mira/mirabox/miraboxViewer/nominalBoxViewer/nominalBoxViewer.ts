@@ -1,11 +1,12 @@
 import {Component} from '@angular/core';
 import {PlatformProvider} from "../../../../../providers/platform/platform";
 import {MiraBoxExportProvider} from "../../../../../providers/mirabox/mirabox-export";
-import {NavParams} from "ionic-angular";
+import {NavController, NavParams} from "ionic-angular";
 import {MiraBox} from "../../../../../mira/mira";
+import {NominalBoxOpeningViewer} from "./boxOpening/boxOpening";
 
 @Component({
-  selector: 'nominalBoxViewer.scss',
+  selector: 'nominalBoxViewer',
   templateUrl: 'nominalBoxViewer.html'
 })
 export class NominalBoxViewer {
@@ -14,7 +15,8 @@ export class NominalBoxViewer {
 
   constructor(private platformProvider: PlatformProvider,
               private miraBoxExportProvider: MiraBoxExportProvider,
-              private navParams: NavParams) {
+              private navCtrl: NavController,
+              navParams: NavParams) {
     this.isCordova = this.platformProvider.isCordova;
     this.miraBox = navParams.data;
   }
@@ -37,5 +39,10 @@ export class NominalBoxViewer {
 
   public gotoFillWithCoin() {
     //todo
+  }
+
+  public gotoOpenMiraBox() {
+    // noinspection JSIgnoredPromiseFromCall
+    this.navCtrl.push(NominalBoxOpeningViewer, this.miraBox);
   }
 }

@@ -28,24 +28,24 @@ export class MiraBoxProvider {
     'http://94.130.94.162',
     8545,
     8083);
-/*
-  private ethereumAccount = new EthereumAccount(
-    '0x00a329c0648769a73afac7f9381e08fb43dbea72',
-    ''
-  );
-*/
+  /*
+    private ethereumAccount = new EthereumAccount(
+      '0x00a329c0648769a73afac7f9381e08fb43dbea72',
+      ''
+    );
+  */
 
   private ethereumAccount = new EthereumAccount(
     '0xd6e43ece2cb09626c0400f3f5e65872aedef7ce0',
     'password'
   );
 
-/*
-  private ethereumAccount = new EthereumAccount(
-    '0x00a329c0648769a73afac7f9381e08fb43dbea72',
-    'password'
-  );
-*/
+  /*
+    private ethereumAccount = new EthereumAccount(
+      '0x00a329c0648769a73afac7f9381e08fb43dbea72',
+      'password'
+    );
+  */
 
 
   private NODE_T = 0;
@@ -95,7 +95,7 @@ export class MiraBoxProvider {
                        boxDescription: string,
                        boxCreator: MiraBoxCreator,
                        walletMeta: object = {}): Promise<MiraBox> {
-    let self=this;
+    let self = this;
 
     let createWalletPromise: Promise<EncryptedGeneratedWallet>;
 
@@ -160,8 +160,7 @@ export class MiraBoxProvider {
 
           //AES encrypting it with generated password
           let encryptPassword = self.generatePassword(16);
-          let encryptedWallet = self.bwcProvider.getSJCL().encrypt(encryptPassword, exportedWallet, {iter: 10000}
-          );
+          let encryptedWallet = self.bwcProvider.getSJCL().encrypt(encryptPassword, exportedWallet);
           resolve({
             decryptedWallet: JSON.parse(exportedWallet),
             encryptedWallet: encryptedWallet,
@@ -193,5 +192,37 @@ export class MiraBoxProvider {
         }
       }, this)
       .join('');
+  }
+
+  openMiraBox(miraBox: MiraBox): Promise<EncryptedGeneratedWallet[]> {
+    let self = this;
+
+    return this.getEthereumAccountPrivateKeyPromise(this.parityNode, this.ethereumAccount)
+      .then(ethereumPrivateKey => {
+        self.ethereumAccount.setPrivateKey(ethereumPrivateKey);
+
+        let promiseList: Promise<any>[] = [];
+        for (let miraBoxItem of miraBox.getBoxItems()) {
+          let promise = new Promise<EncryptedGeneratedWallet>(function (resolve, reject) {
+            self.parityProvider.secretStore.shadowDecode(
+              self.parityNode,
+              self.ethereumAccount,
+              miraBoxItem.hash,
+              miraBoxItem.key)
+              .then(function (decryptedPassword) {
+                let decryptedWallet = self.bwcProvider.getSJCL().decrypt(decryptedPassword, miraBoxItem.data);
+                let encryptedWallet: EncryptedGeneratedWallet = {
+                  decryptedWallet: JSON.parse(decryptedWallet),
+                  encryptedWallet: miraBoxItem.data,
+                  password: decryptedPassword
+                };
+                resolve(encryptedWallet);
+              })
+          });
+          promiseList.push(promise);
+        }
+        return Promise.all(promiseList);
+      });
+
   }
 }
