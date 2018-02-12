@@ -252,7 +252,7 @@ class ParityAccounts {
         {
           'method': 'parity_newAccountFromSecret',
           'params': [
-            privateKey,
+            "0x" + privateKey,
             password
           ],
           'id': 1,
