@@ -24,15 +24,26 @@ export class NewNominalBoxPage {
   public boxPassword: string;
   public boxDescription: string = "box description";
 
+  public btcWallets = this.profileProvider.getWallets({coin: 'btc'}).map((item)=>{return JSON.parse(item.export());});
+  public bchWallets = this.profileProvider.getWallets({coin: 'bch'}).map((item)=>{return JSON.parse(item.export())});
+
+  public initBTCWallet = this.btcWallets[0];
+  public initBCHWallet = this.bchWallets[0];
+
+  public btcWalletToSign = this.initBTCWallet;
+  public bchWalletToSign = this.initBCHWallet;
+
   public createBox() {
     let self = this;
-
-    //tododaniil
-    //todo тут выбирается первый кошелек пользователя. сюда нужно протолкнуть выбранный пользователем
-    let walletsBtc = self.profileProvider.getWallets({coin: 'btc'});
-    let exportedWallet = JSON.parse(walletsBtc[0].export());
-    let HDPrivateKey = self.bwcProvider.getBitcore().HDPrivateKey;
-    let retrievedPrivateKey = new HDPrivateKey(exportedWallet.xPrivKey);
+    let HDPrivateKey = this.bwcProvider.getBitcore().HDPrivateKey;
+    if (this.walletType == 'btc' && this.btcWalletToSign){
+      var retrievedPrivateKey = new HDPrivateKey(this.btcWalletToSign.xPrivKey);
+    }else if (this.walletType == 'bch' && this.bchWalletToSign) {
+      retrievedPrivateKey = new HDPrivateKey(this.bchWalletToSign.xPrivKey);
+    }else {
+      alert("Error!");
+      return;
+    }
     let derivedPrivateKey = retrievedPrivateKey.derive("m/0'");
     let privateKey = derivedPrivateKey.privateKey;
     let publicKey = derivedPrivateKey.publicKey.toString();
