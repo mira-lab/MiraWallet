@@ -55,12 +55,14 @@ import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback'
 import { SuccessModalPage } from '../pages/success/success';
 
 //Mirabox Pages
-import {NewBoxPage} from "../pages/mira/mirabox/newBox/newBox";
-import {NewNominalBoxPage} from "../pages/mira/mirabox/newBox/newNominalBox/newNominalBox";
-import { SelectCryptocurrency } from "../pages/mira/mirabox/newBox/nominalBoxWizard/selectCryptocurrency/selectCryptocurrency";
-import { CreatePassword } from "../pages/mira/mirabox/newBox/nominalBoxWizard/createPassword/createPassword";
-import { NominalBoxViewer} from "../pages/mira/mirabox/miraboxViewer/nominalBoxViewer/nominalBoxViewer";
+import { NewBoxPage } from "../pages/mira/mirabox/newBox/newBox";
+import { NewNominalBoxPage } from "../pages/mira/mirabox/newBox/newNominalBox/newNominalBox";
+import { NominalBoxViewer } from "../pages/mira/mirabox/miraboxViewer/nominalBoxViewer/nominalBoxViewer";
 import { MiraboxImportPage } from "../pages/mira/mirabox/miraboxImport/miraboxImport";
+import { MiraBoxListItem } from "../pages/mira/mirabox/boxListItem/boxListItem";
+import { BoxListPage } from "../pages/mira/mirabox/boxList/boxList";
+import { NominalBoxOpeningViewer } from "../pages/mira/mirabox/miraboxViewer/nominalBoxViewer/boxOpening/boxOpening";
+
 // Integrations: Amazon
 import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
 import { AmazonCardsPage } from '../pages/integrations/amazon/amazon-cards/amazon-cards';
@@ -205,12 +207,10 @@ import { ParityProvider } from '../providers/secret-store/secret-store'
 import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboard';
 import { LongPress } from '../directives/long-press/long-press';
 import { NoLowFee } from '../directives/no-low-fee/no-low-fee'
-import {MiraBoxProvider} from "../providers/mirabox/mirabox";
-import {MiraStorageProvider} from "../providers/mirabox/mirastorage";
-import {MiraboxImportProvider} from "../providers/mirabox/miraboximport";
-import {MiraBoxListItem} from "../pages/mira/mirabox/boxListItem/boxListItem";
-import {BoxListPage} from "../pages/mira/mirabox/boxList/boxList";
-import {MiraBoxExportProvider} from "../providers/mirabox/mirabox-export";
+import { MiraBoxProvider } from "../providers/mirabox/mirabox";
+import { MiraStorageProvider } from "../providers/mirabox/mirastorage";
+import { MiraboxImportProvider } from "../providers/mirabox/miraboximport";
+import { MiraBoxExportProvider } from "../providers/mirabox/mirabox-export";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -319,12 +319,11 @@ let pages: any = [
 pages = pages.concat([
   NewBoxPage,
   NewNominalBoxPage,
-  SelectCryptocurrency,
-  CreatePassword,
   NominalBoxViewer,
   BoxListPage,
   MiraBoxListItem,
   MiraboxImportPage,
+  NominalBoxOpeningViewer
 ]);
 
 let providers: any = [

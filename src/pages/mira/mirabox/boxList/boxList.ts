@@ -4,7 +4,7 @@ import {MiraStorageProvider} from "../../../../providers/mirabox/mirastorage";
 
 
 @Component({
-  selector: 'boxList.scss',
+  selector: 'boxList',
   templateUrl: 'boxList.html'
 })
 export class BoxListPage {

@@ -1,9 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 
-const querystring = require('querystring');
-const http = require('http');
-const uniREST = require('unirest');
 const secp256k1 = require('secp256k1');
 
 export class ParityNode {
@@ -55,16 +52,7 @@ export interface EncryptedResult {
 }
 
 @Injectable()
-export class ParitySecretStore {
-  private NETWORKING = {
-    portJsonRpc: '8545'
-  };
-  private address: string = "0x00a329c0648769a73afac7f9381e08fb43dbea72";
-  private password: string = '';
-  private privateKey: string = '';
-
-  private ssPort = 8082;
-
+class ParitySecretStore {
   constructor(private httpClient: HttpClient) {
   }
 
@@ -139,93 +127,58 @@ export class ParitySecretStore {
       });
   }
 
-  /**
-   * Decode encrypted data by storageId
-   * @param parityNode
-   * @param storageId Shadow mode get key
-   * @param encrypted Encrypted string
-   * @param onComplete Callback when get decoded body from KeyServer
-   */
-  shadowDecode(parityNode: ParityNode, storageId, encrypted, onComplete) {
+  shadowDecode(parityNode: ParityNode, ethereumAccount: EthereumAccount, storageId: string, encryptedData: string) {
     const self = this;
-    let signedStorageId = secp256k1.sign(Buffer.from(storageId, 'hex'), this.privateKey);
-    let hexSignature = signedStorageId.signature.toString('hex');
 
-    let getShadowKey = new Promise(function (resolve) {
-      let url = `${parityNode.getNodeAddress()}:${this.ssPort}/shadow/${storageId}/${hexSignature}00/`;
-      let Request = uniREST.get(url);
-      Request.end(documentKey => resolve(documentKey.body));
-    });
+    let hexSignature = ParitySecretStore.getSignature(storageId, ethereumAccount.getPrivateKey());
 
-    getShadowKey.then(function (shadowKeys: {
+    return new Promise(function (resolve, reject) {
+      let url = `${parityNode.getNodeAddress()}:${parityNode.getSecretStoreRpcPort()}/shadow/${storageId}/${hexSignature}`;
+      self.httpClient.get(url)
+        .subscribe(
+          (shadowKeys: {
+            decrypted_secret: string,
+            common_point: string,
+            decrypt_shadows: string
+          }) => {
+            resolve(shadowKeys);
+          },
+          (httpErrorResponse: HttpErrorResponse) => {
+            reject(httpErrorResponse.message);
+          });
+    }).then(
+      (shadowKeys: {
         decrypted_secret: string,
         common_point: string,
         decrypt_shadows: string
-      }) {
-        let dataBinaryObj = {
-          "jsonrpc": "2.0",
-          "method": "secretstore_shadowDecrypt",
-          "params": [
-            self.address,
-            self.password,
-            shadowKeys.decrypted_secret,
-            shadowKeys.common_point,
-            shadowKeys.decrypt_shadows
-          ],
-          id: 2
-        };
-        let dataBinaryJson = JSON.stringify(dataBinaryObj);
-
-        let Request = uniREST.post(`${this.ssPort}:${self.NETWORKING.portJsonRpc}/`);
-        Request
-          .headers({'Content-Type': 'application/json'})
-          .send(dataBinaryJson)
-          .end(function (data) {
-            let decrypted = Buffer.from(data.body.result.replace('0x', ''), 'hex').toString('utf8');
-            onComplete(decrypted);
-          })
-      },
-      function (err) {
-        console.log(err);
+      }) => {
+        return new Promise<any>(function (resolve, reject) {
+          self.httpClient.post(
+            `${parityNode.getNodeAddress()}:${parityNode.getRpcPort()}/`,
+            {
+              "jsonrpc": "2.0",
+              "method": "secretstore_shadowDecrypt",
+              "params": [
+                ethereumAccount.getAddress(),
+                ethereumAccount.getPassword(),
+                shadowKeys.decrypted_secret,
+                shadowKeys.common_point,
+                shadowKeys.decrypt_shadows,
+                encryptedData
+              ],
+              id: 2
+            })
+            .subscribe(
+              function (response: any) {
+                let data = Buffer.from(response.result.replace('0x', ''), 'hex').toString('utf8');
+                resolve(data);
+              },
+              (httpErrorResponse: HttpErrorResponse) => {
+                reject(httpErrorResponse);
+              }
+            );
+        });
       });
-  }
-
-  doRequest(port, endpoint, method, data, success) {
-    let dataString = JSON.stringify(data);
-    let headers = {};
-
-    if (method === 'GET') {
-      endpoint += '?' + querystring.stringify(data)
-    } else {
-      headers = {
-        'Content-Type': 'application/json',
-        'Content-Length': dataString.length,
-      }
-    }
-    let options = {
-      host: '94.130.94.162',
-      port: port,
-      path: endpoint,
-      method: method,
-      headers: headers
-    };
-    let req = http.request(options, res => {
-      res.setEncoding('utf-8');
-      let responseString = '';
-
-      res.on('data', data => {
-        responseString += data
-      });
-
-      res.on('end', function () {
-        console.log(responseString);
-        let responseObject = JSON.parse(responseString);
-        success(responseObject)
-      });
-    });
-
-    req.write(dataString);
-    req.end();
   }
 }
 
