@@ -12,6 +12,7 @@ import {NominalBoxOpeningViewer} from "./boxOpening/boxOpening";
 export class NominalBoxViewer {
   public isCordova: boolean;
   public miraBox: MiraBox;
+  public currentBalance: number;
 
   constructor(private platformProvider: PlatformProvider,
               private miraBoxExportProvider: MiraBoxExportProvider,
@@ -19,6 +20,7 @@ export class NominalBoxViewer {
               navParams: NavParams) {
     this.isCordova = this.platformProvider.isCordova;
     this.miraBox = navParams.data;
+    this.updateBalance();
   }
 
   download() {
@@ -40,7 +42,26 @@ export class NominalBoxViewer {
   public gotoFillWithCoin() {
     //todo
   }
+ public updateBalance(){
+   let self = this;
+   let pubkey = this.miraBox.getBoxItems()[0].headers.pub;
+   let url = "https://blockchain.info/ru/balance?active=" + pubkey;
+   let xhr = new XMLHttpRequest();
+   xhr.open('GET', url, true);
+   xhr.send()
+   xhr.onreadystatechange = function() {
+     if (xhr.readyState != 4) return;
+     if (xhr.status != 200) {
+       console.log(xhr.status + ': ' + xhr.statusText);
+       self.currentBalance = -1;
+     } else {
+       console.log("Successfully got responce form blockchain.info!");
+       let response = JSON.parse(xhr.responseText);
+       self.currentBalance = response[pubkey].final_balance
+     }
 
+   }
+  }
   public gotoOpenMiraBox() {
     // noinspection JSIgnoredPromiseFromCall
     this.navCtrl.push(NominalBoxOpeningViewer, this.miraBox);
