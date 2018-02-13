@@ -36,9 +36,9 @@ export class NewNominalBoxPage {
   public createBox() {
     let self = this;
     let HDPrivateKey = this.bwcProvider.getBitcore().HDPrivateKey;
-    if (this.walletType == 'btc' && this.btcWalletToSign){
+    if (this.walletType == 'btc' && this.btcWalletToSign.xPrivKey){
       var retrievedPrivateKey = new HDPrivateKey(this.btcWalletToSign.xPrivKey);
-    }else if (this.walletType == 'bch' && this.bchWalletToSign) {
+    }else if (this.walletType == 'bch' && this.bchWalletToSign.xPrivKey) {
       retrievedPrivateKey = new HDPrivateKey(this.bchWalletToSign.xPrivKey);
     }else {
       alert("Error!");
