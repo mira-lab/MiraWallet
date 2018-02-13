@@ -14,6 +14,15 @@
       </ion-select>
     </ion-item>
     <ion-item>
+      <ion-label>Sign with walllet:</ion-label>
+      <ion-select *ngIf="walletType == 'btc'" [(ngModel)]="btcWalletToSign">
+        <ion-option  *ngFor="let wallet of btcWallets" [selected]="wallet == initBTCWallet" [value]="wallet" >{{ wallet.walletName }}</ion-option>
+      </ion-select>
+      <ion-select *ngIf="walletType == 'bch'" [(ngModel)]="bchWalletToSign">
+        <ion-option  *ngFor="let wallet of bchWallets" [selected]="wallet == initBCHWallet" [value]="wallet" >{{ wallet.walletName }}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
       <ion-label>Wallet name</ion-label>
       <ion-input type="text" [value]="walletName"></ion-input>
     </ion-item>
@@ -26,13 +35,8 @@
       <ion-input type="text" [value]="boxDescription"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Sign with walllet:</ion-label>
-      <ion-select *ngIf="walletType == 'btc'" [(ngModel)]="btcWalletToSign">
-        <ion-option  *ngFor="let wallet of btcWallets" [selected]="wallet == initBTCWallet" [value]="wallet" >{{ wallet.walletName }}</ion-option>
-      </ion-select>
-      <ion-select *ngIf="walletType == 'bch'" [(ngModel)]="bchWalletToSign">
-        <ion-option  *ngFor="let wallet of bchWallets" [selected]="wallet == initBCHWallet" [value]="wallet" >{{ wallet.walletName }}</ion-option>
-      </ion-select>
+      <ion-label>Box description</ion-label>
+      <ion-input type="text" [value]="boxDescription"></ion-input>
     </ion-item>
   </ion-list>
 </ion-content>
