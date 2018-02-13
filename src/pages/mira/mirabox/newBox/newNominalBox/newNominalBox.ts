@@ -20,9 +20,9 @@ export class NewNominalBoxPage {
   }
 
   public walletType: MiraBoxWalletType = MiraBoxWalletType.BTC;
-  public walletName: string = 'miraBox name';
-  public boxPassword: string;
-  public boxDescription: string = "box description";
+  public walletName: string = 'It is wallet name';
+  public boxDescription: string = "No description";
+  public creatorName: string = "Anonymous";
 
   public btcWallets = this.profileProvider.getWallets({coin: 'btc'}).map((item) => {
     return JSON.parse(item.export());
@@ -39,9 +39,10 @@ export class NewNominalBoxPage {
 
   public createBox() {
     let self = this;
+    let retrievedPrivateKey;
     let HDPrivateKey = this.bwcProvider.getBitcore().HDPrivateKey;
     if (this.walletType == 'btc' && this.btcWalletToSign.xPrivKey) {
-      var retrievedPrivateKey = new HDPrivateKey(this.btcWalletToSign.xPrivKey);
+      retrievedPrivateKey = new HDPrivateKey(this.btcWalletToSign.xPrivKey);
     } else if (this.walletType == 'bch' && this.bchWalletToSign.xPrivKey) {
       retrievedPrivateKey = new HDPrivateKey(this.bchWalletToSign.xPrivKey);
     } else {
@@ -55,10 +56,10 @@ export class NewNominalBoxPage {
     this.miraBoxProvider.createNominalMiraBox(
       this.walletType,
       this.walletName,
-      '',//todo нам нужен хозяин кошелька??
+      '',
       this.boxDescription,
       {
-        name: "test user",//todo нам нужен хозяин кошелька??
+        name: self.creatorName,
         publicKey: publicKey
       }
     )

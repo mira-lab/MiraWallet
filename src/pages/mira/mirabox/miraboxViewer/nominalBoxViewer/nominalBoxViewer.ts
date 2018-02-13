@@ -28,8 +28,13 @@ export class NominalBoxViewer {
   }
 
   public getAddress() {
-    let xpublicKey = this.bwcProvider.getBitcore().PublicKey.fromString(this.miraBox.getCreator().publicKey);
-    this.miraBoxAdress = xpublicKey.toAddress('livenet');
+    try {
+      let xpublicKey = this.bwcProvider.getBitcore().PublicKey.fromString(this.miraBox.getCreator().publicKey);
+      this.miraBoxAdress = xpublicKey.toAddress('livenet');
+    }
+    catch (e) {
+      console.log(e);
+    }
   }
 
   download() {
