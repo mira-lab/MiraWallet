@@ -45,7 +45,7 @@ export class MiraboxImportPage {
       })
         .catch(reason => {
           console.log(reason)
-        });;
+        });
     } else {
       let fileDialog = document.getElementById('fileInput');
       fileDialog.click();
