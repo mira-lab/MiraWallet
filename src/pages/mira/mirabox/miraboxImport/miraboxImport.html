@@ -7,6 +7,8 @@
 <ion-content no-bounce>
   <ion-list>
     <button block ion-item (click)="importMirabox()">Select File</button>
+    <input *ngIf="!isCordova" id="fileInput" name="file" type="file" style="visibility:hidden"
+           (change)="dealwithFile()"/>
   </ion-list>
   <ion-list>
     <ion-input type="password" placeholder="Password"></ion-input>
