@@ -24,8 +24,12 @@ export class NewNominalBoxPage {
   public boxPassword: string;
   public boxDescription: string = "box description";
 
-  public btcWallets = this.profileProvider.getWallets({coin: 'btc'}).map((item)=>{return JSON.parse(item.export());});
-  public bchWallets = this.profileProvider.getWallets({coin: 'bch'}).map((item)=>{return JSON.parse(item.export())});
+  public btcWallets = this.profileProvider.getWallets({coin: 'btc'}).map((item) => {
+    return JSON.parse(item.export());
+  });
+  public bchWallets = this.profileProvider.getWallets({coin: 'bch'}).map((item) => {
+    return JSON.parse(item.export())
+  });
 
   public initBTCWallet = this.btcWallets[0];
   public initBCHWallet = this.bchWallets[0];
@@ -36,11 +40,11 @@ export class NewNominalBoxPage {
   public createBox() {
     let self = this;
     let HDPrivateKey = this.bwcProvider.getBitcore().HDPrivateKey;
-    if (this.walletType == 'btc' && this.btcWalletToSign.xPrivKey){
+    if (this.walletType == 'btc' && this.btcWalletToSign.xPrivKey) {
       var retrievedPrivateKey = new HDPrivateKey(this.btcWalletToSign.xPrivKey);
-    }else if (this.walletType == 'bch' && this.bchWalletToSign.xPrivKey) {
+    } else if (this.walletType == 'bch' && this.bchWalletToSign.xPrivKey) {
       retrievedPrivateKey = new HDPrivateKey(this.bchWalletToSign.xPrivKey);
-    }else {
+    } else {
       alert("Error!");
       return;
     }
