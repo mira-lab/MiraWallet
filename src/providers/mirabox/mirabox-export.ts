@@ -55,7 +55,7 @@ export class MiraBoxExportProvider {
       directoryEntry.filesystem.root.getFile(guid + '.mbox', {create: true}, function (fileEntry) {
         fileEntry.createWriter(function (fileWriter) {
           fileWriter.onwriteend = function () {
-            self.socialSharing.share("Congratulations! You recieved Mirabox!", "Mirabox", fileEntry.toURL())
+            self.socialSharing.share(null, null, fileEntry.toURL())
               .then(() => {
                 fileEntry.remove(() => {
                   console.log('Successfully removed Mirabox!')

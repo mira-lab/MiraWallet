@@ -23,20 +23,16 @@
       </ion-select>
     </ion-item>
     <ion-item>
+      <ion-label>Creator name</ion-label>
+      <ion-input type="text" [(ngModel)]="creatorName"></ion-input>
+    </ion-item>
+    <ion-item>
       <ion-label>Wallet name</ion-label>
-      <ion-input type="text" [value]="walletName"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Box password</ion-label>
-      <ion-input type="password" [value]="boxPassword"></ion-input>
+      <ion-input type="text" [(ngModel)]="walletName"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Box description</ion-label>
-      <ion-input type="text" [value]="boxDescription"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Box description</ion-label>
-      <ion-input type="text" [value]="boxDescription"></ion-input>
+      <ion-input type="text" [(ngModel)]="boxDescription"></ion-input>
     </ion-item>
   </ion-list>
 </ion-content>
