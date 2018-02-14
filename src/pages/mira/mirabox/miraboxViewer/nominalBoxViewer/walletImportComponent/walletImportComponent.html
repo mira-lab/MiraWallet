@@ -1,0 +1,15 @@
+<ion-list>
+  <ion-item-divider>{{decodedWallet.decryptedWallet?"Decrypted":"Failed"}}</ion-item-divider>
+  <ion-item>
+    <ion-label>Type</ion-label>
+    <ion-label>{{decodedWallet.miraBoxItem.headers.type}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Public key</ion-label>
+    <ion-label>{{decodedWallet.miraBoxItem.headers.pubType}}: {{decodedWallet.miraBoxItem.headers.pub}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <button *ngIf="decodedWallet.decryptedWallet" ion-item (click)="importWallet()">Import this wallet</button>
+  </ion-item>
+</ion-list>
+

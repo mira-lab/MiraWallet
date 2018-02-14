@@ -13,7 +13,7 @@ export class InputPasswordModal {
   private password = '';
 
   constructor(public viewCtrl: ViewController,
-              private navParams: NavParams) {
+              navParams: NavParams) {
     this.onSubmit = navParams.data.onSubmit;
     this.title = navParams.data.title;
   }
