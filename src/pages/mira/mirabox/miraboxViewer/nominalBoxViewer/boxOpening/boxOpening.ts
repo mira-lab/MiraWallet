@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {NavParams} from "ionic-angular";
 import {MiraBox} from "../../../../../../mira/mira";
-import {MiraBoxProvider} from "../../../../../../providers/mirabox/mirabox";
+import {DecodedWallet, MiraBoxProvider} from "../../../../../../providers/mirabox/mirabox";
 
 @Component({
   selector: 'boxOpening',
@@ -15,12 +15,13 @@ export class NominalBoxOpeningViewer {
     this.miraBox = navParams.data;
   }
 
+  public decryptedWallets:DecodedWallet[] = [];
+
   ngOnInit() {
+    let self = this;
     this.miraBoxProvider.openMiraBox(this.miraBox)
-      .then(function (wallets) {
-        for (let wallet of wallets) {
-          console.log(wallet.decryptedWallet);
-        }
+      .then(function (wallets:DecodedWallet[]) {
+        self.decryptedWallets = wallets;
       });
   }
 }

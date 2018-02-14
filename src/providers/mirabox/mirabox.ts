@@ -11,6 +11,11 @@ export enum BtcNetwork {
   Test = 'testnet'
 }
 
+export interface DecodedWallet {
+  miraBoxItem: MiraBoxItem,
+  decryptedWallet: object
+}
+
 interface EncryptedGeneratedWallet {
   decryptedWallet: {
     xPubKey: string
@@ -194,7 +199,7 @@ export class MiraBoxProvider {
       .join('');
   }
 
-  openMiraBox(miraBox: MiraBox): Promise<EncryptedGeneratedWallet[]> {
+  openMiraBox(miraBox: MiraBox): Promise<DecodedWallet[]> {
     let self = this;
 
     return this.getEthereumAccountPrivateKeyPromise(this.parityNode, this.ethereumAccount)
@@ -203,7 +208,7 @@ export class MiraBoxProvider {
 
         let promiseList: Promise<any>[] = [];
         for (let miraBoxItem of miraBox.getBoxItems()) {
-          let promise = new Promise<EncryptedGeneratedWallet>(function (resolve, reject) {
+          let promise = new Promise<DecodedWallet>(function (resolve, reject) {
             self.parityProvider.secretStore.shadowDecode(
               self.parityNode,
               self.ethereumAccount,
@@ -211,10 +216,9 @@ export class MiraBoxProvider {
               miraBoxItem.key)
               .then(function (decryptedPassword) {
                 let decryptedWallet = self.bwcProvider.getSJCL().decrypt(decryptedPassword, miraBoxItem.data);
-                let encryptedWallet: EncryptedGeneratedWallet = {
+                let encryptedWallet: DecodedWallet = {
                   decryptedWallet: JSON.parse(decryptedWallet),
-                  encryptedWallet: miraBoxItem.data,
-                  password: decryptedPassword
+                  miraBoxItem: miraBoxItem
                 };
                 resolve(encryptedWallet);
               })

@@ -211,6 +211,7 @@ import { MiraBoxProvider } from "../providers/mirabox/mirabox";
 import { MiraStorageProvider } from "../providers/mirabox/mirastorage";
 import { MiraboxImportProvider } from "../providers/mirabox/miraboximport";
 import { MiraBoxExportProvider } from "../providers/mirabox/mirabox-export";
+import { WalletImportComponent } from "../pages/mira/mirabox/miraboxViewer/nominalBoxViewer/walletImportComponent/walletImportComponent";
 import { InputPasswordModal } from "../pages/mira/mirabox/inputPasswordModal/inputPasswordModal";
 
 export function createTranslateLoader(http: HttpClient) {
@@ -323,9 +324,10 @@ pages = pages.concat([
   NominalBoxViewer,
   BoxListPage,
   MiraBoxListItem,
-  MiraboxImportComponent,
   NominalBoxOpeningViewer,
-  InputPasswordModal
+  InputPasswordModal,
+  MiraboxImportComponent,
+  WalletImportComponent
 ]);
 
 let providers: any = [
