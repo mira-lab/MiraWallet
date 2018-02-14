@@ -11,10 +11,9 @@ export class MiraBoxExportProvider {
   }
 
   //TODO Change to mirabox format from txt
-  public createFile(fileContent: string, guid: string) {
+  public createFile(fileContent: string, filename: string) {
     let self = this;
     let exportDirectory = "";
-    let filename = guid + '.mbox';
     //data = JSON.stringify(data, null, '\t');
     if (this.file.documentsDirectory !== null) {
       // iOS, OSX

@@ -58,7 +58,7 @@ import { SuccessModalPage } from '../pages/success/success';
 import { NewBoxPage } from "../pages/mira/mirabox/newBox/newBox";
 import { NewNominalBoxPage } from "../pages/mira/mirabox/newBox/newNominalBox/newNominalBox";
 import { NominalBoxViewer } from "../pages/mira/mirabox/miraboxViewer/nominalBoxViewer/nominalBoxViewer";
-import { MiraboxImportPage } from "../pages/mira/mirabox/miraboxImport/miraboxImport";
+import { MiraboxImportComponent } from "../pages/mira/mirabox/miraboxImport/miraboxImport";
 import { MiraBoxListItem } from "../pages/mira/mirabox/boxListItem/boxListItem";
 import { BoxListPage } from "../pages/mira/mirabox/boxList/boxList";
 import { NominalBoxOpeningViewer } from "../pages/mira/mirabox/miraboxViewer/nominalBoxViewer/boxOpening/boxOpening";
@@ -211,6 +211,7 @@ import { MiraBoxProvider } from "../providers/mirabox/mirabox";
 import { MiraStorageProvider } from "../providers/mirabox/mirastorage";
 import { MiraboxImportProvider } from "../providers/mirabox/miraboximport";
 import { MiraBoxExportProvider } from "../providers/mirabox/mirabox-export";
+import { InputPasswordModal } from "../pages/mira/mirabox/inputPasswordModal/inputPasswordModal";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -322,8 +323,9 @@ pages = pages.concat([
   NominalBoxViewer,
   BoxListPage,
   MiraBoxListItem,
-  MiraboxImportPage,
-  NominalBoxOpeningViewer
+  MiraboxImportComponent,
+  NominalBoxOpeningViewer,
+  InputPasswordModal
 ]);
 
 let providers: any = [
