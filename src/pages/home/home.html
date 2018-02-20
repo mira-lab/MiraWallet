@@ -98,6 +98,58 @@
     </button>
   </div>
 
+
+  <ion-card>
+    <ion-card-header>
+        <ion-row>
+          <ion-col class="title">
+            <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="18" />
+            <span translate>Bitcoin Wallets</span>
+          </ion-col>
+          <ion-col text-right class="icons-add-reorder" *ngIf="!showReorderBtc">
+            <div class="add-icon" (click)="goToAddView()">
+              <ion-icon name="add"></ion-icon>
+            </div>
+          </ion-col>
+          <ion-col text-right class="icons-add-reorder" *ngIf="showReorderBtc" (click)="reorderBtc()">
+            {{'Done'|translate}}
+          </ion-col>
+        </ion-row>
+
+    </ion-card-header>
+
+    <ion-list>
+      <button ion-item *ngFor="let wallet of walletsBtc" (click)="goToWalletDetails(wallet)">
+
+        <ion-icon item-start name="custom-wallet"></ion-icon>
+
+        <h2>{{wallet.credentials.walletName}}</h2>
+        <p>
+          <span *ngIf="!wallet.isComplete()" translate>
+            Incomplete
+          </span>
+          <span *ngIf="wallet.isComplete()">
+            <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
+              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
+              + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '')
+              : '')}}
+            </span>
+            <span *ngIf="wallet.scanning" translate>Scanning funds</span>
+            <span *ngIf="wallet.balanceHidden && !wallet.scanning">[{{'Balance Hidden' | translate}}]</span>
+            <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
+            <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
+                      name="timer"></ion-icon>
+            <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
+          </span>
+        </p>
+      </button>
+
+    </ion-list>
+
+
+  </ion-card>
+
+  <!--
   <ion-list *ngIf="walletsBtc && walletsBtc[0]">
     <ion-item-divider>
       <ion-row>
@@ -149,7 +201,68 @@
       </button>
     </ion-list>
   </ion-list>
+  -->
 
+
+
+  <ion-card>
+
+    <ion-card-header>
+
+      <ion-row>
+        <ion-col class="title">
+          <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
+          <span translate>Bitcoin Cash Wallets</span>
+        </ion-col>
+        <ion-col class="icons-add-reorder" *ngIf="!showReorderBch" text-right>
+          <div class="add-icon" (click)="goToAddView('bch')">
+            <ion-icon name="add"></ion-icon>
+          </div>
+        </ion-col>
+        <ion-col text-right class="icons-add-reorder" *ngIf="showReorderBch" (click)="reorderBch()">
+          {{'Done'|translate}}
+        </ion-col>
+      </ion-row>
+
+    </ion-card-header>
+
+    <ion-list>
+
+        <button ion-item *ngFor="let wallet of walletsBch" (click)="goToWalletDetails(wallet)" detail-push>
+
+          <ion-icon item-start name="custom-wallet"></ion-icon>
+
+          <h2>{{wallet.credentials.walletName}}</h2>
+          <p>
+          <span *ngIf="!wallet.isComplete()" translate>
+            Incomplete
+          </span>
+            <span *ngIf="wallet.isComplete()">
+            <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
+              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
+              + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '')
+              : '')}}
+            </span>
+            <span *ngIf="wallet.scanning" translate>Scanning funds</span>
+            <span *ngIf="wallet.balanceHidden && !wallet.scanning">[{{'Balance Hidden' | translate}}]</span>
+            <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
+            <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
+                      name="timer"></ion-icon>
+            <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
+          </span>
+          </p>
+        </button>
+
+    </ion-list>
+
+
+
+
+
+
+
+  </ion-card>
+<!--
   <ion-list *ngIf="walletsBch && walletsBch[0]">
     <ion-item-divider>
       <ion-row>
@@ -201,6 +314,8 @@
       </button>
     </ion-list>
   </ion-list>
+-->
+
 
   <ion-list *ngIf="wallets && wallets[0] && buyAndSellItems && buyAndSellItems.length>0">
     <ion-item-divider>
@@ -245,11 +360,18 @@
     </div>
   </ion-list>
 
-  <ion-list>
-    <ion-item-divider>
+
+
+
+
+
+  <ion-card>
+
+    <ion-card-header>
+
       <ion-row>
         <ion-col class="title">
-          <img src="assets/img/mirabox/nominalbox.svg" alt="MiraBoxes" width="22"/>
+          <img src="assets/img/mirabox/nominalbox.svg" alt="MiraBoxes" width="22" />
           <span translate>MiraBoxes</span>
         </ion-col>
         <ion-col class="icons-add-reorder" text-right>
@@ -258,14 +380,34 @@
           </div>
         </ion-col>
       </ion-row>
-    </ion-item-divider>
 
+    </ion-card-header>
+
+
+    <!--
+      <ion-list>
+        <ion-item-divider>
+          <ion-row>
+            <ion-col class="title">
+              <img src="assets/img/mirabox/nominalbox.svg" alt="MiraBoxes" width="22"/>
+              <span translate>MiraBoxes</span>
+            </ion-col>
+            <ion-col class="icons-add-reorder" text-right>
+              <div class="add-icon" (click)="goToMiraboxAdd()">
+              <ion-icon name="add"></ion-icon>
+            </div>
+            </ion-col>
+          </ion-row>
+        </ion-item-divider>
+-->
     <ion-list>
       <mirabox-list-item *ngFor="let miraBox of miraBoxListShort" [miraBox]="miraBox"></mirabox-list-item>
     </ion-list>
 
     <button ion-item (click)="gotoAllBoxes()">View all</button>
-  </ion-list>
+
+
+
   <ion-list>
     <mirabox-import-btn></mirabox-import-btn>
   </ion-list>
@@ -291,4 +433,8 @@
       </button>
     </div>
   </ion-list>
+
+  </ion-card>
+
+
 </ion-content>

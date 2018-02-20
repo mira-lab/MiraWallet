@@ -7,12 +7,13 @@
   "keywords": [
     "bitcoin",
     "wallet",
-    "bitpay",
+    "bitpay",    
     "copay",
+    "mira",
     "multisignature",
     "bitcore"
   ],
-  "homepage": "https://copay,io",
+  "homepage": "https://copay.io",
   "license": "MIT",
   "repository": {
     "url": "git://github.com/bitpay/copay.git",
@@ -28,6 +29,7 @@
     "clean": "trash platforms && trash plugins && trash config.xml",
     "clean:copay": "npm run clean && npm run apply:copay && ionic cordova prepare && npm run fix:fcm",
     "clean:bitpay": "npm run clean && npm run apply:bitpay && ionic cordova prepare && npm run fix:fcm",
+    "clean:mira": "npm run clean && npm run apply:mira && ionic cordova prepare && npm run fix:fcm",    
     "clean-all": "git clean -dfx",
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
@@ -52,6 +54,7 @@
     "sign:android": "rm -f platforms/android/build/outputs/apk/android-release-signed-aligned.apk; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../copay.keystore -signedjar platforms/android/build/outputs/apk/android-release-signed.apk  platforms/android/build/outputs/apk/android-release-unsigned.apk copay_play && $ANDROID_HOME/build-tools/26.0.1/zipalign -v 4 platforms/android/build/outputs/apk/android-release-signed.apk platforms/android/build/outputs/apk/android-release-signed-aligned.apk",
     "apply:copay": "npm i fs-extra shelljs && cd app-template && node apply.js copay && npm i",
     "apply:bitpay": "npm i fs-extra shelljs && cd app-template && node apply.js bitpay && npm i",
+    "apply:mira": "npm i fs-extra shelljs && cd app-template && node apply.js mira && npm i",
     "fix:fcm": "echo platforms/ios/Copay/Resources platforms/ios/Copay/Resources/Resources platforms/ios/Bitpay/Resources platforms/ios/Bitpay/Resources/Resources | xargs -n 1 cp GoogleService-Info.plist 2>/dev/null; mkdir -p platforms/android/src/debug platforms/android/src/release; echo platforms/android/src/debug platforms/android/src/release | xargs -n 1 cp google-services.json"
   },
   "dependencies": {
@@ -192,6 +195,7 @@
         "URL_SCHEME": "bitcoin",
         "SECOND_URL_SCHEME": "copay",
         "THIRD_URL_SCHEME": "bitcoincash",
+        "FOURTH_URL_SCHEME": "mira",
         "ANDROID_SCHEME": " ",
         "ANDROID_HOST": " ",
         "ANDROID_PATHPREFIX": "/"

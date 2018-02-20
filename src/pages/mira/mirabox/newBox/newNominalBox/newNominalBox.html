@@ -5,23 +5,29 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item>
-      <ion-label>Wallet type</ion-label>
-      <ion-select [(ngModel)]="walletType">
-        <ion-option value="btc" [selected]="">BTC</ion-option>
-        <ion-option value="bch">BCH</ion-option>
-      </ion-select>
-    </ion-item>
-    <ion-item>
-      <ion-label>Sign with walllet:</ion-label>
-      <ion-select *ngIf="walletType == 'btc'" [(ngModel)]="btcWalletToSign">
-        <ion-option  *ngFor="let wallet of btcWallets" [selected]="wallet == initBTCWallet" [value]="wallet" >{{ wallet.walletName }}</ion-option>
-      </ion-select>
-      <ion-select *ngIf="walletType == 'bch'" [(ngModel)]="bchWalletToSign">
-        <ion-option  *ngFor="let wallet of bchWallets" [selected]="wallet == initBCHWallet" [value]="wallet" >{{ wallet.walletName }}</ion-option>
-      </ion-select>
-    </ion-item>
+
+  <ion-card>
+    <ion-list>
+      <ion-item>
+        <ion-label>Wallet type</ion-label>
+        <ion-select [(ngModel)]="walletType">
+          <ion-option value="btc" [selected]="">BTC</ion-option>
+          <ion-option value="bch">BCH</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Sign with walllet:</ion-label>
+        <ion-select *ngIf="walletType == 'btc'" [(ngModel)]="btcWalletToSign">
+          <ion-option  *ngFor="let wallet of btcWallets" [selected]="wallet == initBTCWallet" [value]="wallet" >{{ wallet.walletName }}</ion-option>
+        </ion-select>
+        <ion-select *ngIf="walletType == 'bch'" [(ngModel)]="bchWalletToSign">
+          <ion-option  *ngFor="let wallet of bchWallets" [selected]="wallet == initBCHWallet" [value]="wallet" >{{ wallet.walletName }}</ion-option>
+        </ion-select>
+      </ion-item>
+
+
+
     <ion-item>
       <ion-label>Creator name</ion-label>
       <ion-input type="text" [(ngModel)]="creatorName"></ion-input>
@@ -35,6 +41,9 @@
       <ion-input type="text" [(ngModel)]="boxDescription"></ion-input>
     </ion-item>
   </ion-list>
+
+  </ion-card>
+
 </ion-content>
 
 <ion-footer>
