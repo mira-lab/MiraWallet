@@ -9,6 +9,7 @@
     "wallet",
     "bitpay",
     "copay",
+    "mira",
     "multisignature",
     "bitcore"
   ],
@@ -28,6 +29,7 @@
     "clean": "trash platforms && trash plugins && trash config.xml",
     "clean:copay": "npm run clean && npm run apply:copay && ionic cordova prepare && npm run fix:fcm",
     "clean:bitpay": "npm run clean && npm run apply:bitpay && ionic cordova prepare && npm run fix:fcm",
+    "clean:mira": "npm run clean && npm run apply:mira && ionic cordova prepare && npm run fix:fcm",
     "clean-all": "git clean -dfx",
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
