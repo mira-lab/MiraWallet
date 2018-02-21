@@ -1,9 +1,14 @@
 import * as Message from 'bitcore-message';
 import * as BWC from 'bitcore-wallet-client';
 
-export enum MiraBoxWalletType {
+export enum Coin {
   BTC = 'btc',
   BCH = 'bch'
+}
+
+export interface WalletType {
+  coin: Coin,
+  network: string
 }
 
 export enum MiraBoxType {
@@ -34,7 +39,7 @@ export interface MiraBoxWalletKeyPair {
 export interface MiraBoxItem {
   hash: string,
   headers: {
-    type: string,
+    type: WalletType,
     pubType: string,
     pub: string
   },

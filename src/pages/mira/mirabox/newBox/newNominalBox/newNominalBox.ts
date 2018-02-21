@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {BwcProvider} from "../../../../../providers/bwc/bwc";
-import {MiraBoxWalletType, MiraBox} from "../../../../../mira/mira";
+import {Coin, MiraBox, WalletType} from "../../../../../mira/mira";
 import {MiraBoxProvider} from "../../../../../providers/mirabox/mirabox";
 import {MiraStorageProvider} from "../../../../../providers/mirabox/mirastorage";
 import {NavController} from "ionic-angular";
@@ -19,7 +19,7 @@ export class NewNominalBoxPage {
               private profileProvider: ProfileProvider) {
   }
 
-  public walletType: MiraBoxWalletType = MiraBoxWalletType.BTC;
+  public walletType: Coin = Coin.BTC;
   public walletName: string = 'It is wallet name';
   public boxDescription: string = "No description";
   public creatorName: string = "Anonymous";
@@ -31,48 +31,53 @@ export class NewNominalBoxPage {
     return JSON.parse(item.export())
   });
 
-  public initBTCWallet = this.btcWallets[0];
-  public initBCHWallet = this.bchWallets[0];
+  public signWallet = this.btcWallets[0];
+  public sourceWallet = this.btcWallets[0];
 
-  public btcWalletToSign = this.initBTCWallet;
-  public bchWalletToSign = this.initBCHWallet;
-
-  public createBox() {
-    let self = this;
-    let retrievedPrivateKey;
+  public async createBox() {
     let HDPrivateKey = this.bwcProvider.getBitcore().HDPrivateKey;
-    if (this.walletType == 'btc' && this.btcWalletToSign.xPrivKey) {
-      retrievedPrivateKey = new HDPrivateKey(this.btcWalletToSign.xPrivKey);
-    } else if (this.walletType == 'bch' && this.bchWalletToSign.xPrivKey) {
-      retrievedPrivateKey = new HDPrivateKey(this.bchWalletToSign.xPrivKey);
-    } else {
-      alert("Error!");
+
+    let self = this;
+
+    if (!this.signWallet || !this.sourceWallet.xPrivKey) {
+      alert('You have to select wallet');
       return;
     }
-    let derivedPrivateKey = retrievedPrivateKey.derive("m/0'");
-    let privateKey = derivedPrivateKey.privateKey;
-    let publicKey = derivedPrivateKey.publicKey.toString();
+    if (!this.sourceWallet) {
+      alert('You have to select wallet');
+      return;
+    }
 
-    this.miraBoxProvider.createNominalMiraBox(
-      this.walletType,
+    let signWalletPrivateKey = new HDPrivateKey(this.signWallet.xPrivKey);
+    let signWalletDerivedPrivateKey = signWalletPrivateKey.derive("m/0'");
+    let signPrivateKey = signWalletDerivedPrivateKey.privateKey;
+    let signPublicKey = signWalletDerivedPrivateKey.publicKey.toString();
+
+    let wallet: WalletType = {
+      coin: this.sourceWallet.coin,
+      network: this.sourceWallet.network
+    };
+
+    //creating mirabox
+    let miraBox: MiraBox = await this.miraBoxProvider.createNominalMiraBox(
+      wallet,
       this.walletName,
       '',
       this.boxDescription,
       {
         name: self.creatorName,
-        publicKey: publicKey
+        publicKey: signPublicKey
       }
-    )
-      .then(function (miraBox: MiraBox) {
-        miraBox.createSignature(privateKey);
-        return self.miraStorageProvider.storeMiraBox(miraBox);
-      })
-      .then(function () {
-        console.log('Successfully stored in storage');
-        self.navCtrl.popAll().catch(e => {
-          console.log(e);
-        });
-      });
+    );
+    miraBox.createSignature(signPrivateKey);
+    //storing mirabox
+    await self.miraStorageProvider.storeMiraBox(miraBox);
+    //filling mirabox with coin
 
+    //finishing
+    console.log('Successfully stored in storage');
+    self.navCtrl.popAll().catch(e => {
+      console.log(e);
+    });
   }
 }

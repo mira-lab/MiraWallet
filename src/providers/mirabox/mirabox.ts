@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {EncryptedResult, EthereumAccount, ParityNode, ParityProvider} from "../secret-store/secret-store";
-import {MiraBoxCreator, MiraBox, MiraBoxWalletType, MiraBoxType, MiraBoxItem} from "../../mira/mira";
+import {MiraBoxCreator, MiraBox, MiraBoxType, MiraBoxItem, WalletType, Coin} from "../../mira/mira";
 import {BwcProvider} from "../bwc/bwc";
 
 const ethKey = require('keythereum');
@@ -94,7 +94,7 @@ export class MiraBoxProvider {
       });
   }
 
-  createNominalMiraBox(walletType: MiraBoxWalletType,
+  createNominalMiraBox(wallet: WalletType,
                        walletName: string,
                        copayerName: string,
                        boxDescription: string,
@@ -104,12 +104,16 @@ export class MiraBoxProvider {
 
     let createWalletPromise: Promise<EncryptedGeneratedWallet>;
 
-    switch (walletType) {
+    switch (wallet.coin) {
       //to implement differentTypes of wallets
-      case MiraBoxWalletType.BTC:
-      case MiraBoxWalletType.BCH:
+      case Coin.BTC:
+        createWalletPromise = this.generateNewEncodedBtcWallet(walletName, copayerName, wallet.network);
+        break;
+      case Coin.BCH:
+        createWalletPromise = this.generateNewEncodedBtcWallet(walletName, copayerName, BtcNetwork.Live);
+        break;
       default:
-        createWalletPromise = this.generateNewEncodedBtcWallet(walletName, copayerName);
+        throw 'unknown coin';
     }
     return createWalletPromise.then(function (encryptedWallet: EncryptedGeneratedWallet) {
       return self.encodeWalletPasswordWithSecretStore(encryptedWallet.password)
@@ -119,7 +123,7 @@ export class MiraBoxProvider {
             hash: encryptedPasswordResult.storageId,
             key: encryptedPasswordResult.encrypted,
             headers: {
-              type: walletType,
+              type: wallet,
               pubType: 'xpub',
               pub: encryptedWallet.decryptedWallet.xPubKey
             },
@@ -144,7 +148,7 @@ export class MiraBoxProvider {
 
   generateNewEncodedBtcWallet(walletName: string,
                               copayerName: string,
-                              network: BtcNetwork = BtcNetwork.Live): Promise<EncryptedGeneratedWallet> {
+                              network: string): Promise<EncryptedGeneratedWallet> {
     let self = this;
     return new Promise(function (resolve, reject) {
       let client = new self.bwcProvider.Client({

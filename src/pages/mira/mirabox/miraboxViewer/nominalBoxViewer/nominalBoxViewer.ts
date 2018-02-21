@@ -2,10 +2,11 @@ import {Component} from '@angular/core';
 import {PlatformProvider} from "../../../../../providers/platform/platform";
 import {MiraBoxExportProvider} from "../../../../../providers/mirabox/mirabox-export";
 import {ModalController, NavController, NavParams} from "ionic-angular";
-import {MiraBox} from "../../../../../mira/mira";
+import {MiraBox, MiraBoxItem} from "../../../../../mira/mira";
 import {NominalBoxOpeningViewer} from "./boxOpening/boxOpening";
 import {BwcProvider} from "../../../../../providers/bwc/bwc";
 import {InputPasswordModal} from "../../inputPasswordModal/inputPasswordModal";
+import {BtcNetwork} from "../../../../../providers/mirabox/mirabox";
 
 @Component({
   selector: 'nominalBoxViewer',
@@ -15,7 +16,7 @@ export class NominalBoxViewer {
   public isCordova: boolean;
   public miraBox: MiraBox;
   public currentBalance: number;
-  public miraBoxAdress;
+  public boxItemAddress;
 
   constructor(private platformProvider: PlatformProvider,
               private miraBoxExportProvider: MiraBoxExportProvider,
@@ -25,14 +26,14 @@ export class NominalBoxViewer {
               navParams: NavParams) {
     this.isCordova = this.platformProvider.isCordova;
     this.miraBox = navParams.data;
-    this.updateBalance();
-    this.getAddress();
+    this.getAddress(this.miraBox.getBoxItems()[0]);
+    this.updateBalance(this.miraBox.getBoxItems()[0]);
   }
 
-  public getAddress() {
+  public getAddress(boxItem: MiraBoxItem) {
     try {
-      let xpublicKey = this.bwcProvider.getBitcore().PublicKey.fromString(this.miraBox.getCreator().publicKey);
-      this.miraBoxAdress = xpublicKey.toAddress('livenet');
+      let xPublicKey = this.bwcProvider.getBitcore().PublicKey.fromString(boxItem.headers.pub);
+      this.boxItemAddress = xPublicKey.toAddress(boxItem.headers.type.network);
     }
     catch (e) {
       console.log(e);
@@ -103,10 +104,14 @@ export class NominalBoxViewer {
     //todo
   }
 
-  public updateBalance() {
+  public updateBalance(boxItem: MiraBoxItem) {
     let self = this;
-    let pubkey = this.miraBox.getBoxItems()[0].headers.pub;
-    let url = "https://blockchain.info/ru/balance?active=" + pubkey;
+    let pubkey = boxItem.headers.pub;
+    let url;
+    if (boxItem.headers.type.network == BtcNetwork.Live)
+      url = "https://blockchain.info/ru/balance?active=" + pubkey;
+    else
+      url = "https://testnet.blockchain.info/ru/balance?active=" + pubkey;
     let xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.send();
