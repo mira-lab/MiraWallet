@@ -16,24 +16,96 @@ $icon-border-radius: 3px;
 $toolbar-background: #192c3a;
 $toolbar-scanner: rgba(25, 44, 58, 0.8);
 
-
-
-
-
-
-
-
-
-/* ONEGIN Fixes*/
-/* Main Colors */
 $blueFontColor:                                      #2a45c2;
 $purpleFontColor:                                    #a000b9;
+
+$blue: #2ea5ff;
 
 $v-onboarding-gradient-top-color:                    $blueFontColor;
 $v-onboarding-gradient-bottom-color:                 $purpleFontColor;
 
+$white: #fff;
 
-/* Change Buttons */
+
+/* FONTS DECLARATIONS */
+@import "roboto";
+
+$font-rmd: 'Roboto', Arial, sans-serif;
+
+
+/* TECHNICAL
+.vertical-align-content > *
+{
+  display:        flex     !important;
+  align-content:  center   !important;
+  align-items:    center   !important;
+  flex-direction:  column;
+}
+*/
+
+
+
+
+
+/* Onboarding Blocks */
+.welcome
+{
+
+  background: $blueFontColor;
+  background-image: linear-gradient(to bottom, $blueFontColor 0%, $purpleFontColor 100%);
+
+
+  h1
+  {
+    font-family: $font-rmd !important;
+    font-weight: 400;
+    color: $white !important;
+  }
+
+  ion-list ion-item
+  {
+    background: transparent !important;
+    color: $white !important;
+    font-family: $font-rmd !important;
+    font-weight: 200 !important;
+
+    ion-checkbox
+    {
+      margin: 8px 32px 8px 16px !important;
+
+
+
+
+    }
+  }
+
+  .disclaimerBottom
+  {
+    background: $white !important;
+
+    .checkbox-icon
+    {
+      border-color: $blue !important;
+    }
+
+    button.blueButton
+    {
+      background: $blue !important;
+    }
+
+  }
+
+}
+/* /welcome */
+
+
+/*
+
+
+
+
+
+!* Change Buttons *!
 .miraMainButton
 {
   background: rgba(255, 255, 255, 0.1) !important;
@@ -49,7 +121,7 @@ $v-onboarding-gradient-bottom-color:                 $purpleFontColor;
 }
 
 
-/* Fix White BG on onboarding */
+!* Fix White BG on onboarding *!
 .content-md
 {
   color: inherit !important;
@@ -132,7 +204,7 @@ page-onboarding {
   & > ion-content {
     //background: url(../assets/img/onboarding-welcome-bg.png);
 
-    /* ONEGIN FIXES */
+    !* ONEGIN FIXES *!
     color: white;
     background: $blueFontColor;
     background-image: linear-gradient(to bottom, $blueFontColor 0%, $purpleFontColor 100%);
@@ -181,7 +253,7 @@ ion-list.miraSmallFont ion-label p
 
 
 
-/* TOOLBAR */
+!* TOOLBAR *!
 .toolbar-background
 {
   background: $blueFontColor !important;
@@ -193,7 +265,7 @@ ion-list.miraSmallFont ion-label p
 
 
 
-/* HOMEPAGE */
+!* HOMEPAGE *!
 page-home
 {
 
@@ -228,3 +300,4 @@ ion-icon {
 ion-item ion-input input {
   color: black;
 }
+*/
