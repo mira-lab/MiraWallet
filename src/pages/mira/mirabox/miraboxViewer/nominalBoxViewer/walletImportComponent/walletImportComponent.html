@@ -2,7 +2,7 @@
   <ion-item-divider>{{decodedWallet.decryptedWallet?"Decrypted":"Failed"}}</ion-item-divider>
   <ion-item>
     <ion-label>Type</ion-label>
-    <ion-label>{{decodedWallet.miraBoxItem.headers.type}}</ion-label>
+    <ion-label>{{decodedWallet.miraBoxItem.headers.type.coin}} ({{decodedWallet.miraBoxItem.headers.type.network}})</ion-label>
   </ion-item>
   <ion-item>
     <ion-label>Public key</ion-label>

@@ -2,10 +2,15 @@ import {Component} from '@angular/core';
 import {PlatformProvider} from "../../../../../providers/platform/platform";
 import {MiraBoxExportProvider} from "../../../../../providers/mirabox/mirabox-export";
 import {ModalController, NavController, NavParams} from "ionic-angular";
-import {MiraBox} from "../../../../../mira/mira";
+import {MiraBox, MiraBoxItem} from "../../../../../mira/mira";
 import {NominalBoxOpeningViewer} from "./boxOpening/boxOpening";
 import {BwcProvider} from "../../../../../providers/bwc/bwc";
 import {InputPasswordModal} from "../../inputPasswordModal/inputPasswordModal";
+import {BtcNetwork} from "../../../../../providers/mirabox/mirabox";
+import {TxConfirmNotificationProvider} from "../../../../../providers/tx-confirm-notification/tx-confirm-notification";
+import {WalletProvider} from "../../../../../providers/wallet/wallet";
+import {ConfigProvider} from "../../../../../providers/config/config";
+import {ProfileProvider} from "../../../../../providers/profile/profile";
 
 @Component({
   selector: 'nominalBoxViewer',
@@ -15,29 +20,25 @@ export class NominalBoxViewer {
   public isCordova: boolean;
   public miraBox: MiraBox;
   public currentBalance: number;
-  public miraBoxAdress;
+  public boxItemAddress;
+  private config;
 
   constructor(private platformProvider: PlatformProvider,
               private miraBoxExportProvider: MiraBoxExportProvider,
               private bwcProvider: BwcProvider,
               private navCtrl: NavController,
+              private txConfirmNotificationProvider: TxConfirmNotificationProvider,
+              private configProvider: ConfigProvider,
+              private walletProvider: WalletProvider,
+              private profileProvider: ProfileProvider,
               private modalCtrl: ModalController,
               navParams: NavParams) {
     this.isCordova = this.platformProvider.isCordova;
     this.miraBox = navParams.data;
-    this.updateBalance();
-    this.getAddress();
+    this.updateBalance(this.miraBox.getBoxItems()[0]);
+    this.config = this.configProvider.get();
   }
 
-  public getAddress() {
-    try {
-      let xpublicKey = this.bwcProvider.getBitcore().PublicKey.fromString(this.miraBox.getCreator().publicKey);
-      this.miraBoxAdress = xpublicKey.toAddress('livenet');
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
 
   private setPassword(): Promise<string> {
     let self = this;
@@ -99,14 +100,18 @@ export class NominalBoxViewer {
       .catch(console.log);
   }
 
-  public gotoFillWithCoin() {
-    //todo
+  public async gotoFillWithCoin() {
+
   }
 
-  public updateBalance() {
+  public updateBalance(boxItem: MiraBoxItem) {
     let self = this;
-    let pubkey = this.miraBox.getBoxItems()[0].headers.pub;
-    let url = "https://blockchain.info/ru/balance?active=" + pubkey;
+    let pubkey = boxItem.headers.pub;
+    let url;
+    if (boxItem.headers.type.network == BtcNetwork.Live)
+      url = `https://insight.bitpay.com/api/addr/${boxItem.headers.address}/balance`;
+    else
+      url = `https://test-insight.bitpay.com/api/addr/${boxItem.headers.address}/balance`;
     let xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.send();
@@ -117,8 +122,7 @@ export class NominalBoxViewer {
         self.currentBalance = -1;
       } else {
         console.log("Successfully got responce form blockchain.info!");
-        let response = JSON.parse(xhr.responseText);
-        self.currentBalance = response[pubkey].final_balance
+        self.currentBalance = JSON.parse(xhr.responseText);
       }
 
     }
@@ -128,4 +132,6 @@ export class NominalBoxViewer {
     // noinspection JSIgnoredPromiseFromCall
     this.navCtrl.push(NominalBoxOpeningViewer, this.miraBox);
   }
+
+
 }

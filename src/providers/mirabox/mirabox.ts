@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {EncryptedResult, EthereumAccount, ParityNode, ParityProvider} from "../secret-store/secret-store";
-import {MiraBoxCreator, MiraBox, MiraBoxWalletType, MiraBoxType, MiraBoxItem} from "../../mira/mira";
+import {MiraBoxCreator, MiraBox, MiraBoxType, MiraBoxItem, WalletType, Coin} from "../../mira/mira";
 import {BwcProvider} from "../bwc/bwc";
 
 const ethKey = require('keythereum');
@@ -18,7 +18,8 @@ export interface DecodedWallet {
 
 interface EncryptedGeneratedWallet {
   decryptedWallet: {
-    xPubKey: string
+    xPubKey: string,
+    xPrivKey: string
   },
   encryptedWallet: object,
   password: string
@@ -94,7 +95,7 @@ export class MiraBoxProvider {
       });
   }
 
-  createNominalMiraBox(walletType: MiraBoxWalletType,
+  createNominalMiraBox(wallet: WalletType,
                        walletName: string,
                        copayerName: string,
                        boxDescription: string,
@@ -104,24 +105,38 @@ export class MiraBoxProvider {
 
     let createWalletPromise: Promise<EncryptedGeneratedWallet>;
 
-    switch (walletType) {
+
+    let derivedParam = wallet.network == BtcNetwork.Live
+      ? "m/44'/0'/0'/0/0"
+      : "m/44'/1'/0'/0/0";
+    switch (wallet.coin) {
       //to implement differentTypes of wallets
-      case MiraBoxWalletType.BTC:
-      case MiraBoxWalletType.BCH:
+      case Coin.BTC:
+        createWalletPromise = this.generateNewEncodedBtcWallet(walletName, copayerName, wallet.network);
+        break;
+      case Coin.BCH:
+        createWalletPromise = this.generateNewEncodedBtcWallet(walletName, copayerName, wallet.network);
+        break;
       default:
-        createWalletPromise = this.generateNewEncodedBtcWallet(walletName, copayerName);
+        throw 'unknown coin';
     }
     return createWalletPromise.then(function (encryptedWallet: EncryptedGeneratedWallet) {
       return self.encodeWalletPasswordWithSecretStore(encryptedWallet.password)
         .then(function (encryptedPasswordResult: EncryptedResult) {
+          let HDPrivateKey = self.bwcProvider.getBitcore().HDPrivateKey;
+          let hdPrivateKey = new HDPrivateKey(encryptedWallet.decryptedWallet.xPrivKey);
+          let derived = hdPrivateKey.derive(derivedParam);
+          let address = derived.privateKey.toAddress(wallet.network).toString();
+
           let boxItem: MiraBoxItem = {
             data: encryptedWallet.encryptedWallet,
             hash: encryptedPasswordResult.storageId,
             key: encryptedPasswordResult.encrypted,
             headers: {
-              type: walletType,
+              type: wallet,
               pubType: 'xpub',
-              pub: encryptedWallet.decryptedWallet.xPubKey
+              pub: encryptedWallet.decryptedWallet.xPubKey,
+              address: address
             },
             meta: walletMeta
           };
@@ -144,7 +159,7 @@ export class MiraBoxProvider {
 
   generateNewEncodedBtcWallet(walletName: string,
                               copayerName: string,
-                              network: BtcNetwork = BtcNetwork.Live): Promise<EncryptedGeneratedWallet> {
+                              network: string): Promise<EncryptedGeneratedWallet> {
     let self = this;
     return new Promise(function (resolve, reject) {
       let client = new self.bwcProvider.Client({

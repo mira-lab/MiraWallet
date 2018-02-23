@@ -6,33 +6,40 @@
 
 <ion-content>
   <ion-list>
+    <ion-item-divider>Box settings</ion-item-divider>
     <ion-item>
-      <ion-label>Wallet type</ion-label>
-      <ion-select [(ngModel)]="walletType">
-        <ion-option value="btc" [selected]="">BTC</ion-option>
-        <ion-option value="bch">BCH</ion-option>
-      </ion-select>
-    </ion-item>
-    <ion-item>
-      <ion-label>Sign with walllet:</ion-label>
-      <ion-select *ngIf="walletType == 'btc'" [(ngModel)]="btcWalletToSign">
-        <ion-option  *ngFor="let wallet of btcWallets" [selected]="wallet == initBTCWallet" [value]="wallet" >{{ wallet.walletName }}</ion-option>
-      </ion-select>
-      <ion-select *ngIf="walletType == 'bch'" [(ngModel)]="bchWalletToSign">
-        <ion-option  *ngFor="let wallet of bchWallets" [selected]="wallet == initBCHWallet" [value]="wallet" >{{ wallet.walletName }}</ion-option>
-      </ion-select>
-    </ion-item>
-    <ion-item>
-      <ion-label>Creator name</ion-label>
+      <ion-label>Box creator name</ion-label>
       <ion-input type="text" [(ngModel)]="creatorName"></ion-input>
     </ion-item>
+    <ion-item>
+      <ion-label>Box description</ion-label>
+      <ion-input type="text" [(ngModel)]="boxDescription"></ion-input>
+    </ion-item>
+    <ion-item-divider>New wallet</ion-item-divider>
     <ion-item>
       <ion-label>Wallet name</ion-label>
       <ion-input type="text" [(ngModel)]="walletName"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Box description</ion-label>
-      <ion-input type="text" [(ngModel)]="boxDescription"></ion-input>
+      <ion-label>Source wallet:</ion-label>
+      <ion-select [(ngModel)]="signWalletIdx">
+        <ion-option *ngFor="let wallet of btcWallets; let i=index" [selected]="i==0" [value]="i">
+          {{wallet.name}}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Amount</ion-label>
+      <ion-input type="number" [(ngModel)]="amount"></ion-input>
+    </ion-item>
+    <ion-item-divider>Box sign</ion-item-divider>
+    <ion-item>
+      <ion-label>Sign with wallet:</ion-label>
+      <ion-select [(ngModel)]="sourceWalletIdx">
+        <ion-option *ngFor="let wallet of btcWallets; let i=index" [selected]="i==0"  [value]="i">
+          {{wallet.name}}
+        </ion-option>
+      </ion-select>
     </ion-item>
   </ion-list>
 </ion-content>
