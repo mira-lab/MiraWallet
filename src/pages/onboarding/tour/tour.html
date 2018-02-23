@@ -2,7 +2,7 @@
 
   <ion-navbar>
     <ion-buttons end>
-      <button ion-button color="primary" (click)="createDefaultWallet()" *ngIf="currentIndex == 0" translate>
+      <button ion-button color="primary" (click)="createDefaultWallet()" class="onboardNav" translate>
         Skip
       </button>
     </ion-buttons>
@@ -10,42 +10,169 @@
 
 </ion-header>
 
-<ion-content>
+<ion-content class="welcome">
   <ion-slides pager="true" (ionSlideDidChange)="slideChanged()">
-    <ion-slide>
-      <h1 translate>Bitcoin is secure,
-        <br/>digital money.</h1>
-      <p translate>You can spend bitcoin at millions of websites and stores worldwide.</p>
-      <img src='assets/img/app/onboarding/tour-phone.svg' />
-      <div class="bottom-absolute">
-        <div translate>Just scan the code to pay.</div>
-        <button ion-button block (click)="slideNext()" translate>Got it</button>
-      </div>
+
+    <ion-slide style="height: 100%">
+      <ion-row justify-content-center align-items-center style="height: 80%">
+
+        <div class="onboardBlock">
+          <img src='assets/img/app/mira/phone-2pay-just-scan-qr.svg' class="onboardImage" />
+          <div class="onboardText" translate>To pay just scan QR-code.</div>
+        </div>
+
+        <div class="bottom-absolute">
+          <button ion-button block (click)="slideNext()" class="miraMainButton" translate>OK</button>
+        </div>
+      </ion-row>
     </ion-slide>
 
-    <ion-slide>
-      <h1 translate>Bitcoin is a currency.</h1>
-      <p translate>You can trade it for other currencies like US Dollars, Euros, or Pounds.</p>
-      <img src='assets/img/app/onboarding/tour-currency.svg' />
-      <p>1 BTC = {{localCurrencySymbol}}{{localCurrencyPerBtc}}</p>
-      <div class="bottom-absolute">
-        <div translate>The exchange rate changes with the market.</div>
-        <button ion-button block (click)="slideNext()" translate>
-          Makes sense
-        </button>
-      </div>
-    </ion-slide>
+
+
 
     <ion-slide>
-      <h1 translate>You control your bitcoin.</h1>
-      <p translate>This app stores your bitcoin with cutting-edge security.</p>
-      <img src='assets/img/app/onboarding/tour-control.svg' />
+      <ion-row justify-content-center align-items-center style="height: 80%">
+
+        <div class="onboardBlock">
+          <h1 translate>Bitcoin is a currency.</h1>
+          <div class="curseBlock">
+            <img src="assets/img/app/mira/bts-onboarding.svg"> = {{localCurrencySymbol}}{{localCurrencyPerBtc}}
+          </div>
+          <img src='assets/img/app/mira/bts-is-a-currency.svg' class="onboardImage" />
+          <div class="onboardText" translate>You can trade it for other currencies like US Dollars, Euros, or Pounds.</div>
+        </div>
+
+        <div class="bottom-absolute">
+          <button ion-button block (click)="slideNext()" class="miraMainButton" translate>
+            It's reasonable
+          </button>
+        </div>
+
+      </ion-row>
+    </ion-slide>
+
+
+
+
+    <ion-slide>
+      <ion-row justify-content-center align-items-center style="height: 80%">
+
+        <div class="onboardBlock">
+          <h1 translate>You control your bitcoin.</h1>
+          <img src='assets/img/app/mira/you-control-your-btc.svg' class="onboardImage" />
+          <div class="onboardText" translate>Not even MiraWallet can access it</div>
+        </div>
+
+        <div class="bottom-absolute">
+          <button ion-button block (click)="slideNext()" class="miraMainButton" translate>
+            OK
+          </button>
+        </div>
+
+      </ion-row>
+    </ion-slide>
+
+
+
+    <ion-slide>
+      <ion-row justify-content-center align-items-center style="height: 80%">
+
+        <div class="onboardBlock">
+          <h1 translate>Key features of MiraBox</h1>
+          <ion-card>
+            <ion-list>
+              <ion-card-content>
+                <ion-row>
+                  <ion-col>
+                    <img src="assets/img/app/mira/simplicity.svg">
+                  </ion-col>
+                  <ion-col col-10 text-left class="whiteText miraText">
+                    <h5>Simplicity</h5>
+                    <p>It's easy to transfer and store, because this is a regular file</p>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <img src="assets/img/app/mira/smart-contracts.svg">
+                  </ion-col>
+                  <ion-col col-10 text-left class="whiteText miraText">
+                    <h5>Clear smart contracts</h5>
+                    <p>Conditions for opening and working with Mirabox</p>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <img src="assets/img/app/mira/security.svg">
+                  </ion-col>
+                  <ion-col col-10 text-left class="whiteText miraText">
+                    <h5>Security</h5>
+                    <p>Advanced double-encryption of the MiraBox file</p>
+                  </ion-col>
+                </ion-row>
+              </ion-card-content>
+            </ion-list>
+          </ion-card>
+        </div>
+
       <div class="bottom-absolute">
-        <div translate>Not even BitPay can access it.</div>
-        <button ion-button block (click)="createDefaultWallet()" translate>
-          Create bitcoin wallet
+        <button ion-button block (click)="slideNext()" class="miraMainButton" translate>
+          OK
         </button>
       </div>
+      </ion-row>
     </ion-slide>
+
+
+
+
+    <ion-slide>
+      <ion-row justify-content-center align-items-center style="height: 80%">
+
+        <div class="onboardBlock">
+          <h1 translate>There are three types of MiraBox containers</h1>
+          <ion-card>
+            <ion-list>
+              <ion-card-content>
+                <ion-row>
+                  <ion-col>
+                    <img src="assets/img/app/mira/nominal-box-white.svg">
+                  </ion-col>
+                  <ion-col col-10 text-left class="whiteText miraText">
+                    <strong>Nominal Box</strong> - a container with one type of cryptocurrency included.
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <img src="assets/img/app/mira/multi-box-white.svg">
+                  </ion-col>
+                  <ion-col col-10 text-left class="whiteText miraText">
+                    <strong>MultiBox</strong> - a container with configurable number of different supported cryptocurrencies.
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <img src="assets/img/app/mira/smart-box-white.svg">
+                  </ion-col>
+                  <ion-col col-10 text-left class="whiteText miraText">
+                    <strong>SmartBox</strong> - MultiBox with integrated smart contracts that allow the setting of various conditions
+                    for opening and extracting (currency rate, third-party confirmation, specific date, etc).
+                  </ion-col>
+                </ion-row>
+              </ion-card-content>
+            </ion-list>
+          </ion-card>
+        </div>
+
+        <div class="bottom-absolute">
+          <button ion-button block (click)="createDefaultWallet()" translate class="miraMainButton" >
+            Create Wallet
+          </button>
+        </div><!-- onboardBlock -->
+
+      </ion-row>
+    </ion-slide>
+
+
+
   </ion-slides>
 </ion-content>

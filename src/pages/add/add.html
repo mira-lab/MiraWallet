@@ -5,30 +5,42 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <button class="list-button" ion-item (click)="goToCreateWallet(false)">
+  <ion-card>
+      <button ion-item (click)="goToCreateWallet(false)">
+        <ion-icon item-start>
+          <img src="assets/img/app/wallet-blue.svg" class="icon-wallet" />
+        </ion-icon>
+        <span translate>New personal wallet</span>
+      </button>
+  </ion-card>
+
+
+  <ion-card>
+    <button ion-item (click)="goToCreateWallet(true)">
       <ion-icon item-start>
-        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        <img src="assets/img/app/general-wallet.svg" class="icon-wallet" />
       </ion-icon>
-      <span translate>New personal wallet</span>
+      <span translate>Create general wallet</span>
     </button>
-    <button class="list-button" ion-item (click)="goToCreateWallet(true)">
-      <ion-icon item-start>
-        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
-      </ion-icon>
-      <span translate>Create shared wallet</span>
-    </button>
-    <button class="list-button" ion-item (click)="goToJoinWallet()">
+  </ion-card>
+
+
+  <ion-card>
+    <button ion-item (click)="goToJoinWallet()">
       <ion-icon class="join-icon" item-start>
-        <img src="assets/img/item-ico-addwallet.svg" class="icon-wallet" />
+        <img src="assets/img/app/join-the-general-wallet.svg" class="icon-wallet" />
       </ion-icon>
-      <span translate>Join shared wallet</span>
+      <span translate>Join to the general wallet</span>
     </button>
-    <button class="list-button" ion-item (click)="goToImportWallet()">
+  </ion-card>
+
+  <ion-card>
+    <button ion-item (click)="goToImportWallet()">
       <ion-icon item-start>
-        <img src="assets/img/item-ico-import.svg" class="icon-wallet" />
+        <img src="assets/img/app/import.svg" class="icon-wallet" />
       </ion-icon>
-      <span translate>Import wallet</span>
+      <span translate>Import the wallet</span>
     </button>
-  </ion-list>
+  </ion-card>
+
 </ion-content>

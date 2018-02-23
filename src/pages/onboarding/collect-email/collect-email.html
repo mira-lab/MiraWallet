@@ -2,40 +2,43 @@
 
   <ion-navbar hideBackButton="true">
     <ion-buttons end>
-      <button ion-button color="primary" (click)="skip()" translate>Skip</button>
+      <button ion-button color="primary" (click)="skip()" translate class="onboardNav">Skip</button>
     </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
-<ion-content>
-  <h1 translate>Wallet Created</h1>
+<ion-content class="welcome">
+  <ion-row justify-content-center align-items-center style="height: 50%">
+    <h1 translate>Thank you for creating a MiraWallet!</h1>
+  </ion-row>
 
-  <div *ngIf="!showConfirmForm">
-    <p translate>Notifications by email</p>
-    <img src='assets/img/app/onboarding/push-notifications.svg' />
+  <div *ngIf="!showConfirmForm" class="whiteBG">
 
-    <div class="bottom-absolute">
-      <p translate>Where would you like to receive email notifications about payments?</p>
+
+    <div class="bottom-absolute whiteBottom" text-left>
+      <h5 translate>Notifications by email</h5>
+
+      <p translate>Please enter your email address to receive notifications of payments made</p>
       <form [formGroup]="emailForm" (ngSubmit)="showConfirm()">
         <ion-item>
-          <ion-input type="email" formControlName="email" placeholder="Email Input"></ion-input>
+          <ion-input type="email" formControlName="email" placeholder="Enter you email"></ion-input>
         </ion-item>
 
         <ion-item no-lines text-wrap>
-          <ion-label translate>Get news and updates from BitPay</ion-label>
+          <ion-label translate>Get news and updates</ion-label>
           <ion-checkbox formControlName="accept" checked="true"></ion-checkbox>
         </ion-item>
 
-        <button ion-button block type="submit" [disabled]="!emailForm.valid" translate>Continue &rarr;</button>
+        <button ion-button block type="submit" [disabled]="!emailForm.valid" translate>Continue</button>
       </form>
     </div>
   </div>
 
   <div *ngIf="showConfirmForm">
     <div>
-      <p translate>Is this email address correct?</p>
-      <p>{{ emailForm.value.email }}</p>
+      <p translate class="whiteText">Is this email address correct?</p>
+      <p class="whiteText">{{ emailForm.value.email }}</p>
     </div>
     <div class="buttons">
       <div class="row">
