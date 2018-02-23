@@ -7,10 +7,6 @@ import {NominalBoxOpeningViewer} from "./boxOpening/boxOpening";
 import {BwcProvider} from "../../../../../providers/bwc/bwc";
 import {InputPasswordModal} from "../../inputPasswordModal/inputPasswordModal";
 import {BtcNetwork} from "../../../../../providers/mirabox/mirabox";
-import {TxConfirmNotificationProvider} from "../../../../../providers/tx-confirm-notification/tx-confirm-notification";
-import {WalletProvider} from "../../../../../providers/wallet/wallet";
-import {ConfigProvider} from "../../../../../providers/config/config";
-import {ProfileProvider} from "../../../../../providers/profile/profile";
 
 @Component({
   selector: 'nominalBoxViewer',
@@ -21,22 +17,16 @@ export class NominalBoxViewer {
   public miraBox: MiraBox;
   public currentBalance: number;
   public boxItemAddress;
-  private config;
 
   constructor(private platformProvider: PlatformProvider,
               private miraBoxExportProvider: MiraBoxExportProvider,
               private bwcProvider: BwcProvider,
               private navCtrl: NavController,
-              private txConfirmNotificationProvider: TxConfirmNotificationProvider,
-              private configProvider: ConfigProvider,
-              private walletProvider: WalletProvider,
-              private profileProvider: ProfileProvider,
               private modalCtrl: ModalController,
               navParams: NavParams) {
     this.isCordova = this.platformProvider.isCordova;
     this.miraBox = navParams.data;
     this.updateBalance(this.miraBox.getBoxItems()[0]);
-    this.config = this.configProvider.get();
   }
 
 
@@ -106,7 +96,6 @@ export class NominalBoxViewer {
 
   public updateBalance(boxItem: MiraBoxItem) {
     let self = this;
-    let pubkey = boxItem.headers.pub;
     let url;
     if (boxItem.headers.type.network == BtcNetwork.Live)
       url = `https://insight.bitpay.com/api/addr/${boxItem.headers.address}/balance`;
