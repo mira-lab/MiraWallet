@@ -6,90 +6,150 @@
 
 <ion-content no-bounce>
   <ion-list>
-    <ion-item-divider color="light"></ion-item-divider>
-    <button ion-item (click)="openAddressBookPage()">
-      <ion-icon name="ios-contacts-outline" item-start></ion-icon>
-      {{'Address book' | translate}}
-    </button>
+    <!--<ion-item-divider color="light"></ion-item-divider>-->
 
-    <ion-item-divider color="light"></ion-item-divider>
+    <ion-card>
 
-    <ion-item (click)="openHelpExternalLink()">
-      <ion-icon name="ios-help-circle-outline" item-start></ion-icon>
-      {{'Help &amp; support' | translate}}
-    </ion-item>
+      <button ion-item (click)="openAddressBookPage()">
+        <ion-icon item-start>
+          <img src="assets/img/app/address-book-blue.svg" alt="Address Book" style="width: 25px;" />
+        </ion-icon>
+        {{'Address book' | translate}}
+      </button>
 
-    <ion-item (click)="openSendFeedbackPage()">
-      <ion-icon name="ios-mail-outline" item-start></ion-icon>
-      Send feedback
-    </ion-item>
+      <ion-item (click)="openHelpExternalLink()">
+        <ion-icon item-start>
+          <img src="assets/img/app/help-and-support-blue.svg" alt="Address Book" style="width: 25px;" />
+        </ion-icon>
+        {{'Help &amp; support' | translate}}
+      </ion-item>
 
-    <ion-item *ngIf="isCordova && !isWindowsPhoneApp" (click)="openFeedbackCompletePage()">
-      <ion-icon name="ios-heart-outline" item-start></ion-icon>
-      Share {{ appName }}
-    </ion-item>
+      <ion-item (click)="openSendFeedbackPage()">
+        <ion-icon item-start>
+          <img src="assets/img/app/feedback-blue.svg" alt="Address Book" style="width: 25px;" />
+        </ion-icon>
+        Send feedback
+      </ion-item>
 
-    <ion-item-divider color="light">{{'Preferences' | translate}}</ion-item-divider>
+      <ion-item *ngIf="isCordova && !isWindowsPhoneApp" (click)="openFeedbackCompletePage()">
+        <ion-icon item-start>
+          <img src="assets/img/app/share-blue.svg" alt="Address Book" style="width: 25px;" />
+        </ion-icon>
+        Share {{ appName }}
+      </ion-item>
 
-    <button ion-item (click)="openBitcoinCashPage()">
-      <ion-icon item-start>
-        <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="25" />
-      </ion-icon>
-      Bitcoin Cash
-    </button>
+    </ion-card>
 
-    <button ion-item (click)="openNotificationsPage()">
-      <ion-icon name="ios-notifications-outline" item-start></ion-icon>
-      {{'Notification' | translate}}
-    </button>
 
-    <button ion-item (click)="openLanguagePage()">
-      <ion-icon name="ios-globe-outline" item-start></ion-icon>
-      <ion-label>
-        {{'Language' | translate}}
-      </ion-label>
-      <ion-note *ngIf="currentLanguageName" item-end>
-        {{ currentLanguageName }}
-      </ion-note>
-    </button>
+    <ion-card>
 
-    <button ion-item (click)="openAltCurrencyPage()">
-      <ion-icon name="ios-cash-outline" item-start></ion-icon>
-      <ion-label>
-        {{'Alternative currency' | translate}}
-      </ion-label>
-      <ion-note *ngIf="selectedAlternative" item-end>
-        {{ selectedAlternative.name }}
-      </ion-note>
-    </button>
+      <button ion-item (click)="openBitcoinCashPage()">
+        <ion-icon item-start>
+          <img src="assets/img/app/bitcoin-cash-blue.svg" alt="Bitcoin Cash Wallets" style="width: 25px;" />
+        </ion-icon>
+        Bitcoin Cash
+      </button>
 
-    <button ion-item (click)="openFeePolicyPage()">
-      <ion-icon name="ios-git-network-outline" item-start></ion-icon>
-      <ion-label>
-        {{'Bitcoin network fee policy' | translate}}
-      </ion-label>
-    </button>
+      <button ion-item (click)="openNotificationsPage()">
+        <ion-icon item-start>
+          <img src="assets/img/app/notifications-blue.svg" alt="Bitcoin Cash Wallets" style="width: 25px;" />
+        </ion-icon>
+        {{'Notification' | translate}}
+      </button>
 
-    <button ion-item (click)="openLockPage()">
-      <ion-icon *ngIf="lockMethod != 'Disabled'" name="ios-lock-outline" item-start></ion-icon>
-      <ion-icon *ngIf="lockMethod == 'Disabled'" name="ios-unlock-outline" item-start></ion-icon>
-      <ion-label>
-        {{'Lock' | translate}}
-      </ion-label>
-      <ion-note item-end>
-        {{lockMethod}}
-      </ion-note>
-    </button>
+      <button ion-item (click)="openLanguagePage()">
+        <ion-icon item-start>
+          <img src="assets/img/app/language-blue.svg" alt="Bitcoin Cash Wallets" style="width: 25px;" />
+        </ion-icon>
+        <ion-label>
+          {{'Language' | translate}}
+        </ion-label>
+        <ion-note *ngIf="currentLanguageName" item-end>
+          {{ currentLanguageName }}
+        </ion-note>
+      </button>
 
-    <ion-item-divider *ngIf="walletsBtc.length" color="light">{{'Bitcoin Wallets' | translate}}</ion-item-divider>
+      <button ion-item (click)="openAltCurrencyPage()">
+        <ion-icon item-start>
+          <img src="assets/img/app/dollar-blue.svg" alt="Bitcoin Cash Wallets" style="width: 25px;" />
+        </ion-icon>
+        <ion-label>
+          {{'Alternative currency' | translate}}
+        </ion-label>
+        <ion-note *ngIf="selectedAlternative" item-end>
+          {{ selectedAlternative.name }}
+        </ion-note>
+      </button>
 
-    <button ion-item *ngFor="let wallet of walletsBtc" (click)="openWalletSettingsPage(wallet.credentials.walletId)">
+      <button ion-item (click)="openFeePolicyPage()">
+        <ion-icon item-start>
+          <img src="assets/img/app/network-blue.svg" alt="Bitcoin Cash Wallets" style="width: 25px;" />
+        </ion-icon>
+        <ion-label>
+          {{'Bitcoin network fee policy' | translate}}
+        </ion-label>
+      </button>
+
+      <button ion-item (click)="openLockPage()">
+        <ion-icon item-start *ngIf="lockMethod != 'Disabled'">
+          <img src="assets/img/app/lock-blue.svg" alt="Bitcoin Cash Wallets" style="width: 25px;" />
+        </ion-icon>
+        <ion-icon item-start *ngIf="lockMethod == 'Disabled'">
+          <img src="assets/img/app/lock-blue.svg" alt="Bitcoin Cash Wallets" style="width: 25px;" />
+        </ion-icon>
+
+        <ion-label>
+          {{'Lock' | translate}}
+        </ion-label>
+        <ion-note item-end>
+          {{lockMethod}}
+        </ion-note>
+      </button>
+
+    </ion-card>
+
+
+
+    <ion-item-divider *ngIf="walletsBtc.length">{{'Bitcoin Wallets' | translate}}</ion-item-divider>
+
+    <ion-card>
+
+      <button ion-item *ngFor="let wallet of walletsBtc" (click)="openWalletSettingsPage(wallet.credentials.walletId)">
+        <!--
+        <ion-icon item-start>
+          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+            class="icon-wallet" />
+          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
+            class="icon-wallet" />
+        </ion-icon>
+        -->
+        <ion-icon item-start name="custom-wallet"></ion-icon>
+        <h2>{{wallet.name}}
+          <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span>
+        </h2>
+        <ion-note class="wallet-warning" *ngIf="!wallet.isComplete()" item-end>
+          {{'Incomplete' | translate}}
+        </ion-note>
+        <ion-note class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" item-end>
+          {{'Backup needed' | translate}}
+        </ion-note>
+      </button>
+    </ion-card>
+
+    <ion-item-divider *ngIf="walletsBch.length">{{'Bitcoin Cash Wallets' | translate}}</ion-item-divider>
+
+
+    <ion-card>
+      <button ion-item *ngFor="let wallet of walletsBch" (click)="openWalletSettingsPage(wallet.credentials.walletId)">
+      <!--
       <ion-icon item-start>
         <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
           class="icon-wallet" />
         <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
           class="icon-wallet" />
       </ion-icon>
+      -->
+      <ion-icon item-start name="custom-wallet"></ion-icon>
       <h2>{{wallet.name}}
         <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span>
       </h2>
@@ -100,37 +160,22 @@
         {{'Backup needed' | translate}}
       </ion-note>
     </button>
+    </ion-card>
 
-    <ion-item-divider *ngIf="walletsBch.length" color="light">{{'Bitcoin Cash Wallets' | translate}}</ion-item-divider>
+    <ion-card>
+      <button ion-item (click)="openAdvancedPage()">
+        <ion-icon item-start>
+          <img src="assets/img/app/advanced.svg" alt="Address Book" style="width: 25px;" />
+        </ion-icon>
+        {{'Advanced' | translate}}
+      </button>
 
-    <button ion-item *ngFor="let wallet of walletsBch" (click)="openWalletSettingsPage(wallet.credentials.walletId)">
-      <ion-icon item-start>
-        <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-          class="icon-wallet" />
-        <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-          class="icon-wallet" />
-      </ion-icon>
-      <h2>{{wallet.name}}
-        <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span>
-      </h2>
-      <ion-note class="wallet-warning" *ngIf="!wallet.isComplete()" item-end>
-        {{'Incomplete' | translate}}
-      </ion-note>
-      <ion-note class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" item-end>
-        {{'Backup needed' | translate}}
-      </ion-note>
-    </button>
-
-    <ion-item-divider color="light">More</ion-item-divider>
-
-    <button ion-item (click)="openAdvancedPage()">
-      <ion-icon name="ios-cog-outline" item-start></ion-icon>
-      {{'Advanced' | translate}}
-    </button>
-
-    <button ion-item (click)="openAboutPage()">
-      <ion-icon name="ios-apps-outline" item-start></ion-icon>
-      {{'About' | translate}} {{appName}}
-    </button>
+      <button ion-item (click)="openAboutPage()">
+        <ion-icon item-start>
+          <img src="assets/img/app/about-mira.svg" alt="Address Book" style="width: 25px;" />
+        </ion-icon>
+        {{'About Mira' | translate}} {{appName}}
+      </button>
+    </ion-card>
   </ion-list>
 </ion-content>

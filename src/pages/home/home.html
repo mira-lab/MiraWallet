@@ -49,13 +49,13 @@
     </ion-card-header>
     <ion-card-content class="check">
       <ion-icon class="big-icon-svg check-icon">
-        <img src="assets/img/check-white.svg" class="bg green" />
+        <img src="assets/img/app/mira/successfully.svg" class="" />
       </ion-icon>
       <div class="title" translate>
-        Your wallets are ready!
+        Wallet created succesfully
       </div>
       <div class="subtitle" translate>
-        On this screen you can see all your wallets, accounts, and assets.
+        This tab provides you all your wallets, accounts and assets
       </div>
     </ion-card-content>
   </ion-card>
@@ -98,8 +98,8 @@
     </button>
   </div>
 
-  <ion-list *ngIf="walletsBtc && walletsBtc[0]">
-    <ion-item-divider>
+  <ion-card *ngIf="walletsBtc && walletsBtc[0]">
+    <ion-card-header>
       <ion-row>
         <ion-col class="title">
           <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="18" />
@@ -117,15 +117,15 @@
           {{'Done'|translate}}
         </ion-col>
       </ion-row>
-    </ion-item-divider>
+    </ion-card-header>
 
     <ion-list reorder="{{showReorderBtc}}" (ionItemReorder)="reorderWalletsBtc($event)">
       <button ion-item *ngFor="let wallet of walletsBtc" (click)="goToWalletDetails(wallet)">
         <ion-icon item-start>
-          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-            class="icon-wallet" />
-          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-            class="icon-wallet" />
+          <img *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg"
+               class="icon-wallet" />
+          <img *ngIf="wallet.network != 'testnet'" src="assets/img/app/wallet-blue.svg"
+               class="icon-wallet" />
         </ion-icon>
         <h2>{{wallet.credentials.walletName}}</h2>
         <p>
@@ -142,19 +142,19 @@
             <span *ngIf="wallet.balanceHidden && !wallet.scanning">[{{'Balance Hidden' | translate}}]</span>
             <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
             <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
-              name="timer"></ion-icon>
+                      name="timer"></ion-icon>
             <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
           </span>
         </p>
       </button>
     </ion-list>
-  </ion-list>
+  </ion-card>
 
-  <ion-list *ngIf="walletsBch && walletsBch[0]">
-    <ion-item-divider>
+  <ion-card  *ngIf="walletsBch && walletsBch[0]">
+    <ion-card-header>
       <ion-row>
         <ion-col class="title">
-          <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
+          <img src="assets/img/app/bitcoin-cash-wallets.svg" alt="Bitcoin Cash Wallets" width="22" />
           <span translate>Bitcoin Cash Wallets</span>
         </ion-col>
         <ion-col class="icons-add-reorder" *ngIf="!showReorderBch" text-right>
@@ -169,15 +169,15 @@
           {{'Done'|translate}}
         </ion-col>
       </ion-row>
-    </ion-item-divider>
+    </ion-card-header>
 
     <ion-list reorder="{{showReorderBch}}" (ionItemReorder)="reorderWalletsBch($event)">
-      <button ion-item *ngFor="let wallet of walletsBch" (click)="goToWalletDetails(wallet)">
+      <button ion-item *ngFor="let wallet of walletsBch" (click)="goToWalletDetails(wallet)" detail-push>
         <ion-icon item-start>
-          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-            class="icon-wallet" />
-          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-            class="icon-wallet" />
+          <img *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg"
+               class="icon-wallet" />
+          <img *ngIf="wallet.network != 'testnet'" src="assets/img/app/wallet-blue.svg"
+               class="icon-wallet" />
         </ion-icon>
         <h2>{{wallet.credentials.walletName}}</h2>
         <p>
@@ -194,14 +194,15 @@
             <span *ngIf="wallet.balanceHidden && !wallet.scanning">[{{'Balance Hidden' | translate}}]</span>
             <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
             <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
-              name="timer"></ion-icon>
+                      name="timer"></ion-icon>
             <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
           </span>
         </p>
       </button>
     </ion-list>
-  </ion-list>
+  </ion-card>
 
+  <!--
   <ion-list *ngIf="wallets && wallets[0] && buyAndSellItems && buyAndSellItems.length>0">
     <ion-item-divider>
       <ion-row>
@@ -244,12 +245,13 @@
       </button>
     </div>
   </ion-list>
+  -->
 
-  <ion-list>
-    <ion-item-divider>
+  <ion-card>
+    <ion-card-header>
       <ion-row>
         <ion-col class="title">
-          <img src="assets/img/mirabox/nominalbox.svg" alt="MiraBoxes" width="22"/>
+          <img src="assets/img/mirabox/nominalbox.svg" alt="MiraBoxes" width="22" />
           <span translate>MiraBoxes</span>
         </ion-col>
         <ion-col class="icons-add-reorder" text-right>
@@ -258,37 +260,40 @@
           </div>
         </ion-col>
       </ion-row>
-    </ion-item-divider>
+    </ion-card-header>
 
     <ion-list>
       <mirabox-list-item *ngFor="let miraBox of miraBoxListShort" [miraBox]="miraBox"></mirabox-list-item>
     </ion-list>
 
     <button ion-item (click)="gotoAllBoxes()">View all</button>
-  </ion-list>
-  <ion-list>
-    <mirabox-import-btn></mirabox-import-btn>
-  </ion-list>
-  <!-- -->
-  <ion-list *ngIf="nextStepsItems && nextStepsItems.length>0">
-    <ion-item-divider>
-      <ion-row>
-        <ion-col class="title">
-          <span translate>Next steps</span>
-        </ion-col>
-        <ion-col text-right (click)="hideNextSteps = !hideNextSteps">
-          <ion-icon *ngIf="hideNextSteps" name="arrow-down"></ion-icon>
-          <ion-icon *ngIf="!hideNextSteps" name="arrow-up"></ion-icon>
-        </ion-col>
-      </ion-row>
-    </ion-item-divider>
-    <div *ngIf="!hideNextSteps">
-      <button ion-item *ngFor="let nextStepsItem of nextStepsItems" (click)="goTo(nextStepsItem.page)">
-        <ion-icon item-start>
-          <img src="{{nextStepsItem.icon}}" class="icon-services" />
-        </ion-icon>
-        <span>{{nextStepsItem.title || nextStepsItem.name}}</span>
-      </button>
-    </div>
-  </ion-list>
+
+    <ion-list>
+      <mirabox-import-btn></mirabox-import-btn>
+    </ion-list>
+  </ion-card>
+
+  <ion-card>
+    <ion-list *ngIf="nextStepsItems && nextStepsItems.length>0">
+      <ion-item-divider>
+        <ion-row>
+          <ion-col class="title">
+            <span translate>Next steps</span>
+          </ion-col>
+          <ion-col text-right (click)="hideNextSteps = !hideNextSteps">
+            <ion-icon *ngIf="hideNextSteps" name="arrow-down"></ion-icon>
+            <ion-icon *ngIf="!hideNextSteps" name="arrow-up"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-item-divider>
+      <div *ngIf="!hideNextSteps">
+        <button ion-item *ngFor="let nextStepsItem of nextStepsItems" (click)="goTo(nextStepsItem.page)">
+          <ion-icon item-start>
+            <img src="{{nextStepsItem.icon}}" class="icon-services" />
+          </ion-icon>
+          <span>{{nextStepsItem.title || nextStepsItem.name}}</span>
+        </button>
+      </div>
+    </ion-list>
+  </ion-card>
 </ion-content>

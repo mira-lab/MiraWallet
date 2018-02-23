@@ -1,0 +1,515 @@
+/*
+ * Copay Distribution SCSS overrides
+ */
+
+// Named Color Variables
+// --------------------------------------------------
+// Named colors makes it easy to reuse colors on various components.
+// It's highly recommended to change the default colors
+// to match your app's branding. Ionic uses a Sass map of
+// colors so you can add, rename and remove colors as needed.
+// The "primary" color is the only required color in the map.
+
+$color-primary: #2ea5ff;
+$color-secondary: #31465b;
+$icon-border-radius: 3px;
+$toolbar-background: #192c3a;
+$toolbar-scanner: rgba(25, 44, 58, 0.8);
+
+$blueFontColor:                                      #2a45c2;
+$purpleFontColor:                                    #a000b9;
+
+$blue: #2ea5ff;
+
+$v-onboarding-gradient-top-color:                    $blueFontColor;
+$v-onboarding-gradient-bottom-color:                 $purpleFontColor;
+
+$white: #fff;
+
+
+/* FONTS DECLARATIONS */
+@import "roboto";
+$font-rmd: 'Roboto', Arial, sans-serif;
+
+
+
+/* GLOBAL VARIABLES */
+.miraMainButton
+{
+  background: rgba(255, 255, 255, 0.1) !important;
+  font-weight: 500 !important;
+  color: white !important;
+  max-width: 80% !important;
+  margin: 0 auto !important;
+}
+.miraSecButton
+{
+  border: none !important;
+  font-family: $font-rmd;
+  color: white !important;
+  font-weight: 300 !important;
+  max-width: 80% !important;
+  margin: 0 auto !important;
+}
+
+.whiteText
+{
+  color: $white !important;
+}
+
+
+.toolbar-background
+{
+  background: #2a45c2 !important;
+}
+
+
+
+
+
+/* ONBOARDING AND AGREEMENT BLUE BACKGROUND BLOCKS */
+
+.onboardNav
+{
+  color: white !important;
+  font-family: $font-rmd !important;
+  font-weight: 300 !important;
+  font-size: 120% !important;
+}
+
+.welcome
+{
+
+  background: $blueFontColor;
+  background-image: linear-gradient(to bottom, $blueFontColor 0%, $purpleFontColor 100%);
+
+
+
+  h1
+  {
+    font-family: $font-rmd !important;
+    font-weight: 400;
+    color: $white !important;
+  }
+
+  ion-list ion-item
+  {
+    background: transparent !important;
+    color: $white !important;
+    font-family: $font-rmd !important;
+    font-weight: 300 !important;
+
+    ion-checkbox
+    {
+      margin: 8px 32px 8px 16px !important;
+
+
+
+
+    }
+  }
+
+
+
+
+  .disclaimerBottom
+  {
+    background: $white !important;
+
+    .checkbox-icon
+    {
+      border-color: $blue !important;
+    }
+
+    button.blueButton
+    {
+      background: $blue !important;
+    }
+
+  }
+
+  .onboardNav
+  {
+    color: white !important;
+    font-family: $font-rmd !important;
+    font-weight: 300 !important;
+    font-size: 120% !important;
+  }
+
+  /* onboarding.html*/
+  .onboarding-description
+  {
+    font-family: $font-rmd !important;
+    font-weight: 300 !important;
+    color: $white !important;
+    margin: 0 auto !important;
+    font-size: 24px !important;
+  }
+
+
+  .onboardBlock
+  {
+    width: 80% !important;
+
+
+    .onboardImage
+    {
+      width: 80% !important;
+      margin: 0 auto !important;
+    }
+
+    .onboardText
+    {
+      color: $white !important;
+      font-weight: 300 !important;
+      max-width: 80% !important;
+      margin: 0 auto !important;
+      display: block !important;
+    }
+
+    .curseBlock
+    {
+      font-weight: 500 !important;
+      color: $white !important;
+      margin: 0 auto !important;
+
+      img
+      {
+        vertical-align: middle !important;
+        width: 36px !important;
+        display: inline-block !important;
+      }
+
+    }
+
+
+
+    /* CARDS */
+    ion-card
+    {
+      background-color: transparent !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      box-shadow: none !important;
+      width: 100% !important;
+
+      ion-list
+      {
+
+        button
+        {
+
+          color: white !important;
+          background-color: transparent !important;
+          border: none !important;
+
+        }
+
+      } /* ion-list*/
+
+    } /* ion-card */
+
+
+    .miraText
+    {
+      font-family: $font-rmd;
+      font-size: 16px !important;
+      font-weight: 300 !important;
+
+    }
+
+    h5
+    {
+      font-size: 1.4em !important;
+      color: $white !important;
+    }
+
+    p
+    {
+      font-size: 1.1em !important;
+      color: white !important;
+      font-weight: 300 !important;
+    }
+
+  } /* onboardBlock */
+
+
+}
+
+
+
+
+.icon-wallet
+{
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+
+ion-icon {
+  &[class*="custom-"]
+  {
+    mask-size: contain;
+    mask-position: 50% 50%;
+    mask-repeat: no-repeat;
+    background: currentColor;
+    width: 1em;
+    height: 1em;
+    color: $blueFontColor;
+  }
+
+  &[class*="custom-wallet"]
+  {
+    mask-image: url(../assets/img/app/wallet-blue.svg);
+  }
+
+  &[class*="custom-home"]
+  {
+    mask-image: url(../assets/img/app/home-gray.svg);
+  }
+
+  &[class*="custom-scan"]
+  {
+    mask-image: url(../assets/img/app/scan-gray.svg);
+  }
+
+  &[class*="custom-get"]
+  {
+    mask-image: url(../assets/img/app/qr-gray.svg);
+  }
+
+  &[class*="custom-send"]
+  {
+    mask-image: url(../assets/img/app/send-gray.svg);
+  }
+
+  &[class*="custom-settings"]
+  {
+    mask-image: url(../assets/img/app/settings-gray.svg);
+  }
+
+
+
+}
+
+
+
+
+/* collect-email.html */
+.whiteBottom
+{
+  background: white !important;
+  height: 50% !important;
+}
+
+
+
+
+
+
+/* /welcome */
+
+
+/*
+
+
+
+
+
+!* Change Buttons *!
+.miraMainButton
+{
+  background: rgba(255, 255, 255, 0.1) !important;
+  font-weight: 500 !important;
+}
+
+.miraSecButton
+{
+  border: none !important;
+  font-family: 'Roboto', sans-serif !important;
+  color: white !important;
+  font-weight: 300 !important;
+}
+
+
+!* Fix White BG on onboarding *!
+.content-md
+{
+  color: inherit !important;
+  background-color: transparent !important;
+}
+
+
+
+
+ion-item
+{
+  color: white !important;
+  border: none !important;
+  background: transparent !important;
+  overflow: inherit !important;
+
+  .item-inner
+  {
+    overflow: inherit !important;
+    border: none !important;
+  }
+
+  h2, p
+  {
+    color: white !important;
+  }
+
+  p
+  {
+    font-weight: 300 !important;
+  }
+
+
+  ion-label
+  {
+    white-space: inherit !important;
+  }
+
+}
+
+
+.miraContent
+{
+  color: white;
+  background: $blueFontColor;
+  background-image: linear-gradient(to bottom, $blueFontColor 0%, $purpleFontColor 100%);
+
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+
+
+  h1, p
+  {
+    color: white !important;
+  }
+
+}
+
+
+
+.white-bottom
+{
+  background: white !important;
+  color: black !important;
+
+  ion-label
+  {
+    color: black !important;
+    font-weight: 300 !important;
+  }
+  .link
+  {
+    font-size: inherit !important;
+  }
+}
+
+
+page-onboarding {
+  & > ion-content {
+    //background: url(../assets/img/onboarding-welcome-bg.png);
+
+    !* ONEGIN FIXES *!
+    color: white;
+    background: $blueFontColor;
+    background-image: linear-gradient(to bottom, $blueFontColor 0%, $purpleFontColor 100%);
+
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  .logo-tagline {
+    text-align: center;
+
+
+    img {
+      max-width: 200px;
+      margin: 5rem 0;
+    }
+    p {
+      line-height: 1.6;
+      font-size: 18px;
+      color: white;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 300;
+    }
+  }
+
+
+
+  .grid, .row {
+    // Force grid to fill height of content as this is not set by default
+    height: 100%;
+  }
+
+}
+
+
+
+ion-list.miraSmallFont ion-label p
+{
+  font-size: 1.4rem !important;
+}
+
+
+
+
+
+
+
+
+!* TOOLBAR *!
+.toolbar-background
+{
+  background: $blueFontColor !important;
+}
+.toolbar-title
+{
+  text-align: center;
+}
+
+
+
+!* HOMEPAGE *!
+page-home
+{
+
+
+  .title
+  {
+    font-size: 1.6rem;
+    font-weight: 500 !important;
+  }
+}
+
+
+
+ion-icon {
+  &[class*="custom-"] {
+    mask-size: contain;
+    mask-position: 50% 50%;
+    mask-repeat: no-repeat;
+    background: currentColor;
+    width: 1em;
+    height: 1em;
+    color: $blueFontColor;
+  }
+
+  &[class*="custom-wallet"] {
+    mask-image: url(../assets/img/app/wallet-blue.svg);
+  }
+}
+
+
+
+ion-item ion-input input {
+  color: black;
+}
+*/
