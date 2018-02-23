@@ -49,7 +49,7 @@
         <span>Try open...</span>
       </button>
     </ion-item>
-    <ion-item>
+    <ion-item *ngIf="isCordova">
       <button ion-item (click)="sheetShare()">
         <span>Share...</span>
       </button>
