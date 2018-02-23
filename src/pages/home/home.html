@@ -122,7 +122,7 @@
     <ion-list reorder="{{showReorderBtc}}" (ionItemReorder)="reorderWalletsBtc($event)">
       <button ion-item *ngFor="let wallet of walletsBtc" (click)="goToWalletDetails(wallet)">
         <ion-icon item-start>
-          <img *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg"
+          <img *ngIf="wallet.network == 'testnet'" src="assets/img/app/wallet-blue.svg"
                class="icon-wallet" />
           <img *ngIf="wallet.network != 'testnet'" src="assets/img/app/wallet-blue.svg"
                class="icon-wallet" />
@@ -174,7 +174,7 @@
     <ion-list reorder="{{showReorderBch}}" (ionItemReorder)="reorderWalletsBch($event)">
       <button ion-item *ngFor="let wallet of walletsBch" (click)="goToWalletDetails(wallet)" detail-push>
         <ion-icon item-start>
-          <img *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg"
+          <img *ngIf="wallet.network == 'testnet'" src="assets/img/app/wallet-blue.svg"
                class="icon-wallet" />
           <img *ngIf="wallet.network != 'testnet'" src="assets/img/app/wallet-blue.svg"
                class="icon-wallet" />
