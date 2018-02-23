@@ -827,9 +827,10 @@ export class ProfileProvider {
       let opts: any = {};
       opts.m = 1;
       opts.n = 1;
-      opts.networkName = 'livenet';
+      opts.networkName = 'testnet';
       opts.coin = 'btc';
       this.createWallet(opts).then((wallet: any) => {
+        opts.networkName = 'livenet';
         opts.coin = 'bch';
         this.createWallet(opts).then(() => {
           return resolve(wallet);
