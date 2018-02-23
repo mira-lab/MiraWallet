@@ -22,19 +22,23 @@
     </ion-item>
     <ion-item>
       <ion-label>Source wallet:</ion-label>
-      <ion-select [(ngModel)]="signWallet">
-        <ion-option  *ngFor="let wallet of btcWallets" [selected]="wallet == btcWallets[0]" [value]="wallet" >{{ wallet.walletName }}</ion-option>
+      <ion-select [(ngModel)]="signWalletIdx">
+        <ion-option *ngFor="let wallet of btcWallets; let i=index" [selected]="i==0" [value]="i">
+          {{wallet.name}}
+        </ion-option>
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-label>Amount</ion-label>
-      <ion-input type="number"></ion-input>
+      <ion-input type="number" [(ngModel)]="amount"></ion-input>
     </ion-item>
     <ion-item-divider>Box sign</ion-item-divider>
     <ion-item>
       <ion-label>Sign with wallet:</ion-label>
-      <ion-select [(ngModel)]="sourceWallet">
-        <ion-option  *ngFor="let wallet of btcWallets" [selected]="wallet == btcWallets[0]" [value]="wallet" >{{ wallet.walletName }}</ion-option>
+      <ion-select [(ngModel)]="sourceWalletIdx">
+        <ion-option *ngFor="let wallet of btcWallets; let i=index" [selected]="i==0"  [value]="i">
+          {{wallet.name}}
+        </ion-option>
       </ion-select>
     </ion-item>
   </ion-list>

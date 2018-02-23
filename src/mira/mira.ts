@@ -41,7 +41,8 @@ export interface MiraBoxItem {
   headers: {
     type: WalletType,
     pubType: string,
-    pub: string
+    pub: string,
+    address: string
   },
   key: string,
   meta: object,
