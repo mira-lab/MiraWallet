@@ -3,13 +3,15 @@ import { NavController, LoadingController, Slides, Navbar } from 'ionic-angular'
 import { Logger } from '../../../providers/logger/logger';
 
 //pages
-import { CollectEmailPage } from '../collect-email/collect-email';
+//import { CollectEmailPage } from '../collect-email/collect-email';
 
 //providers
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import {TabsPage} from "../../tabs/tabs";
+import { PersistenceProvider} from "../../../providers/persistence/persistence";
 
 @Component({
   selector: 'page-tour',
@@ -30,7 +32,8 @@ export class TourPage {
     private profileProvider: ProfileProvider,
     private rateProvider: RateProvider,
     private txFormatProvider: TxFormatProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private persistenceProvider: PersistenceProvider,
   ) {
     this.currentIndex = 0;
     this.rateProvider.whenRatesAvailable().then(() => {
@@ -69,7 +72,10 @@ export class TourPage {
     this.onGoingProcessProvider.set('creatingWallet', true);
     this.profileProvider.createDefaultWallet().then((wallet) => {
       this.onGoingProcessProvider.set('creatingWallet', false);
-      this.navCtrl.push(CollectEmailPage, { walletId: wallet.id });
+      //this.navCtrl.push(CollectEmailPage, { walletId: wallet.id });
+      this.persistenceProvider.setDisclaimerAccepted();
+      this.navCtrl.setRoot(TabsPage);
+      this.navCtrl.popToRoot();
     })
   }
 
