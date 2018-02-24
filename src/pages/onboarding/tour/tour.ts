@@ -3,7 +3,7 @@ import { NavController, LoadingController, Slides, Navbar } from 'ionic-angular'
 import { Logger } from '../../../providers/logger/logger';
 
 //pages
-import { CollectEmailPage } from '../collect-email/collect-email';
+//import { CollectEmailPage } from '../collect-email/collect-email';
 
 //providers
 import { ProfileProvider } from '../../../providers/profile/profile';
