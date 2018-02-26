@@ -1,0 +1,31 @@
+<ion-item>
+  <ion-label>Creator</ion-label>
+  <ion-label>{{creator}}</ion-label>
+</ion-item>
+<ion-item>
+  <ion-label>Description</ion-label>
+  <ion-label>{{description}}</ion-label>
+</ion-item>
+<ion-item-divider color="light">Wallet info</ion-item-divider>
+<ion-item>
+  <ion-label>Address</ion-label>
+  <ion-label>{{address}}</ion-label>
+</ion-item>
+<ion-item>
+  <ion-label>Status</ion-label>
+  <ion-label>ToDo</ion-label>
+</ion-item>
+
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6>
+        <button ion-button block class="button-footer" color="secondary" (click)="import()">Import</button>
+      </ion-col>
+      <ion-col col-6>
+        <button ion-button block class="button-footer" color="danger" (click)="close()">Don't Import</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

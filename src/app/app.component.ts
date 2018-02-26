@@ -23,6 +23,7 @@ import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PinModalPage } from '../pages/pin/pin';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
+import {AndroidImportPage} from "../pages/mira/mirabox/miraboxImport/androidImport/androidImport";
 
 @Component({
   templateUrl: 'app.html',
@@ -54,6 +55,7 @@ export class CopayApp {
   }
 
   initializeApp() {
+    let self = this;
     this.platform.ready().then((readySource) => {
       this.app.load().then(() => {
         this.logger.info(
@@ -77,11 +79,33 @@ export class CopayApp {
         });
         this.openLockModal();
         // Check Profile
+
+        //tododaniil deal with situations when app launches via mbox without existing profile
         this.profile.loadAndBindProfile().then((profile: any) => {
           this.registerIntegrations();
           if (profile) {
             this.logger.info('Profile exists.');
-            this.rootPage = TabsPage;
+            (<any>window).plugins.intentShim.getIntent(
+              function(intent) {
+                if (intent.action != "android.intent.action.MAIN") {
+                  try {
+                    var miraboxFile = intent.data;
+                  }catch (err){
+                    console.log("Error: "+err);
+                    self.platform.exitApp();
+                    return;
+                  }
+                  self.rootPage = AndroidImportPage;
+                }else{
+                  console.log("intent.action == \"android.intent.action.MAIN\"")
+                  self.rootPage = TabsPage;
+                }
+              },
+              function()
+              {
+                console.log('Error getting launch intent');
+              });
+
           }
           else {
             this.logger.info('No profile exists.');

@@ -101,13 +101,23 @@ export class HomePage {
     private feedbackProvider: FeedbackProvider,
     private miraStorageProvider:MiraStorageProvider
   ) {
+    if(this.platformProvider.isAndroid)
+      this.handleIntents();
     this.cachedBalanceUpdateOn = '';
     this.isNW = this.platformProvider.isNW;
     this.isWindowsPhoneApp = this.platformProvider.isWP;
     this.showReorderBtc = false;
     this.showReorderBch = false;
   }
-
+  handleIntents(){
+    let self = this;
+    //Google-chrome downloads intent handler
+    //tododaniil add onIntent handler
+    (<any>window).plugins.intentShim.onIntent(function (intent) {
+      console.log('Received Intent: ' + JSON.stringify(intent.extras));
+      console.log("DATA"+ intent.data);
+    });
+  }
   ionViewWillEnter() {
     this.config = this.configProvider.get();
     this.wallets = this.profileProvider.getWallets();

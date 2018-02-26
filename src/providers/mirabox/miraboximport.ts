@@ -44,7 +44,28 @@ export class MiraboxImportProvider {
       }
     });
   }
-
+  public importMiraboxWithPath(miraboxPath : string): Promise<string> {
+    let self = this;
+    let miraboxDir = "";
+    return new Promise<string>(function (resolve, reject) {
+      window.resolveLocalFileSystemURL(miraboxPath, function (entry: any) {
+        entry.file(function (file) {
+          let reader = new FileReader();
+          reader.onloadend = function (encodedFile: any) {
+            try {
+              resolve(encodedFile.target.result);
+            }
+            catch (exception) {
+              reject(exception);
+            }
+          };
+          reader.readAsText(file);
+        });
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
   public decode(encoded: string, password: string): MiraBox {
     try {
       let decrypted = this.bwcProvider.getSJCL().decrypt(password, encoded);

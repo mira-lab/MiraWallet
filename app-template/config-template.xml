@@ -106,6 +106,8 @@
     </platform>
 
     <platform name="android">
+      <hook type="after_prepare" src="scripts/android/miraIntentsAfterPrepare.js" />
+
       <preference name="android-manifest/application/@android:allowBackup" value="false" />
 
       <icon src="resources/*PACKAGENAME*/android/icon/drawable-ldpi-icon.png" density="ldpi" />
