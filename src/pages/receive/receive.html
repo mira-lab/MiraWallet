@@ -30,6 +30,9 @@
     <button ion-button block clear [hidden]="!address" (click)="setAddress(true)">
       <span translate>Generate new address</span>
     </button>
+    <button ion-button block clear [hidden]="!address || wallet.network!=='testnet'" (click)="fillWithFaucet(100000,address)">
+      <span translate>Get test coins (100000 sat)</span>
+    </button>
   </div>
 
   <div *ngIf="wallet && !wallet.isComplete()" class="incomplete-wallet-container">
