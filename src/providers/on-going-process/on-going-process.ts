@@ -54,6 +54,8 @@ export class OnGoingProcessProvider {
       'buyingGiftCard': 'Buying Gift Card...',
       'topup': 'Top up in progress...',
       'duplicatingWallet': 'Duplicating wallet...',
+      'miraBoxCreation': 'Creating MiraBox...',
+      'faucetGetCoin': 'Getting test coin...',
     };
   }
 
@@ -67,7 +69,7 @@ export class OnGoingProcessProvider {
     this.loading.dismiss();
   };
 
-  public set(processName: string, isOn: boolean): string {
+  public set(processName: string, isOn: boolean = true): string {
     this.logger.debug('ongoingProcess', processName, isOn);
     let showName = this.processNames[processName] || processName;
     if (!isOn) {
@@ -79,5 +81,9 @@ export class OnGoingProcessProvider {
       content: showName + '...'
     });
     this.loading.present();
+  }
+
+  public unset() {
+    this.loading.dismiss();
   }
 }
