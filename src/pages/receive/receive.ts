@@ -17,6 +17,7 @@ import { PlatformProvider } from '../../providers/platform/platform';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 
 import * as _ from 'lodash';
+import {FaucetProvider} from "../../providers/mirabox/faucet";
 
 @Component({
   selector: 'page-receive',
@@ -41,7 +42,8 @@ export class ReceivePage {
     private platformProvider: PlatformProvider,
     private events: Events,
     private socialSharing: SocialSharing,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private faucet: FaucetProvider
   ) {
     this.showShareButton = this.platformProvider.isCordova;
   }
@@ -138,4 +140,15 @@ export class ReceivePage {
     this.alertCtrl.create(opts).present();
   }
 
+  public fillWithFaucet(satAmount, address) {
+    this.faucet.fillWithCoin(address, satAmount)
+      .then((response) => {
+        console.log(response);
+        alert('Success.\nWait for incoming transaction');
+      })
+      .catch((error)=>{
+        console.log(error);
+        alert(`Error occured:${error}`)
+      })
+  }
 }

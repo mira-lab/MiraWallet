@@ -213,6 +213,7 @@ import { MiraboxImportProvider } from "../providers/mirabox/miraboximport";
 import { MiraBoxExportProvider } from "../providers/mirabox/mirabox-export";
 import { WalletImportComponent } from "../pages/mira/mirabox/miraboxViewer/nominalBoxViewer/walletImportComponent/walletImportComponent";
 import { InputPasswordModal } from "../pages/mira/mirabox/inputPasswordModal/inputPasswordModal";
+import {FaucetProvider} from "../providers/mirabox/faucet";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -395,6 +396,7 @@ let providers: any = [
   MiraboxImportProvider,
   MiraStorageProvider,
   MiraBoxExportProvider,
+  FaucetProvider
 ];
 
 let pipes = [
