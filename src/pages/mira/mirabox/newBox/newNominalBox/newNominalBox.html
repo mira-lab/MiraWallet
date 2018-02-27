@@ -45,6 +45,6 @@
 </ion-content>
 
 <ion-footer>
-  <button ion-button block class="button-footer" (click)="createBox()">Create Box
+  <button ion-button block class="button-footer" [disabled]="inProgress" (click)="createBox()">Create Box
   </button>
 </ion-footer>

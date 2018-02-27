@@ -8,6 +8,7 @@ import {ProfileProvider} from "../../../../../providers/profile/profile";
 import {WalletProvider} from "../../../../../providers/wallet/wallet";
 import {ConfigProvider} from "../../../../../providers/config/config";
 import {TxConfirmNotificationProvider} from "../../../../../providers/tx-confirm-notification/tx-confirm-notification";
+import {OnGoingProcessProvider} from "../../../../../providers/on-going-process/on-going-process";
 
 
 @Component({
@@ -16,6 +17,7 @@ import {TxConfirmNotificationProvider} from "../../../../../providers/tx-confirm
 })
 export class NewNominalBoxPage {
   private config;
+  public inProgress: boolean = false;
 
   constructor(private bwcProvider: BwcProvider,
               private miraBoxProvider: MiraBoxProvider,
@@ -24,7 +26,8 @@ export class NewNominalBoxPage {
               private txConfirmNotificationProvider: TxConfirmNotificationProvider,
               private configProvider: ConfigProvider,
               private walletProvider: WalletProvider,
-              private profileProvider: ProfileProvider) {
+              private profileProvider: ProfileProvider,
+              private ongoingProcessProvider: OnGoingProcessProvider) {
     this.config = this.configProvider.get();
 
     this.btcWallets = this.profileProvider.getWallets({coin: 'btc'});
@@ -46,88 +49,99 @@ export class NewNominalBoxPage {
   }
 
   public async createBox() {
-    let HDPrivateKey = this.bwcProvider.getBitcore().HDPrivateKey;
-
     let self = this;
+    this.inProgress=true;
+    try {
+      this.ongoingProcessProvider.set('miraBoxCreation');
 
-    let signWalletExported = NewNominalBoxPage.exportWallet(this.btcWallets[this.signWalletIdx]);
-    let sourceWalletExported = NewNominalBoxPage.exportWallet(this.btcWallets[this.sourceWalletIdx]);
+      let HDPrivateKey = this.bwcProvider.getBitcore().HDPrivateKey;
 
-    if (!signWalletExported || !signWalletExported.xPrivKey) {
-      alert('You have to select wallet');
-      return;
-    }
-    if (!sourceWalletExported) {
-      alert('You have to select wallet');
-      return;
-    }
-    
-    let signWalletPrivateKey = new HDPrivateKey(signWalletExported.xPrivKey);
-    let signWalletDerivedPrivateKey = signWalletPrivateKey.derive("m/0'");
-    let signPrivateKey = signWalletDerivedPrivateKey.privateKey;
-    let signPublicKey = signWalletDerivedPrivateKey.publicKey.toString();
 
-    let wallet: WalletType = {
-      coin: sourceWalletExported.coin,
-      network: sourceWalletExported.network
-    };
+      let signWalletExported = NewNominalBoxPage.exportWallet(this.btcWallets[this.signWalletIdx]);
+      let sourceWalletExported = NewNominalBoxPage.exportWallet(this.btcWallets[this.sourceWalletIdx]);
 
-    //creating mirabox
-    let miraBox: MiraBox = await this.miraBoxProvider.createNominalMiraBox(
-      wallet,
-      this.walletName,
-      '',
-      this.boxDescription,
-      {
-        name: self.creatorName,
-        publicKey: signPublicKey
+      if (!signWalletExported || !signWalletExported.xPrivKey) {
+        alert('You have to select wallet');
+        return;
       }
-    );
-    miraBox.createSignature(signPrivateKey);
-    //storing mirabox
-    await self.miraStorageProvider.storeMiraBox(miraBox);
+      if (!sourceWalletExported) {
+        alert('You have to select wallet');
+        return;
+      }
 
-    //filling mirabox with coin
+      let signWalletPrivateKey = new HDPrivateKey(signWalletExported.xPrivKey);
+      let signWalletDerivedPrivateKey = signWalletPrivateKey.derive("m/0'");
+      let signPrivateKey = signWalletDerivedPrivateKey.privateKey;
+      let signPublicKey = signWalletDerivedPrivateKey.publicKey.toString();
 
-    let sourceWallet = this.btcWallets[this.sourceWalletIdx];
+      let wallet: WalletType = {
+        coin: sourceWalletExported.coin,
+        network: sourceWalletExported.network
+      };
 
-    let recipientAddress = miraBox.getBoxItems()[0].headers.address;
-
-    let Unit = this.bwcProvider.getBitcore().Unit;
-
-    let satoshiAmount = Unit.fromBTC(this.amount).toSatoshis();
-
-    let txp = {
-      "outputs": [
+      this.ongoingProcessProvider.set('miraBoxCreation', false);
+      //creating mirabox
+      let miraBox: MiraBox = await this.miraBoxProvider.createNominalMiraBox(
+        wallet,
+        this.walletName,
+        '',
+        this.boxDescription,
         {
-          "toAddress": recipientAddress,
-          "amount": satoshiAmount
+          name: self.creatorName,
+          publicKey: signPublicKey
         }
-      ],
-      "feeLevel": "normal",
-      "excludeUnconfirmedUtxos": !this.config.wallet.spendUnconfirmed,
-      "dryRun": false
-    };
+      );
+      miraBox.createSignature(signPrivateKey);
+      //storing mirabox
+      await self.miraStorageProvider.storeMiraBox(miraBox);
 
-    let tx = await this.walletProvider.createTx(sourceWallet, txp);
+      //filling mirabox with coin
 
-    if (!sourceWallet.canSign() && !sourceWallet.isPrivKeyExternal()) {
-      await this.walletProvider.onlyPublish(sourceWallet, tx);
-    }
-    else {
-      let publishedTx = await  this.walletProvider.publishAndSign(sourceWallet, tx);
-      if (this.config.confirmedTxsNotifications && this.config.confirmedTxsNotifications.enabled) {
-        this.txConfirmNotificationProvider.subscribe(sourceWallet, {
-          txid: publishedTx.txid
-        });
+      let sourceWallet = this.btcWallets[this.sourceWalletIdx];
+
+      let recipientAddress = miraBox.getBoxItems()[0].headers.address;
+
+      let Unit = this.bwcProvider.getBitcore().Unit;
+
+      let satoshiAmount = Unit.fromBTC(this.amount).toSatoshis();
+
+      let txp = {
+        "outputs": [
+          {
+            "toAddress": recipientAddress,
+            "amount": satoshiAmount
+          }
+        ],
+        "feeLevel": "normal",
+        "excludeUnconfirmedUtxos": !this.config.wallet.spendUnconfirmed,
+        "dryRun": false
+      };
+
+      let tx = await this.walletProvider.createTx(sourceWallet, txp);
+
+      if (!sourceWallet.canSign() && !sourceWallet.isPrivKeyExternal()) {
+        await this.walletProvider.onlyPublish(sourceWallet, tx);
       }
-    }
+      else {
+        let publishedTx = await  this.walletProvider.publishAndSign(sourceWallet, tx);
+        if (this.config.confirmedTxsNotifications && this.config.confirmedTxsNotifications.enabled) {
+          this.txConfirmNotificationProvider.subscribe(sourceWallet, {
+            txid: publishedTx.txid
+          });
+        }
+      }
 
-    //finishing
-    console.log('Successfully stored in storage');
-    self.navCtrl.popAll()
-      .catch(e => {
+      //finishing
+      console.log('Successfully stored in storage');
+      self.navCtrl.popAll().catch(e => {
         console.log(e);
       });
+    }
+    catch {
+      this.ongoingProcessProvider.unset();
+    }
+    finally {
+      this.inProgress = false;
+    }
   }
 }

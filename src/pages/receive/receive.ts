@@ -18,6 +18,7 @@ import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 
 import * as _ from 'lodash';
 import {FaucetProvider} from "../../providers/mirabox/faucet";
+import {OnGoingProcessProvider} from "../../providers/on-going-process/on-going-process";
 
 @Component({
   selector: 'page-receive',
@@ -43,6 +44,7 @@ export class ReceivePage {
     private events: Events,
     private socialSharing: SocialSharing,
     private bwcErrorProvider: BwcErrorProvider,
+    private ongoingProcessProvider: OnGoingProcessProvider,
     private faucet: FaucetProvider
   ) {
     this.showShareButton = this.platformProvider.isCordova;
@@ -141,14 +143,18 @@ export class ReceivePage {
   }
 
   public fillWithFaucet(satAmount, address) {
+    let self = this;
+    this.ongoingProcessProvider.set('faucetGetCoin');
     this.faucet.fillWithCoin(address, satAmount)
       .then((response) => {
+        self.ongoingProcessProvider.unset();
         console.log(response);
         alert('Success.\nWait for incoming transaction');
       })
       .catch((error)=>{
+        self.ongoingProcessProvider.unset();
         console.log(error);
         alert(`Error occured:${error}`)
-      })
+      });
   }
 }
