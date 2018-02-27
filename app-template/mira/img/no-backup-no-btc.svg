@@ -1,16 +1,83 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Слой_8" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 134 137" enable-background="new 0 0 134 137" xml:space="preserve">
-<path fill="#FFFFFF" d="M104.6,16c1.6,0,3.2,0.6,4.3,1.8l11.7,11.7c1.2,1.2,1.8,2.7,1.8,4.3v90.6H13.2V16H104.6 M104.6,15H12.2
-	v110.3h111.2V33.8c0-1.9-0.7-3.7-2.1-5l-11.7-11.7C108.2,15.7,106.4,15,104.6,15L104.6,15z"/>
-<path fill="#FFFFFF" d="M90,60.8H45.5c-3.6,0-6.5-2.9-6.5-6.5v-39c0-0.3,0.2-0.5,0.5-0.5h56.7c0.3,0,0.5,0.2,0.5,0.5v39
-	C96.6,57.9,93.6,60.8,90,60.8z M39.9,15.8v38.5c0,3.1,2.5,5.5,5.5,5.5H90c3.1,0,5.5-2.5,5.5-5.5V15.8H39.9z"/>
-<rect x="26.8" y="76.3" opacity="0.15" fill="#FFFFFF" width="82" height="40.7"/>
-<path fill="#FFFFFF" d="M100,96.8H35.3c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5H100c0.3,0,0.5,0.2,0.5,0.5S100.3,96.8,100,96.8z"/>
-<path fill="#FFFFFF" d="M100,86.2H35.3c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5H100c0.3,0,0.5,0.2,0.5,0.5S100.3,86.2,100,86.2z"/>
-<path fill="#FFFFFF" d="M99,107.8H36.3c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5H99c0.3,0,0.5,0.2,0.5,0.5S99.3,107.8,99,107.8z"/>
-<path opacity="0.15" fill="#FFFFFF" d="M89.7,15.3v34H73.3v-34H39.4v39c0,3.3,2.7,6,6,6H90c3.3,0,6-2.7,6-6v-39H89.7z"/>
-<path fill="#FFFFFF" d="M89.7,49.8H73.3c-0.3,0-0.5-0.2-0.5-0.5v-34c0-0.3,0.2-0.5,0.5-0.5h16.3c0.3,0,0.5,0.2,0.5,0.5v34
-	C90.2,49.6,89.9,49.8,89.7,49.8z M73.8,48.8h15.3v-33H73.8V48.8z"/>
-</svg>
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="Слой_8"
+   x="0px"
+   y="0px"
+   viewBox="0 0 111.2 110.5"
+   enable-background="new 0 0 134 137"
+   xml:space="preserve"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="no-backup-no-btc.svg"
+   width="111.2"
+   height="110.5"><metadata
+     id="metadata3449"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+     id="defs3447" /><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview3445"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="6.2043796"
+     inkscape:cx="54.8"
+     inkscape:cy="56.8"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Слой_8" /><path
+     d="m 92.4,1.2 c 1.6,0 3.2,0.6 4.3,1.8 l 11.7,11.7 c 1.2,1.2 1.8,2.7 1.8,4.3 l 0,90.6 -109.2,0 0,-108.4 91.4,0 m 0,-1 -92.4,0 0,110.3 111.2,0 0,-91.5 c 0,-1.9 -0.7,-3.7 -2.1,-5 L 97.4,2.3 C 96,0.9 94.2,0.2 92.4,0.2 l 0,0 z"
+     id="path3429"
+     inkscape:connector-curvature="0"
+     style="fill:#ffffff" /><path
+     d="m 77.8,46 -44.5,0 c -3.6,0 -6.5,-2.9 -6.5,-6.5 l 0,-39 C 26.8,0.2 27,0 27.3,0 L 84,0 c 0.3,0 0.5,0.2 0.5,0.5 l 0,39 C 84.4,43.1 81.4,46 77.8,46 Z M 27.7,1 l 0,38.5 c 0,3.1 2.5,5.5 5.5,5.5 l 44.6,0 c 3.1,0 5.5,-2.5 5.5,-5.5 L 83.3,1 27.7,1 Z"
+     id="path3431"
+     inkscape:connector-curvature="0"
+     style="fill:#ffffff" /><rect
+     x="14.599999"
+     y="61.500004"
+     width="82"
+     height="40.700001"
+     id="rect3433"
+     style="opacity:0.15;fill:#ffffff" /><path
+     d="m 87.8,82 -64.7,0 c -0.3,0 -0.5,-0.2 -0.5,-0.5 0,-0.3 0.2,-0.5 0.5,-0.5 l 64.7,0 c 0.3,0 0.5,0.2 0.5,0.5 0,0.3 -0.2,0.5 -0.5,0.5 z"
+     id="path3435"
+     inkscape:connector-curvature="0"
+     style="fill:#ffffff" /><path
+     d="m 87.8,71.4 -64.7,0 c -0.3,0 -0.5,-0.2 -0.5,-0.5 0,-0.3 0.2,-0.5 0.5,-0.5 l 64.7,0 c 0.3,0 0.5,0.2 0.5,0.5 0,0.3 -0.2,0.5 -0.5,0.5 z"
+     id="path3437"
+     inkscape:connector-curvature="0"
+     style="fill:#ffffff" /><path
+     d="m 86.8,93 -62.7,0 c -0.3,0 -0.5,-0.2 -0.5,-0.5 0,-0.3 0.2,-0.5 0.5,-0.5 l 62.7,0 c 0.3,0 0.5,0.2 0.5,0.5 0,0.3 -0.2,0.5 -0.5,0.5 z"
+     id="path3439"
+     inkscape:connector-curvature="0"
+     style="fill:#ffffff" /><path
+     d="m 77.5,0.5 0,34 -16.4,0 0,-34 -33.9,0 0,39 c 0,3.3 2.7,6 6,6 l 44.6,0 c 3.3,0 6,-2.7 6,-6 l 0,-39 -6.3,0 z"
+     id="path3441"
+     inkscape:connector-curvature="0"
+     style="opacity:0.15;fill:#ffffff" /><path
+     d="m 77.5,35 -16.4,0 c -0.3,0 -0.5,-0.2 -0.5,-0.5 l 0,-34 C 60.6,0.2 60.8,0 61.1,0 l 16.3,0 c 0.3,0 0.5,0.2 0.5,0.5 l 0,34 C 78,34.8 77.7,35 77.5,35 Z m -15.9,-1 15.3,0 0,-33 -15.3,0 0,33 z"
+     id="path3443"
+     inkscape:connector-curvature="0"
+     style="fill:#ffffff" /></svg>
