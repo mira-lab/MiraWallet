@@ -79,33 +79,21 @@ export class CopayApp {
         });
         this.openLockModal();
         // Check Profile
-
-        //tododaniil deal with situations when app launches via mbox without existing profile
         this.profile.loadAndBindProfile().then((profile: any) => {
           this.registerIntegrations();
           if (profile) {
             this.logger.info('Profile exists.');
-            (<any>window).plugins.intentShim.getIntent(
-              function(intent) {
-                if (intent.action != "android.intent.action.MAIN") {
-                  try {
-                    var miraboxFile = intent.data;
-                  }catch (err){
-                    console.log("Error: "+err);
-                    self.platform.exitApp();
-                    return;
-                  }
-                  self.rootPage = AndroidImportPage;
-                }else{
-                  console.log("intent.action == \"android.intent.action.MAIN\"")
-                  self.rootPage = TabsPage;
-                }
-              },
-              function()
-              {
+            //If  profile exists, open mirabox import page.
+            //If not, show onboarding pages, create profile and show mirabox import page.
+            if(this.platform.is('android'))
+              (<any>window).plugins.intentShim.getIntent((intent) => {
+                self.rootPage = intent.action != "android.intent.action.MAIN" ? AndroidImportPage : TabsPage;
+              },() => {
+                self.rootPage = TabsPage;
                 console.log('Error getting launch intent');
               });
-
+            else
+              this.rootPage = TabsPage;
           }
           else {
             this.logger.info('No profile exists.');

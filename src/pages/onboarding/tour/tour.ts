@@ -12,6 +12,8 @@ import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import {TabsPage} from "../../tabs/tabs";
 import { PersistenceProvider} from "../../../providers/persistence/persistence";
+import {AndroidImportPage} from "../../mira/mirabox/miraboxImport/androidImport/androidImport";
+import {PlatformProvider} from "../../../providers/platform/platform";
 
 @Component({
   selector: 'page-tour',
@@ -34,6 +36,7 @@ export class TourPage {
     private txFormatProvider: TxFormatProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private persistenceProvider: PersistenceProvider,
+    private platformProvider: PlatformProvider,
   ) {
     this.currentIndex = 0;
     this.rateProvider.whenRatesAvailable().then(() => {
@@ -74,8 +77,22 @@ export class TourPage {
       this.onGoingProcessProvider.set('creatingWallet', false);
       //this.navCtrl.push(CollectEmailPage, { walletId: wallet.id });
       this.persistenceProvider.setDisclaimerAccepted();
-      this.navCtrl.setRoot(TabsPage);
-      this.navCtrl.popToRoot();
+      if(this.platformProvider.isAndroid)
+        (<any>window).plugins.intentShim.getIntent((intent) => {
+          if(intent.action != "android.intent.action.MAIN"){
+            this.navCtrl.setRoot(AndroidImportPage);
+            this.navCtrl.popToRoot();
+          }else{
+            this.navCtrl.setRoot(TabsPage);
+            this.navCtrl.popToRoot();
+          }
+        },() => {
+          console.log('Error getting launch intent');
+        });
+      else{
+        this.navCtrl.setRoot(TabsPage);
+        this.navCtrl.popToRoot();
+      }
     })
   }
 
