@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, Events, ModalController } from 'ionic-angular';
+import {NavController, Events, ModalController, App} from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // Pages
@@ -42,6 +42,7 @@ import {NewBoxPage} from "../mira/mirabox/newBox/newBox";
 import {MiraStorageProvider} from "../../providers/mirabox/mirastorage";
 import {MiraBox} from "../../mira/mira";
 import {BoxListPage} from "../mira/mirabox/boxList/boxList";
+import {AndroidImportPage} from "../mira/mirabox/miraboxImport/androidImport/androidImport";
 
 @Component({
   selector: 'page-home',
@@ -77,6 +78,7 @@ export class HomePage {
   private isWindowsPhoneApp: boolean;
 
   constructor(
+    private appCtrl: App,
     private navCtrl: NavController,
     private profileProvider: ProfileProvider,
     private releaseProvider: ReleaseProvider,
@@ -112,10 +114,10 @@ export class HomePage {
   handleIntents(){
     let self = this;
     //Google-chrome downloads intent handler
-    //tododaniil add onIntent handler
     (<any>window).plugins.intentShim.onIntent(function (intent) {
-      console.log('Received Intent: ' + JSON.stringify(intent.extras));
-      console.log("DATA"+ intent.data);
+      if(intent.data){
+        self.appCtrl.getRootNav().setRoot(AndroidImportPage, {canGoBack:true, data: intent.data})
+      }
     });
   }
   ionViewWillEnter() {

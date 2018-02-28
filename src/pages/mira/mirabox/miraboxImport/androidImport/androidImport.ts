@@ -1,9 +1,10 @@
 import {Component} from "@angular/core";
-import {ModalController, NavController, NavParams, Platform, ToastController} from "ionic-angular";
+import {ModalController, NavController, NavParams, Platform, ToastController, App} from "ionic-angular";
 import {MiraBox} from "../../../../../mira/mira";
 import {InputPasswordModal} from "../../inputPasswordModal/inputPasswordModal";
 import {MiraboxImportProvider} from "../../../../../providers/mirabox/miraboximport";
 import {MiraStorageProvider} from "../../../../../providers/mirabox/mirastorage";
+import {TabsPage} from "../../../../tabs/tabs";
 
 @Component({
   selector: 'androidImportPage',
@@ -15,42 +16,57 @@ export class AndroidImportPage {
   public name = '*';
   public address = '*';
   private miraBox: MiraBox;
-
-  constructor(private navCtrl: NavController,
+  private canGoBack: boolean = false;
+  private data;
+  constructor(private appCtrl: App,
+              private navCtrl: NavController,
               private navParams: NavParams,
               private miraboxImportProvider: MiraboxImportProvider,
               private modalCtrl: ModalController,
               private miraStorageProvider: MiraStorageProvider,
               private platform: Platform,
               private toastCtrl: ToastController) {
-    this.importMiraBoxWithPath()
+    this.canGoBack = this.navParams.get('canGoBack');
+    this.data = this.navParams.get('data')
+    this.importMiraBoxWithPath();
   }
 
   public importMiraBoxWithPath() {
     let self = this;
-    (<any>window).plugins.intentShim.getIntent(
-      function (intent) {
-        try {
-          var miraboxFile = intent.data;
-        } catch (err) {
-          console.log("Error: " + err);
-          self.platform.exitApp();
-          return;
-        }
-        self.miraboxImportProvider
-          .importMiraboxWithPath(miraboxFile)
-          .then((encodedMiraBox: string) => {
-            return self.openEncodedMiraBox(encodedMiraBox);
-          })
-          .catch(reason => {
-            console.log(reason)
-          });
-
-      },
-      function () {
-        console.log('Error getting launch intent');
-      });
-
+    let miraboxFile;
+    if(this.canGoBack) {
+      self.miraboxImportProvider
+        .importMiraboxWithPath(this.data)
+        .then((encodedMiraBox: string) => {
+          return self.openEncodedMiraBox(encodedMiraBox);
+        })
+        .catch(reason => {
+          console.log(reason)
+        });
+    }
+    else {
+      (<any>window).plugins.intentShim.getIntent(
+        function (intent) {
+          try {
+            miraboxFile = intent.data;
+          } catch (err) {
+            console.log("Error: " + err);
+            self.platform.exitApp();
+            return;
+          }
+          self.miraboxImportProvider
+            .importMiraboxWithPath(miraboxFile)
+            .then((encodedMiraBox: string) => {
+              return self.openEncodedMiraBox(encodedMiraBox);
+            })
+            .catch(reason => {
+              console.log(reason)
+            });
+        },
+        function () {
+          console.log('Error getting launch intent');
+        });
+    }
 
   }
 
@@ -97,13 +113,20 @@ export class AndroidImportPage {
           position: 'middle'
         });
         toast.onDidDismiss(() => {
-          this.platform.exitApp();
+          if(this.canGoBack) {
+            this.appCtrl.getRootNav().setRoot(TabsPage);
+          }
+          else
+            this.platform.exitApp();
         });
         toast.present();
       });
   }
 
   public close() {
-    this.platform.exitApp();
+    if(this.canGoBack)
+      this.appCtrl.getRootNav().setRoot(TabsPage);
+    else
+      this.platform.exitApp();
   }
 }
