@@ -45,8 +45,6 @@ export class MiraboxImportProvider {
     });
   }
   public importMiraboxWithPath(miraboxPath : string): Promise<string> {
-    let self = this;
-    let miraboxDir = "";
     return new Promise<string>(function (resolve, reject) {
       window.resolveLocalFileSystemURL(miraboxPath, function (entry: any) {
         entry.file(function (file) {

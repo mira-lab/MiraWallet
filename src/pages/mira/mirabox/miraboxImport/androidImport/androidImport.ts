@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {ModalController, NavController, NavParams, Platform, ToastController, App} from "ionic-angular";
+import {ModalController, NavParams, Platform, ToastController, App} from "ionic-angular";
 import {MiraBox} from "../../../../../mira/mira";
 import {InputPasswordModal} from "../../inputPasswordModal/inputPasswordModal";
 import {MiraboxImportProvider} from "../../../../../providers/mirabox/miraboximport";
@@ -18,8 +18,8 @@ export class AndroidImportPage {
   private miraBox: MiraBox;
   private canGoBack: boolean = false;
   private data;
+
   constructor(private appCtrl: App,
-              private navCtrl: NavController,
               private navParams: NavParams,
               private miraboxImportProvider: MiraboxImportProvider,
               private modalCtrl: ModalController,
@@ -34,7 +34,7 @@ export class AndroidImportPage {
   public importMiraBoxWithPath() {
     let self = this;
     let miraboxFile;
-    if(this.canGoBack) {
+    if (this.canGoBack) {
       self.miraboxImportProvider
         .importMiraboxWithPath(this.data)
         .then((encodedMiraBox: string) => {
@@ -113,7 +113,7 @@ export class AndroidImportPage {
           position: 'middle'
         });
         toast.onDidDismiss(() => {
-          if(this.canGoBack) {
+          if (this.canGoBack) {
             this.appCtrl.getRootNav().setRoot(TabsPage);
           }
           else
@@ -124,7 +124,7 @@ export class AndroidImportPage {
   }
 
   public close() {
-    if(this.canGoBack)
+    if (this.canGoBack)
       this.appCtrl.getRootNav().setRoot(TabsPage);
     else
       this.platform.exitApp();
