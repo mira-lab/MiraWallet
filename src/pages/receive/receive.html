@@ -51,11 +51,9 @@
 </ion-content>
 
 <ion-footer>
-  <div *ngIf="wallets[0]" class="wallets-container" (click)="showWallets()">
-    <img src="assets/img/icon-wallet.svg" class="icon-wallet" [ngStyle]="{'background-color': wallet.color}" *ngIf="wallet.network == 'livenet'">
-    <img src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" [ngStyle]="{'background-color': wallet.color}" *ngIf="wallet.network == 'testnet'">
-    <div class="wallet-text">
-      <div>{{wallet.name}}</div>
-    </div>
-  </div>
+  <button ion-button *ngIf="wallets[0]" class="wallets-container" (click)="showWallets()" icon-start block outline>
+    <ion-icon class="custom-wallet" *ngIf="wallet.network == 'livenet'"></ion-icon>&nbsp;
+    <ion-icon class="custom-wallet" *ngIf="wallet.network == 'testnet'"></ion-icon>&nbsp;
+    <span>{{wallet.name}}</span>
+  </button>
 </ion-footer>
