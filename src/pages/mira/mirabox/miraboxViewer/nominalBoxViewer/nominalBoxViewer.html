@@ -5,56 +5,68 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item-divider color="light">Box info</ion-item-divider>
-    <ion-item>
-      <ion-label>Signature</ion-label>
-      <ion-label>{{miraBox.validateSignature()?'Valid':'Invalid'}}</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Creator</ion-label>
-      <ion-label>{{miraBox.getCreator().name}}</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Description</ion-label>
-      <ion-label>{{miraBox.getDescription()}}</ion-label>
-    </ion-item>
-    <ion-item-divider color="light">Wallet info</ion-item-divider>
-    <ion-item>
-      <ion-label>Name</ion-label>
-      <ion-label>{{miraBox.getBoxItems()[0].meta.name}}</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Address</ion-label>
-      <ion-label>{{miraBox.getBoxItems()[0].headers.address}}</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Status</ion-label>
-      <ion-label>ToDo</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Balance</ion-label>
-      <ion-label>{{ currentBalance }}</ion-label>
-    </ion-item>
-    <ion-item>
-      <button ion-item (click)="gotoFillWithCoin()">
-        <ion-icon item-start>
-          <img src="assets/img/icon-bitcoin.svg" class="icon-services"/>
+  <ion-card>
+    <ion-list>
+      <ion-item-divider color="light">Box info</ion-item-divider>
+      <ion-item>
+        <ion-label>Signature</ion-label>
+        <ion-label>{{miraBox.validateSignature()?'Valid':'Invalid'}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Creator</ion-label>
+        <ion-label>{{miraBox.getCreator().name}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Description</ion-label>
+        <ion-label>{{miraBox.getDescription()}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+  <ion-card>
+    <ion-list>
+      <ion-item-divider color="light">Wallet info</ion-item-divider>
+      <ion-item>
+        <ion-label>Name</ion-label>
+        <ion-label>{{miraBox.getBoxItems()[0].meta.name}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Address</ion-label>
+        <ion-label>{{miraBox.getBoxItems()[0].headers.address}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Status</ion-label>
+        <ion-label>ToDo</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Balance</ion-label>
+        <ion-label>{{ currentBalance }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+  <ion-row>
+    <ion-col>
+      <button ion-button (click)="gotoFillWithCoin()" block outline icon-start>
+        <ion-icon>
+          <img src="assets/img/icon-bitcoin.svg" class="icon-services" />
         </ion-icon>
         <span>Fill with coin</span>
       </button>
-    </ion-item>
-    <ion-item>
-      <button ion-item (click)="gotoOpenMiraBox()">
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <button ion-button (click)="gotoOpenMiraBox()" block outline icon-end>
         <span>Try open...</span>
+        <ion-icon name="open"></ion-icon>
       </button>
-    </ion-item>
-    <ion-item *ngIf="isCordova">
-      <button ion-item (click)="sheetShare()">
+    </ion-col>
+    <ion-col>
+      <button ion-button (click)="sheetShare()" block outline icon-end *ngIf="isCordova">
         <span>Share...</span>
+        <ion-icon name="share"></ion-icon>
       </button>
-    </ion-item>
-  </ion-list>
+    </ion-col>
+  </ion-row>
 </ion-content>
 
 <ion-footer>

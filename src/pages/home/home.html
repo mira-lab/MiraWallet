@@ -110,7 +110,7 @@
             <ion-icon name="reorder"></ion-icon>
           </div>
           <div class="add-icon" (click)="goToAddView()">
-            <ion-icon name="add"></ion-icon>
+            <ion-icon name="add-circle"></ion-icon>
           </div>
         </ion-col>
         <ion-col text-right class="icons-add-reorder" *ngIf="showReorderBtc" (click)="reorderBtc()">
@@ -162,7 +162,7 @@
             <ion-icon name="reorder"></ion-icon>
           </div>
           <div class="add-icon" (click)="goToAddView('bch')">
-            <ion-icon name="add"></ion-icon>
+            <ion-icon name="add-circle"></ion-icon>
           </div>
         </ion-col>
         <ion-col text-right class="icons-add-reorder" *ngIf="showReorderBch" (click)="reorderBch()">
@@ -256,7 +256,7 @@
         </ion-col>
         <ion-col class="icons-add-reorder" text-right>
           <div class="add-icon" (click)="goToMiraboxAdd()">
-            <ion-icon name="add"></ion-icon>
+            <ion-icon name="add-circle"></ion-icon>
           </div>
         </ion-col>
       </ion-row>
@@ -266,7 +266,10 @@
       <mirabox-list-item *ngFor="let miraBox of miraBoxListShort" [miraBox]="miraBox"></mirabox-list-item>
     </ion-list>
 
-    <button ion-item (click)="gotoAllBoxes()">View all</button>
+    <button ion-button (click)="gotoAllBoxes()" block outline icon-end>
+      View all
+      <ion-icon name="albums"></ion-icon>
+    </button>
 
     <ion-list>
       <mirabox-import-btn></mirabox-import-btn>

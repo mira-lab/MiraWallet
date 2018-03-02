@@ -55,6 +55,12 @@ $font-rmd: 'Roboto', Arial, sans-serif;
 .whiteText
 {
   color: $white !important;
+
+  h5
+  {
+    color: $white !important;
+  }
+
 }
 
 
@@ -221,7 +227,6 @@ $font-rmd: 'Roboto', Arial, sans-serif;
     h5
     {
       font-size: 1.4em !important;
-      color: $white !important;
     }
 
     p
@@ -289,10 +294,23 @@ ion-icon {
     mask-image: url(../assets/img/app/settings-gray.svg);
   }
 
-
+  &[class*="custom-icon-bitcoin"]
+  {
+    mask-image: url(../assets/img/icon-bitcoin.svg);
+  }
 
 }
 
+ion-tabs
+{
+
+  .tab-button[aria-selected=true] ion-icon, .tab-button[aria-selected=true] span
+  {
+    color: black !important;
+  }
+
+
+}
 
 
 
@@ -306,210 +324,20 @@ ion-icon {
 
 
 
-
-
-/* /welcome */
-
-
-/*
-
-
-
-
-
-!* Change Buttons *!
-.miraMainButton
+.roundedCard
 {
-  background: rgba(255, 255, 255, 0.1) !important;
-  font-weight: 500 !important;
+  border-radius: 15px !important;
+  padding-top: 5em !important;
 }
 
-.miraSecButton
+.noBottomBorder
 {
-  border: none !important;
-  font-family: 'Roboto', sans-serif !important;
-  color: white !important;
-  font-weight: 300 !important;
+  border-bottom: none !important;
+  border-top-color: #ccc !important;
 }
 
 
-!* Fix White BG on onboarding *!
-.content-md
-{
-  color: inherit !important;
-  background-color: transparent !important;
+.text-address {
+  font-size: 4vw !important;
+  font-weight: bold !important;
 }
-
-
-
-
-ion-item
-{
-  color: white !important;
-  border: none !important;
-  background: transparent !important;
-  overflow: inherit !important;
-
-  .item-inner
-  {
-    overflow: inherit !important;
-    border: none !important;
-  }
-
-  h2, p
-  {
-    color: white !important;
-  }
-
-  p
-  {
-    font-weight: 300 !important;
-  }
-
-
-  ion-label
-  {
-    white-space: inherit !important;
-  }
-
-}
-
-
-.miraContent
-{
-  color: white;
-  background: $blueFontColor;
-  background-image: linear-gradient(to bottom, $blueFontColor 0%, $purpleFontColor 100%);
-
-  background-position: center center;
-  background-size: contain;
-  background-repeat: no-repeat;
-
-
-  h1, p
-  {
-    color: white !important;
-  }
-
-}
-
-
-
-.white-bottom
-{
-  background: white !important;
-  color: black !important;
-
-  ion-label
-  {
-    color: black !important;
-    font-weight: 300 !important;
-  }
-  .link
-  {
-    font-size: inherit !important;
-  }
-}
-
-
-page-onboarding {
-  & > ion-content {
-    //background: url(../assets/img/onboarding-welcome-bg.png);
-
-    !* ONEGIN FIXES *!
-    color: white;
-    background: $blueFontColor;
-    background-image: linear-gradient(to bottom, $blueFontColor 0%, $purpleFontColor 100%);
-
-    background-position: center center;
-    background-size: contain;
-    background-repeat: no-repeat;
-  }
-  .logo-tagline {
-    text-align: center;
-
-
-    img {
-      max-width: 200px;
-      margin: 5rem 0;
-    }
-    p {
-      line-height: 1.6;
-      font-size: 18px;
-      color: white;
-      font-family: 'Roboto', sans-serif;
-      font-weight: 300;
-    }
-  }
-
-
-
-  .grid, .row {
-    // Force grid to fill height of content as this is not set by default
-    height: 100%;
-  }
-
-}
-
-
-
-ion-list.miraSmallFont ion-label p
-{
-  font-size: 1.4rem !important;
-}
-
-
-
-
-
-
-
-
-!* TOOLBAR *!
-.toolbar-background
-{
-  background: $blueFontColor !important;
-}
-.toolbar-title
-{
-  text-align: center;
-}
-
-
-
-!* HOMEPAGE *!
-page-home
-{
-
-
-  .title
-  {
-    font-size: 1.6rem;
-    font-weight: 500 !important;
-  }
-}
-
-
-
-ion-icon {
-  &[class*="custom-"] {
-    mask-size: contain;
-    mask-position: 50% 50%;
-    mask-repeat: no-repeat;
-    background: currentColor;
-    width: 1em;
-    height: 1em;
-    color: $blueFontColor;
-  }
-
-  &[class*="custom-wallet"] {
-    mask-image: url(../assets/img/app/wallet-blue.svg);
-  }
-}
-
-
-
-ion-item ion-input input {
-  color: black;
-}
-*/

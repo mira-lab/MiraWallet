@@ -5,49 +5,49 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="createForm" (ngSubmit)="setOptsAndCreate()">
-    <ion-item>
-      <ion-label stacked>Wallet name</ion-label>
-      <ion-input type="text" formControlName="walletName"></ion-input>
-    </ion-item>
-
-    <div *ngIf="isShared">
+    <form [formGroup]="createForm" (ngSubmit)="setOptsAndCreate()">
       <ion-item>
-        <ion-label stacked>Your name</ion-label>
-        <ion-input type="text" formControlName="myName"></ion-input>
+        <ion-label stacked>Wallet name</ion-label>
+        <ion-input type="text" formControlName="walletName"></ion-input>
       </ion-item>
 
+      <div *ngIf="isShared">
+        <ion-item>
+          <ion-label stacked>Your name</ion-label>
+          <ion-input type="text" formControlName="myName"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label stacked>Total number of copayers</ion-label>
+          <ion-select formControlName="totalCopayers" (ionChange)="setTotalCopayers(createForm.value.totalCopayers)">
+            <ion-option *ngFor="let copayer of copayers" [value]="copayer">{{copayer}}</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label stacked>Required number of signatures</ion-label>
+          <ion-select formControlName="requiredCopayers">
+            <ion-option *ngFor="let signature of signatures" [value]="signature">{{signature}}</ion-option>
+          </ion-select>
+        </ion-item>
+      </div>
       <ion-item>
-        <ion-label stacked>Total number of copayers</ion-label>
-        <ion-select formControlName="totalCopayers" (ionChange)="setTotalCopayers(createForm.value.totalCopayers)">
-          <ion-option *ngFor="let copayer of copayers" [value]="copayer">{{copayer}}</ion-option>
+        <ion-label stacked>{{'Coin' | translate}}</ion-label>
+        <ion-select formControlName="coin" (ionChange)="createForm.value.testnetEnabled = false">
+          <ion-option value="btc">BTC</ion-option>
+          <ion-option value="bch">BCH</ion-option>
         </ion-select>
       </ion-item>
 
-      <ion-item>
-        <ion-label stacked>Required number of signatures</ion-label>
-        <ion-select formControlName="requiredCopayers">
-          <ion-option *ngFor="let signature of signatures" [value]="signature">{{signature}}</ion-option>
-        </ion-select>
-      </ion-item>
-    </div>
+      <button ion-button (click)="showAdvOpts = !showAdvOpts" outline block icon-end>
+        <span *ngIf="!showAdvOpts">Show advanced options</span>
+        <span *ngIf="showAdvOpts">Hide advanced options</span>
+        <ion-icon name="options"></ion-icon>
+      </button>
 
-    <ion-item>
-      <ion-label stacked>{{'Coin' | translate}}</ion-label>
-      <ion-select formControlName="coin" (ionChange)="createForm.value.testnetEnabled = false">
-        <ion-option value="btc">BTC</ion-option>
-        <ion-option value="bch">BCH</ion-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-item-divider color="light"></ion-item-divider>
-
-    <ion-item (click)="showAdvOpts = !showAdvOpts">
-      <ion-label *ngIf="!showAdvOpts">Show advanced options</ion-label>
-      <ion-label *ngIf="showAdvOpts">Hide advanced options</ion-label>
-    </ion-item>
 
     <div *ngIf="showAdvOpts">
+
       <ion-item>
         <ion-label stacked>Wallet service URL</ion-label>
         <ion-input type="text" formControlName="bwsURL"></ion-input>
@@ -108,6 +108,7 @@
         <ion-toggle formControlName="singleAddress"></ion-toggle>
       </ion-item>
     </div>
+
   </form>
 </ion-content>
 

@@ -11,20 +11,24 @@
 
 </ion-header>
 
-<ion-content>
-
-  <div class="zero-state" *ngIf="isEmptyList">
-    <i class="icon zero-state-icon">
-      <img class="svg" src="assets/img/address-book-add.svg" />
-    </i>
-    <div class="zero-state-heading" translate>No contacts yet</div>
-    <div class="zero-state-description" translate>Get started by adding your first one.</div>
-    <div class="bottom-absolute">
-      <button ion-button block (click)="addEntry()" translate>
-        Add Contact
-      </button>
-    </div>
+<ion-content class="welcome">
+  <ion-grid style="height: 80%">
+    <ion-row justify-content-center align-items-center style="height: 100%">
+      <div class="zero-state" *ngIf="isEmptyList">
+        <i class="icon zero-state-icon">
+          <img class="svg" src="assets/img/address-book-add.svg" />
+        </i>
+        <div class="zero-state-heading whiteText" translate>No contacts yet</div>
+        <div class="zero-state-description whiteText" translate>Get started by adding your first one.</div>
+      </div>
+    </ion-row>
+  </ion-grid>
+  <div class="bottom-absolute">
+    <button ion-button block (click)="addEntry()" translate class="miraMainButton">
+      Add Contact
+    </button>
   </div>
+
 
   <div *ngIf="!isEmptyList">
     <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
