@@ -55,6 +55,12 @@ $font-rmd: 'Roboto', Arial, sans-serif;
 .whiteText
 {
   color: $white !important;
+
+  h5
+  {
+    color: $white !important;
+  }
+
 }
 
 
@@ -293,8 +299,20 @@ ion-icon {
     mask-image: url(../assets/img/icon-bitcoin.svg);
   }
 
+}
+
+ion-tabs
+{
+
+  .tab-button[aria-selected=true] ion-icon, .tab-button[aria-selected=true] span
+  {
+    color: black !important;
+  }
+
 
 }
+
+
 
 /* collect-email.html */
 .whiteBottom
