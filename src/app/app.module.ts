@@ -217,6 +217,7 @@ import { InputPasswordModal } from "../pages/mira/mirabox/inputPasswordModal/inp
 import {FaucetProvider} from "../providers/mirabox/faucet";
 import {Web3Provider} from "../providers/mirabox/web3/web3";
 import {SmartboxTemplatesProvider} from "../providers/mirabox/smartbox-templates/smartbox-templates";
+import {TemplateViewerPage} from "../pages/mira/mirabox/newBox/newNominalBox/templates/templateViewer/templateViewer";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -333,6 +334,7 @@ pages = pages.concat([
   MiraboxImportComponent,
   WalletImportComponent,
   SmartTemplatesPage,
+  TemplateViewerPage,
 ]);
 
 let providers: any = [

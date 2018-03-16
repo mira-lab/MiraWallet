@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{template.name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>Name:</ion-label>
+      <ion-label>{{template.name}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Version:</ion-label>
+      <ion-label>{{template.version}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Author:</ion-label>
+      <ion-label>{{template.author}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Descrtiption:</ion-label>
+      <ion-label>{{template.description}}</ion-label>
+    </ion-item>
+    <ion-item *ngFor="let setting of template.settings">
+      <ion-label color="primary" stacked>{{setting.name}}</ion-label>
+      <ion-input placeholder="{{setting.type}}"></ion-input>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<ion-footer>
+  <button ion-button block class="button-footer" (click)="chooseTemplate()">Accept</button>
+</ion-footer>

@@ -8,10 +8,10 @@
 
   <div class="explanation">
     <div class="heading">Templates set conditions for opening mirabox.</div>
-    <div class="description">Choose template, after creating mirabox you MUST set template's settings.</div>
+    <div class="description">Choose template, set settings (you will be able to change them after creating mirabox too).</div>
   </div>
 
-  <ion-list radio-group [(ngModel)]="chosenTemplate">
+  <!--<ion-list radio-group [(ngModel)]="chosenTemplate">
     <ion-list *ngFor="let template of templatesList">
       <ion-item>
         <ion-label>{{template.name}}</ion-label>
@@ -22,10 +22,15 @@
         {{template.description}}
       </ion-item>
     </ion-list>
-  </ion-list>
+  </ion-list>-->
   <ion-list>
-    <ion-item>
-      <button (click)="test()">TEST</button>
-    </ion-item>
+    <button ion-item detail-push *ngFor="let template of templatesList" (click)="openTemplateViewer(template)">
+      <ion-label>
+        {{ template.name }}
+      </ion-label>
+      <ion-note item-end>
+        {{ template.version }}
+      </ion-note>
+    </button>
   </ion-list>
 </ion-content>

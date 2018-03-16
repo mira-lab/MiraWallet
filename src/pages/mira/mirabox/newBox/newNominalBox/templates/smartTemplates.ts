@@ -1,6 +1,8 @@
 import {Component} from "@angular/core";
 import {Web3Provider} from "../../../../../../providers/mirabox/web3/web3";
 import {SmartboxTemplatesProvider} from "../../../../../../providers/mirabox/smartbox-templates/smartbox-templates";
+import {NavController} from "ionic-angular";
+import {TemplateViewerPage} from "./templateViewer/templateViewer";
 
 @Component({
   selector: 'page-smarttemplates',
@@ -12,7 +14,8 @@ export class SmartTemplatesPage {
   public templatesList;
   public chosenTemplate;
   constructor(private web3Provider:Web3Provider,
-              private smartboxTemplatesProvider: SmartboxTemplatesProvider){
+              private smartboxTemplatesProvider: SmartboxTemplatesProvider,
+              private navCtrl: NavController){
     this.smartboxTemplatesProvider.updateTemplateList().then((result) => { this.templatesList = result;})
   }
   public openDescription(template){
@@ -25,5 +28,8 @@ export class SmartTemplatesPage {
   public test(){
     let web3 = this.web3Provider.getWeb3();
     this.web3Provider.checkConnection();
+  }
+  public openTemplateViewer(_template: any){
+    this.navCtrl.push(TemplateViewerPage,{template: _template});
   }
 }

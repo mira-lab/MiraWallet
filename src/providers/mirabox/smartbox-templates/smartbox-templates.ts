@@ -45,6 +45,7 @@ export class SmartboxTemplatesProvider{
     return templates.templates;
   }
   private getAbiAndDescription(builderAddress:string, i:number, resolve){
+    let self = this;
     let Web3 = require('web3');
     let web3 = new Web3(new Web3.providers.HttpProvider('http://94.130.94.162:8545'));
     let builderAbi = require("./BuilderAbi.json");
@@ -54,6 +55,11 @@ export class SmartboxTemplatesProvider{
         .call()
         .then((result) => {
           this.smartboxTemplates[i].abi = result;
+          this.parseSettings(result).then((result)=>{
+            this.smartboxTemplates[i].settings = result;
+          }, (error)=>{
+            console.log(error);
+          });
           resolveAbi();
         });
     });
@@ -75,4 +81,14 @@ export class SmartboxTemplatesProvider{
     })
     return Promise.all(requests);
   }
+  public parseSettings(abi:string){
+    return new Promise((resolve, reject) => {
+        let parsed_abi = JSON.parse(abi);
+        parsed_abi.map((item) => {
+          if (item.name == "setSettings")
+            resolve(item.inputs);
+        });
+        reject("No setSetting function was found!");
+      });
+    }
 }
