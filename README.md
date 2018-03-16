@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/mira-lab/MiraWallet/master/resources/mira/icon/mira-wallet.png" alt="Copay" width="79">
+
 Content:
 # What is MiraWallet
 # Main Features
@@ -6,8 +8,6 @@ Content:
 # How secure is MiraNet?
 # What technical issues does Mira resolve?
 # How does this work?
-
-
 
 
 # What is MiraWallet
@@ -41,15 +41,12 @@ Available for Android devices.
 
 The core element of the Mira system is a MiraBox, an encrypted container that stores the private key. The Mira technology might be applicable to almost any cryptocurrency, where asymmetric cryptography is used.
 
-
 NominalBox - a container with one type of cryptocurrency included.
 MultiBox - a container with a configurable number of different supported cryptocurrencies.
 SmartBox - a MultiBox with integrated smart contracts that allow the setting of various conditions for opening/extracting (currency rate, third-party confirmation, specific date, etc).
 
 
-
-
-The benefit of the MiraNet blockchain
+# The benefit of the MiraNet blockchain
 
 The network is the Ethereum sidechain, and is built on the basis of Ethereum. The main elements are the Mira nodes that maintain the system. The consensus used in the network is DPoS. But since it's a sidechain, there's a smart contract in the main Ethereum network that manages the entire Mira network. This contract provides a voting mechanism in DPoS, a payment channel between MiraNet and Ethereum network, and the anchoring of the Mira state in Ethereum. MiraBoxes managing is implemented by MasterNodes. It is intended to use sharding in MiraNet to speed up transaction processing, and, possibly, to use WebAsm as a replacement for the EVM nodes of the network.
 Users could be assured that all transactions via MiraNet are cryptographically secured and provide integrity. Nodes keep the Network maintained by confirming transactions then adding them to their copy of the ledger, constantly updating and communicating with each other. This makes the probability of any false or fraudulent transactions being accepted into the network at zero percent as incorrect ones are quickly rejected.
@@ -59,15 +56,13 @@ Users could be assured that all transactions via MiraNet are cryptographically s
 Mira’s smart contract language makes it easier to apply formal verification to any smart contract running on its own blockchain. Among other advantages: cost savings, stable network, anonymity, and faster dealings.
 
 
-
-How secure is MiraNet?
+# How secure is MiraNet?
 
 As a consensus protocol, Ouroboros protocol is used. Currently, it is the only PoS protocol with mathematically verified security.
 Private keys are stored with some redundancy, so even if some of the nodes are broken, data recovery is still possible.
 
 
-
-What technical issues does Mira resolve?
+# What technical issues does Mira resolve?
 
 - Instant transmission of cryptocurrency.
 - Implementation of DPoS management in the MiraNet network using a smart contract in the core Ethereum network, thereby increasing the reliability of the network and making it possible to organize the transition of MIRA tokens between Ethereum network and the MiraNet network.
@@ -76,17 +71,14 @@ What technical issues does Mira resolve?
 - Confirmation of data storage with the help of "evidence with zero disclosure"
 
 
-
-
-
-How does this work?
-● User creates a MiraBox
+# How does this work?
+■ User creates a MiraBox
 ■ Type selection (specifies the smart contract that manages MiraBox)
 ■ Initial settings defined by the smart contract are specified (for example, access pin can be set up in the MiraBox for the bearer).
 ■ Selection of the master node for MiraBox maintenance (the choice can be made in manual or in automatic mode).
 ■ MiraBox is transmitted to the receiver by any available way (IPFS, telegram, email, even on hard copy).
-● You can track the status of MiraBox at any time.
-● After receiving MiraBox, the recipient sends a request to a smart contract or to an autopsy, or absolutely any function specified in the smart contract algorithm. In MiraBox, a pin for the bearer can be changed. When you create a MiraBox, you can also create a smart contract that manages MiraBox's life-cycle and maintenance fee. Periodic fee is possible with the use of technology of proof with zero disclosure. And in practice it can be implemented as a periodic signing, for example, once a day, a hash from a block and sending this data to a smart contract.
+■ You can track the status of MiraBox at any time.
+■ After receiving MiraBox, the recipient sends a request to a smart contract or to an autopsy, or absolutely any function specified in the smart contract algorithm. In MiraBox, a pin for the bearer can be changed. When you create a MiraBox, you can also create a smart contract that manages MiraBox's life-cycle and maintenance fee. Periodic fee is possible with the use of technology of proof with zero disclosure. And in practice it can be implemented as a periodic signing, for example, once a day, a hash from a block and sending this data to a smart contract.
 
 
 
