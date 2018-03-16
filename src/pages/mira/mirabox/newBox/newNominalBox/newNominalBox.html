@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>New Nominal Box</ion-title>
+    <ion-title>New {{ boxType }} Box</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -41,6 +41,25 @@
         </ion-option>
       </ion-select>
     </ion-item>
+  <!--  <ion-item *ngIf="boxType=='smart'">
+      <ion-label>Templates:</ion-label>
+      <ion-select [(ngModel)]="sourceTemplateIdx">
+        <ion-option *ngFor="let template of smartTemplates; let i=index" [selected]="i==0" [value]="i">
+          {{template.name}}
+        </ion-option>
+      </ion-select>
+    </ion-item>-->
+    <button ion-item (click)="openTemplatesPage()">
+      <ion-icon item-start>
+        <img src="assets/img/app/lock-blue.svg" alt="Bitcoin Cash Wallets" style="width: 25px;" />
+      </ion-icon>
+      <ion-label>
+        Choose Template...
+      </ion-label>
+      <ion-note item-end>
+        Default
+      </ion-note>
+    </button>
   </ion-list>
 </ion-content>
 

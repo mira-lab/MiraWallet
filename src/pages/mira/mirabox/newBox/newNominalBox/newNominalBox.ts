@@ -3,13 +3,14 @@ import {BwcProvider} from "../../../../../providers/bwc/bwc";
 import {Coin, MiraBox, WalletType} from "../../../../../mira/mira";
 import {MiraBoxProvider} from "../../../../../providers/mirabox/mirabox";
 import {MiraStorageProvider} from "../../../../../providers/mirabox/mirastorage";
-import {NavController} from "ionic-angular";
+import {NavController, NavParams} from "ionic-angular";
 import {ProfileProvider} from "../../../../../providers/profile/profile";
 import {WalletProvider} from "../../../../../providers/wallet/wallet";
 import {ConfigProvider} from "../../../../../providers/config/config";
 import {TxConfirmNotificationProvider} from "../../../../../providers/tx-confirm-notification/tx-confirm-notification";
 import {OnGoingProcessProvider} from "../../../../../providers/on-going-process/on-going-process";
-
+import {Web3Provider} from "../../../../../providers/mirabox/web3/web3";
+import {SmartTemplatesPage} from "./templates/smartTemplates";
 
 @Component({
   selector: 'page-mirabox-new-nominal',
@@ -27,12 +28,17 @@ export class NewNominalBoxPage {
               private configProvider: ConfigProvider,
               private walletProvider: WalletProvider,
               private profileProvider: ProfileProvider,
-              private ongoingProcessProvider: OnGoingProcessProvider) {
+              private ongoingProcessProvider: OnGoingProcessProvider,
+              private web3Provider: Web3Provider,
+              private navParams: NavParams) {
     this.config = this.configProvider.get();
 
     this.btcWallets = this.profileProvider.getWallets({coin: 'btc'});
-  }
 
+    this.boxType = this.navParams.get("boxType");
+    console.log(this.boxType);
+  }
+  public boxType:string = 'Nominal';
   public walletType: Coin = Coin.BTC;
   public walletName: string = 'It is wallet name';
   public boxDescription: string = "No description";
@@ -40,14 +46,17 @@ export class NewNominalBoxPage {
   public amount: number = 0.001;
 
   public btcWallets;
-
+  public smartTemplates;
+  public sourceTemplateIdx = 0;
   public signWalletIdx = 0;
   public sourceWalletIdx = 0;
 
   private static exportWallet(wallet) {
     return JSON.parse(wallet.export())
   }
-
+  public openTemplatesPage(){
+    this.navCtrl.push(SmartTemplatesPage);
+  }
   public async createBox() {
     let self = this;
     this.inProgress=true;

@@ -13,12 +13,13 @@ export class NewBoxPage {
 
   public createSimpleMiraBox() {
     // noinspection JSIgnoredPromiseFromCall
-    this.navCtrl.push(NewNominalBoxPage);
+    this.navCtrl.push(NewNominalBoxPage, {boxType:"Nominal"});
   }
 
   public createMultiMiraBox() {
   }
 
   public createSmartMiraBox() {
+    this.navCtrl.push(NewNominalBoxPage, {boxType:"Smart"});
   }
 }

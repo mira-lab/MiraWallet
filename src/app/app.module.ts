@@ -62,6 +62,7 @@ import { MiraboxImportComponent } from "../pages/mira/mirabox/miraboxImport/mira
 import { MiraBoxListItem } from "../pages/mira/mirabox/boxListItem/boxListItem";
 import { BoxListPage } from "../pages/mira/mirabox/boxList/boxList";
 import { NominalBoxOpeningViewer } from "../pages/mira/mirabox/miraboxViewer/nominalBoxViewer/boxOpening/boxOpening";
+import { SmartTemplatesPage} from "../pages/mira/mirabox/newBox/newNominalBox/templates/smartTemplates";
 
 // Integrations: Amazon
 import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
@@ -215,6 +216,7 @@ import { WalletImportComponent } from "../pages/mira/mirabox/miraboxViewer/nomin
 import { InputPasswordModal } from "../pages/mira/mirabox/inputPasswordModal/inputPasswordModal";
 import {FaucetProvider} from "../providers/mirabox/faucet";
 import {Web3Provider} from "../providers/mirabox/web3/web3";
+import {SmartboxTemplatesProvider} from "../providers/mirabox/smartbox-templates/smartbox-templates";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -329,7 +331,8 @@ pages = pages.concat([
   NominalBoxOpeningViewer,
   InputPasswordModal,
   MiraboxImportComponent,
-  WalletImportComponent
+  WalletImportComponent,
+  SmartTemplatesPage,
 ]);
 
 let providers: any = [
@@ -398,7 +401,8 @@ let providers: any = [
   MiraStorageProvider,
   MiraBoxExportProvider,
   Web3Provider,
-  FaucetProvider
+  FaucetProvider,
+  SmartboxTemplatesProvider,
 ];
 
 let pipes = [

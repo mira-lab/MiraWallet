@@ -1,0 +1,239 @@
+[
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "document",
+        "type": "bytes32"
+      },
+      {
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "name": "setPin",
+        "type": "bytes32"
+      },
+      {
+        "name": "allowChangeOwner",
+        "type": "bool"
+      }
+    ],
+    "name": "changeOwnerByAdmin",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "document",
+        "type": "bytes32"
+      }
+    ],
+    "name": "openMiraBox",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "document",
+        "type": "bytes32"
+      }
+    ],
+    "name": "permittedCount",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "document",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getMiraBoxOpened",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "document",
+        "type": "bytes32"
+      },
+      {
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "checkPermissions",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "document",
+        "type": "bytes32"
+      },
+      {
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "name": "pin",
+        "type": "bytes32"
+      }
+    ],
+    "name": "checkKeyAccess",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "document",
+        "type": "bytes32"
+      },
+      {
+        "name": "accessPin",
+        "type": "bytes32"
+      },
+      {
+        "name": "setPin",
+        "type": "bytes32"
+      }
+    ],
+    "name": "changeOwner",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "document",
+        "type": "bytes32"
+      },
+      {
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "name": "pin",
+        "type": "bytes32"
+      }
+    ],
+    "name": "addKey",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "document",
+        "type": "bytes32"
+      }
+    ],
+    "name": "whoAccess",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "document",
+        "type": "bytes32"
+      },
+      {
+        "name": "oldPin",
+        "type": "bytes32"
+      },
+      {
+        "name": "newPin",
+        "type": "bytes32"
+      },
+      {
+        "name": "allowChangeOwner",
+        "type": "bool"
+      }
+    ],
+    "name": "changePin",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "payable": false,
+    "type": "constructor"
+  }
+]

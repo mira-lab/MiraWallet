@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Available templates:</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="explanation">
+    <div class="heading">Templates set conditions for opening mirabox.</div>
+    <div class="description">Choose template, after creating mirabox you MUST set template's settings.</div>
+  </div>
+
+  <ion-list radio-group [(ngModel)]="chosenTemplate">
+    <ion-list *ngFor="let template of templatesList">
+      <ion-item>
+        <ion-label>{{template.name}}</ion-label>
+        <ion-radio [value]="template.name" (ionSelect)="openDescription(template)"></ion-radio>
+        <span item-end>{{template.version}}</span>
+      </ion-item>
+      <ion-item *ngIf="template.opened">
+        {{template.description}}
+      </ion-item>
+    </ion-list>
+  </ion-list>
+  <ion-list>
+    <ion-item>
+      <button (click)="test()">TEST</button>
+    </ion-item>
+  </ion-list>
+</ion-content>
