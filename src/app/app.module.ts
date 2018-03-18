@@ -216,7 +216,7 @@ import { WalletImportComponent } from "../pages/mira/mirabox/miraboxViewer/nomin
 import { InputPasswordModal } from "../pages/mira/mirabox/inputPasswordModal/inputPasswordModal";
 import {FaucetProvider} from "../providers/mirabox/faucet";
 import {Web3Provider} from "../providers/mirabox/web3/web3";
-import {SmartboxTemplatesProvider} from "../providers/mirabox/smartbox-templates/smartbox-templates";
+import {SmartTemplatesProvider} from "../providers/mirabox/smartbox-templates/smartbox-templates";
 import {TemplateViewerPage} from "../pages/mira/mirabox/newBox/newNominalBox/templates/templateViewer/templateViewer";
 
 export function createTranslateLoader(http: HttpClient) {
@@ -404,7 +404,7 @@ let providers: any = [
   MiraBoxExportProvider,
   Web3Provider,
   FaucetProvider,
-  SmartboxTemplatesProvider,
+  SmartTemplatesProvider,
 ];
 
 let pipes = [

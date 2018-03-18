@@ -49,6 +49,7 @@
         </ion-option>
       </ion-select>
     </ion-item>-->
+    <!-- tododaniil show button only if smartbox selected -->
     <button ion-item (click)="openTemplatesPage()">
       <ion-icon item-start>
         <img src="assets/img/app/lock-blue.svg" alt="Bitcoin Cash Wallets" style="width: 25px;" />
@@ -57,8 +58,13 @@
         Choose Template...
       </ion-label>
       <ion-note item-end>
-        Default
+        {{ selectedTemplate }}
       </ion-note>
+    </button>
+    <button ion-item (click)="testSmart()">
+      <ion-label>
+        Test
+      </ion-label>
     </button>
   </ion-list>
 </ion-content>

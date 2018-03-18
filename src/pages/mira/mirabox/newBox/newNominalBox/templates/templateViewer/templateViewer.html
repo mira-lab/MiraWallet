@@ -23,10 +23,10 @@
     </ion-item>
     <ion-item *ngFor="let setting of template.settings">
       <ion-label color="primary" stacked>{{setting.name}}</ion-label>
-      <ion-input placeholder="{{setting.type}}"></ion-input>
+      <ion-input placeholder="{{setting.type}}" class="clearThis" (change)="checkDisabled()" [(ngModel)]="setting.value"></ion-input>
     </ion-item>
   </ion-list>
 </ion-content>
 <ion-footer>
-  <button ion-button block class="button-footer" (click)="chooseTemplate()">Accept</button>
+  <button ion-button block class="button-footer" [disabled]="isAcceptDisabled" (click)="setSettings()">Accept</button>
 </ion-footer>

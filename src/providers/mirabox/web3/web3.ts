@@ -2,11 +2,8 @@ import {Injectable} from "@angular/core";
 
 @Injectable()
 export class Web3Provider {
-  private Web3;
-  private web3;
   constructor(){
-    this.Web3 = require('web3');
-    this.web3 = new this.Web3(new this.Web3.providers.HttpProvider('http://94.130.94.162:8545'));
+
   }
   public checkConnection() {
     let web3 = this.getWeb3();
@@ -15,7 +12,9 @@ export class Web3Provider {
       .catch(e => console.log('Something went wrong with Web3:' + e));
   }
   public getWeb3() {
-    return this.web3;
+    let Web3 = require('web3');
+    let web3 = new Web3(new Web3.providers.HttpProvider('http://94.130.94.162:8545'));
+    return web3;
   }
 
   public checkMiraBoxOpened(hash: string) {

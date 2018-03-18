@@ -27,6 +27,7 @@
       }
     ],
     "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -45,6 +46,7 @@
       }
     ],
     "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -63,6 +65,7 @@
       }
     ],
     "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -81,6 +84,7 @@
       }
     ],
     "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -103,6 +107,7 @@
       }
     ],
     "payable": false,
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -129,6 +134,7 @@
       }
     ],
     "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -155,32 +161,21 @@
       }
     ],
     "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "constant": false,
     "inputs": [
       {
-        "name": "document",
-        "type": "bytes32"
-      },
-      {
-        "name": "user",
+        "name": "factory_address",
         "type": "address"
-      },
-      {
-        "name": "pin",
-        "type": "bytes32"
       }
     ],
-    "name": "addKey",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
+    "name": "setMiraBoxFactory",
+    "outputs": [],
     "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -199,6 +194,38 @@
       }
     ],
     "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "document",
+        "type": "bytes32"
+      },
+      {
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "name": "pin",
+        "type": "bytes32"
+      },
+      {
+        "name": "templateName",
+        "type": "bytes32"
+      }
+    ],
+    "name": "addKey",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -229,11 +256,18 @@
       }
     ],
     "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "name": "factory",
+        "type": "address"
+      }
+    ],
     "payable": false,
+    "stateMutability": "nonpayable",
     "type": "constructor"
   }
 ]

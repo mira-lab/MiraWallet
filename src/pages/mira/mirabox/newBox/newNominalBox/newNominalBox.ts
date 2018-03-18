@@ -11,6 +11,7 @@ import {TxConfirmNotificationProvider} from "../../../../../providers/tx-confirm
 import {OnGoingProcessProvider} from "../../../../../providers/on-going-process/on-going-process";
 import {Web3Provider} from "../../../../../providers/mirabox/web3/web3";
 import {SmartTemplatesPage} from "./templates/smartTemplates";
+import {SmartTemplatesProvider} from "../../../../../providers/mirabox/smartbox-templates/smartbox-templates";
 
 @Component({
   selector: 'page-mirabox-new-nominal',
@@ -19,7 +20,7 @@ import {SmartTemplatesPage} from "./templates/smartTemplates";
 export class NewNominalBoxPage {
   private config;
   public inProgress: boolean = false;
-
+  public selectedTemplate:string = "Not Selected";
   constructor(private bwcProvider: BwcProvider,
               private miraBoxProvider: MiraBoxProvider,
               private miraStorageProvider: MiraStorageProvider,
@@ -30,13 +31,13 @@ export class NewNominalBoxPage {
               private profileProvider: ProfileProvider,
               private ongoingProcessProvider: OnGoingProcessProvider,
               private web3Provider: Web3Provider,
-              private navParams: NavParams) {
+              private navParams: NavParams,
+              private smartTemplatesProvider: SmartTemplatesProvider) {
     this.config = this.configProvider.get();
 
     this.btcWallets = this.profileProvider.getWallets({coin: 'btc'});
 
     this.boxType = this.navParams.get("boxType");
-    console.log(this.boxType);
   }
   public boxType:string = 'Nominal';
   public walletType: Coin = Coin.BTC;
@@ -56,6 +57,15 @@ export class NewNominalBoxPage {
   }
   public openTemplatesPage(){
     this.navCtrl.push(SmartTemplatesPage);
+  }
+  public ionViewWillEnter() {
+    if(this.smartTemplatesProvider.selectedTemplate)
+      this.selectedTemplate = this.smartTemplatesProvider.selectedTemplate.name + " " + this.smartTemplatesProvider.selectedTemplate.version;
+    else
+      this.selectedTemplate = "Not Selected";
+  }
+  public ionViewWillLeave(){
+    this.smartTemplatesProvider.deleteSelectedTemplate();
   }
   public async createBox() {
     let self = this;
@@ -139,7 +149,6 @@ export class NewNominalBoxPage {
           });
         }
       }
-
       //finishing
       console.log('Successfully stored in storage');
       self.navCtrl.popAll().catch(e => {
@@ -151,6 +160,13 @@ export class NewNominalBoxPage {
     }
     finally {
       this.inProgress = false;
+    }
+  }
+  //tododaniil make it with real mirabox and add changing settings to viewer
+  public testSmart() {
+    if (this.boxType == "Smart") {
+      this.smartTemplatesProvider.createSmartBoxHandler("good_test", "0x7125B514c135a89a8776a4336C20b4bb183Fb97D", "12wq")
+        .then(()=>console.log("ok"));
     }
   }
 }
