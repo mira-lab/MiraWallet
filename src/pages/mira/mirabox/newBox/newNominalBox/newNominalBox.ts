@@ -165,7 +165,7 @@ export class NewNominalBoxPage {
   //tododaniil make it with real mirabox and add changing settings to viewer
   public testSmart() {
     if (this.boxType == "Smart") {
-      this.smartTemplatesProvider.createSmartBoxHandler("good_test", "0x7125B514c135a89a8776a4336C20b4bb183Fb97D", "12wq")
+      this.smartTemplatesProvider.createSmartBoxHandler("jijix", "0x7125B514c135a89a8776a4336C20b4bb183Fb97D", "12wq")
         .then(()=>console.log("ok"));
     }
   }
