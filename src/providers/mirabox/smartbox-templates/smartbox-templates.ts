@@ -5,10 +5,11 @@ import {Web3Provider} from "../web3/web3";
 export class SmartTemplatesProvider {
   public smartboxTemplates;
   public selectedTemplate;
-  public selectedTemplateName = "Not Selected";
-  private web3;
+  private web3: any;
   private miraFactoryAddress = "0x5d3495ca996ead23698d623c22ecce71953a5f0b";
   private permissioningAddress = "0x43647204afdbd22cabbdf43eb3d6206312f305c3";
+  private miraFactoryAbi = require("./MiraFactoryAbi.json");
+  private permissioningAbi = require("./PermissioningAbi.json");
 
   constructor(private web3Provider: Web3Provider) {
     this.updateTemplateList()
@@ -16,14 +17,12 @@ export class SmartTemplatesProvider {
         console.log("Got templates list.")
       }, (err) => {
         console.log("Couldn't get template list: ") + err
-      })
-
+      });
     this.web3 = this.web3Provider.getWeb3();
   }
 
-  //tododaniil pretify code
-  //tododaniil deal with web3 multiple instatition
-  //tododaniil remove not used code
+  //tododaniil make config file for contract addresses and other options
+  //tododaniil add XSS check
   public updateTemplateList() {
     return new Promise((resolve, reject) => {
       this.askTemplates().then((result) => {
@@ -48,10 +47,7 @@ export class SmartTemplatesProvider {
   }
 
   private askTemplates() {
-    let miraFactoryAbi = require("./MiraFactoryAbi.json");
-    let Web3 = require('web3');
-    let web3 = new Web3(new Web3.providers.HttpProvider('http://94.130.94.162:8545'));
-    let miraFactoryContract = new web3.eth.Contract(miraFactoryAbi, this.miraFactoryAddress);
+    let miraFactoryContract = new this.web3.eth.Contract(this.miraFactoryAbi, this.miraFactoryAddress);
     return new Promise((resolve, reject) => {
       miraFactoryContract.methods.getTemplatesList()
         .call()
@@ -70,10 +66,8 @@ export class SmartTemplatesProvider {
   }
 
   private getAbiAndDescription(builderAddress: string, i: number, resolve, reject) {
-    let Web3 = require('web3');
-    let web3 = new Web3(new Web3.providers.HttpProvider('http://94.130.94.162:8545'));
     let builderAbi = require("./BuilderAbi.json");
-    let builderContract = new web3.eth.Contract(builderAbi, builderAddress);
+    let builderContract = new this.web3.eth.Contract(builderAbi, builderAddress);
     let abiPromise = new Promise((resolveAbi, rejectAbi) => {
       builderContract.methods.getAbi()
         .call()
@@ -130,30 +124,24 @@ export class SmartTemplatesProvider {
 
   public setTemplate(template: any) {
     this.selectedTemplate = template;
-    this.selectedTemplateName = template.name;
   }
 
   private addKey(document: string, address: string, pin: string) {
     return new Promise((resolve, reject) => {
+      let _document = this.web3.utils.asciiToHex(document);
+      let _pin = this.web3.utils.asciiToHex(pin);
+      let templateName = this.web3.utils.asciiToHex(this.selectedTemplate.name);
 
-      let Web3 = require('web3');
-      let web3 = new Web3(new Web3.providers.HttpProvider('http://94.130.94.162:8545'));
+      let permissioningContract = new this.web3.eth.Contract(this.permissioningAbi, this.permissioningAddress);
 
-      let _document = web3.utils.fromAscii(document);
-      let _pin = web3.utils.fromAscii(pin);
-      let templateName = web3.utils.asciiToHex(this.selectedTemplate.name);
-
-      const permissioningAbi = require("./PermissioningAbi.json");
-      let permissioningContract = new web3.eth.Contract(permissioningAbi, this.permissioningAddress);
-
-      var getData = permissioningContract.methods.addKey(_document, address, _pin, templateName).encodeABI();
-      web3.eth.accounts.signTransaction({
+      let getData = permissioningContract.methods.addKey(_document, address, _pin, templateName).encodeABI();
+      this.web3.eth.accounts.signTransaction({
         to: this.permissioningAddress,
         data: getData,
         gas: 3000000
       }, '0xdf0d6892474da2f19726f481b8baf698eabdd6b52b9fe2ad5c045b1367809239')
         .then(result => {
-          web3.eth.sendSignedTransaction(result.rawTransaction)
+          this.web3.eth.sendSignedTransaction(result.rawTransaction)
             .on('receipt', (result) => {
               console.log("Got receipt from addkey:");
               console.log(result);
@@ -171,11 +159,8 @@ export class SmartTemplatesProvider {
 
   private askAddress(document: string) {
     return new Promise((resolve, reject) => {
-      let Web3 = require('web3');
-      let web3 = new Web3(new Web3.providers.HttpProvider('http://94.130.94.162:8545'));
-      const miraFactoryAbi = require("./MiraFactoryAbi.json");
-      let miraFactoryContract = new web3.eth.Contract(miraFactoryAbi, this.miraFactoryAddress);
-      let _document = web3.utils.asciiToHex(document);
+      let miraFactoryContract = new this.web3.eth.Contract(this.miraFactoryAbi, this.miraFactoryAddress);
+      let _document = this.web3.utils.asciiToHex(document);
       miraFactoryContract.methods.askAddress(_document)
         .call()
         .then((result) => {
@@ -194,20 +179,18 @@ export class SmartTemplatesProvider {
       this.selectedTemplate.settings.map(item => {
         opts.push(Number(item.value));
       })
-      console.log(opts);
-      let Web3 = require('web3');
-      let web3 = new Web3(new Web3.providers.HttpProvider('http://94.130.94.162:8545'));
+
       let templateInstanceAbi = JSON.parse(this.selectedTemplate.abi);
       let templateInstanceAddress = address;
-      let templateInstanceContract = new web3.eth.Contract(templateInstanceAbi, templateInstanceAddress);
-      var getData = templateInstanceContract.methods.setSettings.apply(templateInstanceContract.methods, opts).encodeABI();
-      web3.eth.accounts.signTransaction({
+      let templateInstanceContract = new this.web3.eth.Contract(templateInstanceAbi, templateInstanceAddress);
+      let getData = templateInstanceContract.methods.setSettings.apply(templateInstanceContract.methods, opts).encodeABI();
+      this.web3.eth.accounts.signTransaction({
         to: templateInstanceAddress,
         data: getData,
         gas: 3000000
       }, '0xdf0d6892474da2f19726f481b8baf698eabdd6b52b9fe2ad5c045b1367809239')
         .then(result => {
-          web3.eth.sendSignedTransaction(result.rawTransaction)
+          this.web3.eth.sendSignedTransaction(result.rawTransaction)
             .on('receipt', (result) => {
               console.log("Got receipt from setSettings:");
               console.log(result);
@@ -225,19 +208,23 @@ export class SmartTemplatesProvider {
 
   public createSmartBoxHandler(document, address, pin) {
     return new Promise((resolve, reject) => {
-      this.addKey(document, address, pin)
-        .then(() => {
-          return this.askAddress(document);
-        })
-        .then((result) => {
-          return this.setSettings(result);
-        })
-        .then(() => {
-          resolve();
-        })
-        .catch((err) => {
-          reject(err);
-        })
+      if(this.selectedTemplate) {
+        this.addKey(document, address, pin)
+          .then(() => {
+            return this.askAddress(document);
+          })
+          .then((result) => {
+            return this.setSettings(result);
+          })
+          .then(() => {
+            resolve();
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      }else{
+        reject("Template is not selected!");
+      }
     });
   }
 }

@@ -59,13 +59,16 @@ export class NewNominalBoxPage {
     this.navCtrl.push(SmartTemplatesPage);
   }
   public ionViewWillEnter() {
-    if(this.smartTemplatesProvider.selectedTemplate)
-      this.selectedTemplate = this.smartTemplatesProvider.selectedTemplate.name + " " + this.smartTemplatesProvider.selectedTemplate.version;
-    else
-      this.selectedTemplate = "Not Selected";
+    if(this.boxType=="Smart") {
+      if (this.smartTemplatesProvider.selectedTemplate)
+        this.selectedTemplate = this.smartTemplatesProvider.selectedTemplate.name + " " + this.smartTemplatesProvider.selectedTemplate.version;
+      else
+        this.selectedTemplate = "Not Selected";
+    }
   }
   public ionViewWillLeave(){
-    this.smartTemplatesProvider.deleteSelectedTemplate();
+    if(this.boxType=="Smart")
+      this.smartTemplatesProvider.deleteSelectedTemplate();
   }
   public async createBox() {
     let self = this;
@@ -165,7 +168,7 @@ export class NewNominalBoxPage {
   //tododaniil make it with real mirabox and add changing settings to viewer
   public testSmart() {
     if (this.boxType == "Smart") {
-      this.smartTemplatesProvider.createSmartBoxHandler("jijix", "0x7125B514c135a89a8776a4336C20b4bb183Fb97D", "12wq")
+      this.smartTemplatesProvider.createSmartBoxHandler("xrts", "0x7125B514c135a89a8776a4336C20b4bb183Fb97D", "12wq")
         .then(()=>console.log("ok"));
     }
   }

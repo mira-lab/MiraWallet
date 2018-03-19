@@ -49,8 +49,7 @@
         </ion-option>
       </ion-select>
     </ion-item>-->
-    <!-- tododaniil show button only if smartbox selected -->
-    <button ion-item (click)="openTemplatesPage()">
+    <button *ngIf="boxType=='Smart'" ion-item (click)="openTemplatesPage()">
       <ion-icon item-start>
         <img src="assets/img/app/lock-blue.svg" alt="Bitcoin Cash Wallets" style="width: 25px;" />
       </ion-icon>
@@ -61,7 +60,7 @@
         {{ selectedTemplate }}
       </ion-note>
     </button>
-    <button ion-item (click)="testSmart()">
+    <button *ngIf="boxType=='Smart'" ion-item (click)="testSmart()">
       <ion-label>
         Test
       </ion-label>
