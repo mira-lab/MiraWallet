@@ -11,7 +11,7 @@
 
 # What is MiraWallet
 
-<img src="https://raw.githubusercontent.com/mira-lab/MiraWallet/master/resources/mira/images/Mira-application.png" alt="MiraApplication" width="479">
+<img src="https://raw.githubusercontent.com/mira-lab/MiraWallet/master/resources/mira/images/Mira-application.png" alt="MiraApplication" width="888">
 
 MiraWallet is an application for iOS and Android with wallet functions. Mira is a secure  protocol for mobile devices that allows to build a decentralized system that can:
 - create the keys based on elliptical curves in a decentralized way.
@@ -46,7 +46,7 @@ The core element of the Mira system is a MiraBox, an encrypted container that st
 - MultiBox - a container with a configurable number of different supported cryptocurrencies.
 - SmartBox - a MultiBox with integrated smart contracts that allow the setting of various conditions for opening/extracting (currency rate, third-party confirmation, specific date, etc).
 
-<img src="https://raw.githubusercontent.com/mira-lab/MiraWallet/master/resources/mira/images/Mira-boxes-types.jpg" alt="MiraWallet" width="479">
+<img src="https://raw.githubusercontent.com/mira-lab/MiraWallet/master/resources/mira/images/Mira-boxes-types.jpg" alt="MiraWallet" width="888">
 
 
 # The benefit of the MiraNet blockchain
@@ -55,7 +55,7 @@ The network is the Ethereum sidechain, and is built on the basis of Ethereum. Th
 Users could be assured that all transactions via MiraNet are cryptographically secured and provide integrity. Nodes keep the Network maintained by confirming transactions then adding them to their copy of the ledger, constantly updating and communicating with each other. This makes the probability of any false or fraudulent transactions being accepted into the network at zero percent as incorrect ones are quickly rejected.
 
 <img src="https://raw.githubusercontent.com/mira-lab/MiraWallet/master/resources/mira/images/point-of-Mira-nodes.jpg" alt="Mira nodes schema" width="479">
-“СХЕМА РАБОТЫ НОД“
+СХЕМА РАБОТЫ НОД
 
 Mira’s smart contract language makes it easier to apply formal verification to any smart contract running on its own blockchain. Among other advantages: cost savings, stable network, anonymity, and faster dealings.
 
