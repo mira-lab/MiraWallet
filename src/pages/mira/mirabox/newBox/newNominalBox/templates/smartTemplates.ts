@@ -13,23 +13,34 @@ import {TemplateViewerPage} from "./templateViewer/templateViewer";
 export class SmartTemplatesPage {
   public templatesList;
   public chosenTemplate;
-  constructor(private web3Provider:Web3Provider,
+
+  constructor(private web3Provider: Web3Provider,
               private smartboxTemplatesProvider: SmartTemplatesProvider,
-              private navCtrl: NavController){
-    this.smartboxTemplatesProvider.updateTemplateList().then((result) => { this.templatesList = result;})
+              private navCtrl: NavController) {
+    this.smartboxTemplatesProvider.getTemplateList()
+      .then((templateList) => {
+        this.templatesList = templateList;
+      })
   }
-  public openDescription(template){
+
+  public openDescription(template) {
     template.opened = true;
-    this.templatesList.forEach((item, i , arr) => {if(item!=template) arr[i].opened = false;})
+    this.templatesList.forEach((item, i, arr) => {
+      if (item != template) arr[i].opened = false;
+    })
   }
-  public closeAllDescriptions(){
-    this.templatesList.forEach((item, i , arr) => {arr[i].opened = false;})
+
+  public closeAllDescriptions() {
+    this.templatesList.forEach((item, i, arr) => {
+      arr[i].opened = false;
+    })
   }
-  public test(){
-    let web3 = this.web3Provider.getWeb3();
+
+  public test() {
     this.web3Provider.checkConnection();
   }
-  public openTemplateViewer(_template: any){
-    this.navCtrl.push(TemplateViewerPage,{template: _template});
+
+  public openTemplateViewer(_template: any) {
+    this.navCtrl.push(TemplateViewerPage, {template: _template});
   }
 }

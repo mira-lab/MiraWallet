@@ -6,53 +6,55 @@ export class SmartTemplatesProvider {
   public smartboxTemplates;
   public selectedTemplate;
   private web3: any;
-  private miraFactoryAddress = "0x5d3495ca996ead23698d623c22ecce71953a5f0b";
-  private permissioningAddress = "0x43647204afdbd22cabbdf43eb3d6206312f305c3";
-  private miraFactoryAbi = require("./MiraFactoryAbi.json");
+  private miraFactoryContractAddress = "0x5d3495ca996ead23698d623c22ecce71953a5f0b";
+  private permissioningContractAddress = "0x43647204afdbd22cabbdf43eb3d6206312f305c3";
+  private miraFactoryContractAbi = require("./MiraFactoryAbi.json");
   private permissioningAbi = require("./PermissioningAbi.json");
 
   constructor(private web3Provider: Web3Provider) {
-    this.updateTemplateList()
+    this.getTemplateList()
       .then(() => {
-        console.log("Got templates list.")
+        console.log("Got templates list.");
       }, (err) => {
-        console.log("Couldn't get template list: ") + err
+        console.log(`Couldn't get template list: ${err}`);
       });
     this.web3 = this.web3Provider.getWeb3();
   }
 
   //tododaniil make config file for contract addresses and other options
   //tododaniil add XSS check
-  public updateTemplateList() {
-    return new Promise((resolve, reject) => {
-      this.askTemplates().then((result) => {
-        let tempList: any = result;
-        if (!this.smartboxTemplates || tempList.length != this.smartboxTemplates.length) {
-          this.smartboxTemplates = tempList;
-          this.getTemplatesAbiAndDescription().then(() => {
-            resolve(this.smartboxTemplates);
-          }, (err) => {
-            reject(err);
-          });
-        }
-        else {
-          resolve(this.smartboxTemplates);
-        }
-      });
+  public getTemplateList() {
+    let self = this;
+    return new Promise((resolve) => {
+      if (self.smartboxTemplates) {
+        return resolve(self.smartboxTemplates);
+      }
+      return this.updateTemplates()
+        .then(() => {
+          resolve(self.smartboxTemplates);
+        })
     });
   }
 
-  public deleteSelectedTemplate() {
-    this.selectedTemplate = void 0;
+  private updateTemplates() {
+    let self = this;
+    return this.requestForTemplates()
+      .then((templates) => {
+        self.smartboxTemplates = templates;
+        let requestsPromises = this.smartboxTemplates.map((item, i) => {
+          return self.updateAbiAndDescription(item.address, i);
+        });
+        return Promise.all(requestsPromises);
+      });
   }
 
-  private askTemplates() {
-    let miraFactoryContract = new this.web3.eth.Contract(this.miraFactoryAbi, this.miraFactoryAddress);
+  private requestForTemplates(): Promise<any> {
+    let miraFactoryContract = new this.web3.eth.Contract(this.miraFactoryContractAbi, this.miraFactoryContractAddress);
     return new Promise((resolve, reject) => {
       miraFactoryContract.methods.getTemplatesList()
         .call()
         .then((result) => {
-          resolve(this.parseTemplates(result));
+          resolve(JSON.parse(result).templates);
         })
         .catch((err) => {
           reject(err);
@@ -60,12 +62,11 @@ export class SmartTemplatesProvider {
     });
   }
 
-  private parseTemplates(result: string) {
-    let templates = JSON.parse(result);
-    return templates.templates;
+  public deleteSelectedTemplate() {
+    this.selectedTemplate = void 0;
   }
 
-  private getAbiAndDescription(builderAddress: string, i: number, resolve, reject) {
+  private updateAbiAndDescription(builderAddress: string, i: number): Promise<any> {
     let builderAbi = require("./BuilderAbi.json");
     let builderContract = new this.web3.eth.Contract(builderAbi, builderAddress);
     let abiPromise = new Promise((resolveAbi, rejectAbi) => {
@@ -73,10 +74,11 @@ export class SmartTemplatesProvider {
         .call()
         .then((result) => {
           this.smartboxTemplates[i].abi = result;
-          this.parseSettings(result).then((result) => {
-            this.smartboxTemplates[i].settings = result;
-            resolveAbi();
-          });
+          this.parseSettings(result)
+            .then((result) => {
+              this.smartboxTemplates[i].settings = result;
+              resolveAbi();
+            });
         })
         .catch((err) => {
           rejectAbi(err);
@@ -93,23 +95,10 @@ export class SmartTemplatesProvider {
           rejectDescr(err)
         })
     });
-    Promise.all([abiPromise, descrPromise])
-      .then(() => {
-        resolve();
-      }, (err) => {
-        reject(err)
-      });
+    return Promise.all([abiPromise, descrPromise]);
   }
 
-  private getTemplatesAbiAndDescription() {
-    let requests = this.smartboxTemplates.map((item, i) => {
-      return new Promise((resolve, reject) => {
-        this.getAbiAndDescription(item.address, i, resolve, reject);
-      })
-    })
-    return Promise.all(requests);
-  }
-
+  //todo переписать.. здесь не нужны промисы
   public parseSettings(abi: string) {
     return new Promise((resolve, reject) => {
       let parsed_abi = JSON.parse(abi);
@@ -126,17 +115,17 @@ export class SmartTemplatesProvider {
     this.selectedTemplate = template;
   }
 
-  private addKey(document: string, address: string, pin: string) {
+  private addKey(document: string, ownerAddress: string, pin: string) {
     return new Promise((resolve, reject) => {
-      let _document = this.web3.utils.asciiToHex(document);
-      let _pin = this.web3.utils.asciiToHex(pin);
+      let documentHex = this.web3.utils.asciiToHex(document);
+      let pinHex = this.web3.utils.asciiToHex(pin);
       let templateName = this.web3.utils.asciiToHex(this.selectedTemplate.name);
 
-      let permissioningContract = new this.web3.eth.Contract(this.permissioningAbi, this.permissioningAddress);
+      let permissioningContract = new this.web3.eth.Contract(this.permissioningAbi, this.permissioningContractAddress);
 
-      let getData = permissioningContract.methods.addKey(_document, address, _pin, templateName).encodeABI();
+      let getData = permissioningContract.methods.addKey(documentHex, ownerAddress, pinHex, templateName).encodeABI();
       this.web3.eth.accounts.signTransaction({
-        to: this.permissioningAddress,
+        to: this.permissioningContractAddress,
         data: getData,
         gas: 3000000
       }, '0xdf0d6892474da2f19726f481b8baf698eabdd6b52b9fe2ad5c045b1367809239')
@@ -148,7 +137,7 @@ export class SmartTemplatesProvider {
               resolve();
             })
             .on('error', (err) => {
-              reject(err)
+              reject(err);
             })
         })
         .catch((err) => {
@@ -157,11 +146,13 @@ export class SmartTemplatesProvider {
     });
   }
 
-  private askAddress(document: string) {
+  private requestAddress(document: string) {
     return new Promise((resolve, reject) => {
-      let miraFactoryContract = new this.web3.eth.Contract(this.miraFactoryAbi, this.miraFactoryAddress);
-      let _document = this.web3.utils.asciiToHex(document);
-      miraFactoryContract.methods.askAddress(_document)
+      let miraFactoryContract = new this.web3.eth.Contract(
+        this.miraFactoryContractAbi,
+        this.miraFactoryContractAddress);
+      let documentHex = this.web3.utils.asciiToHex(document);
+      miraFactoryContract.methods.askAddress(documentHex)
         .call()
         .then((result) => {
           console.log("Got address: " + result);
@@ -178,14 +169,14 @@ export class SmartTemplatesProvider {
       let opts = [];
       this.selectedTemplate.settings.map(item => {
         opts.push(Number(item.value));
-      })
+      });
 
-      let templateInstanceAbi = JSON.parse(this.selectedTemplate.abi);
-      let templateInstanceAddress = address;
-      let templateInstanceContract = new this.web3.eth.Contract(templateInstanceAbi, templateInstanceAddress);
-      let getData = templateInstanceContract.methods.setSettings.apply(templateInstanceContract.methods, opts).encodeABI();
+      let selectedContractAbi = JSON.parse(this.selectedTemplate.abi);
+      let selectedContractAddress = address;
+      let selectedContract = new this.web3.eth.Contract(selectedContractAbi, selectedContractAddress);
+      let getData = selectedContract.methods.setSettings.apply(selectedContract.methods, opts).encodeABI();
       this.web3.eth.accounts.signTransaction({
-        to: templateInstanceAddress,
+        to: selectedContractAddress,
         data: getData,
         gas: 3000000
       }, '0xdf0d6892474da2f19726f481b8baf698eabdd6b52b9fe2ad5c045b1367809239')
@@ -208,10 +199,10 @@ export class SmartTemplatesProvider {
 
   public createSmartBoxHandler(document, address, pin) {
     return new Promise((resolve, reject) => {
-      if(this.selectedTemplate) {
+      if (this.selectedTemplate) {
         this.addKey(document, address, pin)
           .then(() => {
-            return this.askAddress(document);
+            return this.requestAddress(document);
           })
           .then((_address) => {
             return this.setSettings(_address);
@@ -222,7 +213,7 @@ export class SmartTemplatesProvider {
           .catch((err) => {
             reject(err);
           });
-      }else{
+      } else {
         reject("Template is not selected!");
       }
     });
