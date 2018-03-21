@@ -194,7 +194,7 @@ export class SmartTemplatesProvider {
             .on('receipt', (result) => {
               console.log("Got receipt from setSettings:");
               console.log(result);
-              resolve();
+              resolve(address);
             })
             .on('error', (err) => {
               reject(err);
@@ -213,11 +213,11 @@ export class SmartTemplatesProvider {
           .then(() => {
             return this.askAddress(document);
           })
-          .then((result) => {
-            return this.setSettings(result);
+          .then((_address) => {
+            return this.setSettings(_address);
           })
-          .then(() => {
-            resolve();
+          .then((_address) => {
+            resolve(_address);
           })
           .catch((err) => {
             reject(err);
