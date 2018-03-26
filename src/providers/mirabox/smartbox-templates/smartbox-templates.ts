@@ -4,7 +4,6 @@ import {Web3Provider} from "../web3/web3";
 @Injectable()
 export class SmartTemplatesProvider {
   public smartboxTemplates;
-  public selectedTemplate;
   private web3: any;
   private miraFactoryContractAddress = "0x5d3495ca996ead23698d623c22ecce71953a5f0b";
   private permissioningContractAddress = "0x43647204afdbd22cabbdf43eb3d6206312f305c3";
@@ -12,12 +11,6 @@ export class SmartTemplatesProvider {
   private permissioningAbi = require("./PermissioningAbi.json");
 
   constructor(private web3Provider: Web3Provider) {
-    this.getTemplateList()
-      .then(() => {
-        console.log("Got templates list.");
-      }, (err) => {
-        console.log(`Couldn't get template list: ${err}`);
-      });
     this.web3 = this.web3Provider.getWeb3();
   }
 
@@ -62,10 +55,6 @@ export class SmartTemplatesProvider {
     });
   }
 
-  public deleteSelectedTemplate() {
-    this.selectedTemplate = void 0;
-  }
-
   private updateAbiAndDescription(builderAddress: string, i: number): Promise<any> {
     let builderAbi = require("./BuilderAbi.json");
     let builderContract = new this.web3.eth.Contract(builderAbi, builderAddress);
@@ -74,11 +63,11 @@ export class SmartTemplatesProvider {
         .call()
         .then((result) => {
           this.smartboxTemplates[i].abi = result;
-          this.parseSettings(result)
-            .then((result) => {
-              this.smartboxTemplates[i].settings = result;
-              resolveAbi();
-            });
+          this.smartboxTemplates[i].settings = this.parseSettings(result);
+          if (!this.smartboxTemplates[i].settings) {
+            rejectAbi("No setSettings function found in Abi");
+          }
+          resolveAbi();
         })
         .catch((err) => {
           rejectAbi(err);
@@ -98,32 +87,28 @@ export class SmartTemplatesProvider {
     return Promise.all([abiPromise, descrPromise]);
   }
 
-  //todo переписать.. здесь не нужны промисы
   public parseSettings(abi: string) {
-    return new Promise((resolve, reject) => {
-      let parsed_abi = JSON.parse(abi);
-      parsed_abi.map((item) => {
-        if (item.name == "setSettings")
-          resolve(item.inputs);
-      });
-      reject("No setSetting function was found!");
+    let parsedAbi = JSON.parse(abi);
+    let parsedSettings;
+    parsedAbi.forEach((item) => {
+      if (item.name == "setSettings") {
+        parsedSettings = item.inputs;
+      }
     });
+    return parsedSettings;
   }
 
 
-  public setTemplate(template: any) {
-    this.selectedTemplate = template;
-  }
 
-  private addKey(document: string, ownerAddress: string, pin: string) {
+  private addKey(document: string, ownerAddress: string, pin: string, template: any) {
     return new Promise((resolve, reject) => {
       let documentHex = this.web3.utils.asciiToHex(document);
       let pinHex = this.web3.utils.asciiToHex(pin);
-      let templateName = this.web3.utils.asciiToHex(this.selectedTemplate.name);
+      let templateNameHex = this.web3.utils.asciiToHex(template.name);
 
       let permissioningContract = new this.web3.eth.Contract(this.permissioningAbi, this.permissioningContractAddress);
 
-      let getData = permissioningContract.methods.addKey(documentHex, ownerAddress, pinHex, templateName).encodeABI();
+      let getData = permissioningContract.methods.addKey(documentHex, ownerAddress, pinHex, templateNameHex).encodeABI();
       this.web3.eth.accounts.signTransaction({
         to: this.permissioningContractAddress,
         data: getData,
@@ -164,14 +149,17 @@ export class SmartTemplatesProvider {
     });
   }
 
-  private setSettings(address) {
+  private setSettings(address, template) {
     return new Promise((resolve, reject) => {
       let opts = [];
-      this.selectedTemplate.settings.map(item => {
-        opts.push(Number(item.value));
+      template.settings.map(item => {
+        if(item.type.contains("uint"))
+          opts.push(Number(item.value));
+        else
+          opts.push(this.web3.utils.asciiToHex(item.value));
       });
 
-      let selectedContractAbi = JSON.parse(this.selectedTemplate.abi);
+      let selectedContractAbi = JSON.parse(template.abi);
       let selectedContractAddress = address;
       let selectedContract = new this.web3.eth.Contract(selectedContractAbi, selectedContractAddress);
       let getData = selectedContract.methods.setSettings.apply(selectedContract.methods, opts).encodeABI();
@@ -197,25 +185,21 @@ export class SmartTemplatesProvider {
     });
   }
 
-  public createSmartBoxHandler(document, address, pin) {
+  public createSmartBoxHandler(document, address, pin, template) {
     return new Promise((resolve, reject) => {
-      if (this.selectedTemplate) {
-        this.addKey(document, address, pin)
-          .then(() => {
-            return this.requestAddress(document);
-          })
-          .then((_address) => {
-            return this.setSettings(_address);
-          })
-          .then((_address) => {
-            resolve(_address);
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      } else {
-        reject("Template is not selected!");
-      }
+      this.addKey(document, address, pin, template)
+        .then(() => {
+          return this.requestAddress(document);
+        })
+        .then((_address) => {
+          return this.setSettings(_address, template);
+        })
+        .then((_address) => {
+          resolve(_address);
+        })
+        .catch((err) => {
+          reject(err);
+        });
     });
   }
 }

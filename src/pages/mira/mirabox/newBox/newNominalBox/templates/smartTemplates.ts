@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {Web3Provider} from "../../../../../../providers/mirabox/web3/web3";
 import {SmartTemplatesProvider} from "../../../../../../providers/mirabox/smartbox-templates/smartbox-templates";
-import {NavController} from "ionic-angular";
+import {NavController, NavParams} from "ionic-angular";
 import {TemplateViewerPage} from "./templateViewer/templateViewer";
 
 @Component({
@@ -16,31 +16,16 @@ export class SmartTemplatesPage {
 
   constructor(private web3Provider: Web3Provider,
               private smartboxTemplatesProvider: SmartTemplatesProvider,
-              private navCtrl: NavController) {
+              private navCtrl: NavController,
+              private navParams: NavParams) {
     this.smartboxTemplatesProvider.getTemplateList()
       .then((templateList) => {
         this.templatesList = templateList;
       })
   }
 
-  public openDescription(template) {
-    template.opened = true;
-    this.templatesList.forEach((item, i, arr) => {
-      if (item != template) arr[i].opened = false;
-    })
-  }
-
-  public closeAllDescriptions() {
-    this.templatesList.forEach((item, i, arr) => {
-      arr[i].opened = false;
-    })
-  }
-
-  public test() {
-    this.web3Provider.checkConnection();
-  }
-
   public openTemplateViewer(_template: any) {
-    this.navCtrl.push(TemplateViewerPage, {template: _template});
+    let getTemplate = this.navParams.get('getTemplate');
+    this.navCtrl.push(TemplateViewerPage, {getTemplate: getTemplate, template: _template});
   }
 }

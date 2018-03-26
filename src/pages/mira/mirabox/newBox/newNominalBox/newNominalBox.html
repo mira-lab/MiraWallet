@@ -57,7 +57,7 @@
         Choose Template...
       </ion-label>
       <ion-note item-end>
-        {{ selectedTemplate }}
+        {{ selectedTemplate ? selectedTemplate.name + " " + selectedTemplate.version : "Not selected."}}
       </ion-note>
     </button>
     <button *ngIf="boxType=='Smart'" ion-item (click)="testSmart()">

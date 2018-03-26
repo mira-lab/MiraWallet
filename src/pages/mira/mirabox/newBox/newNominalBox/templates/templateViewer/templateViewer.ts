@@ -12,11 +12,10 @@ import {NewNominalBoxPage} from "../../newNominalBox";
 export class TemplateViewerPage {
   public template;
   public isAcceptDisabled: boolean = true;
-
   constructor(private navParams: NavParams,
               private smartboxTemplatesProvider: SmartTemplatesProvider,
               private navCtrl: NavController) {
-    this.template = JSON.parse(JSON.stringify(this.navParams.get('template')));
+    this.template = this.navParams.get('template');
     console.log("const");
   }
   ionViewDidEnter(){
@@ -26,8 +25,11 @@ export class TemplateViewerPage {
     }
   }
   public setSettings() {
-    this.smartboxTemplatesProvider.setTemplate(this.template);
-    this.navCtrl.popTo(this.navCtrl.getByIndex(this.navCtrl.length()-3));
+    //this.smartboxTemplatesProvider.setTemplate(this.template);
+      this.navCtrl.popTo(this.navCtrl.getByIndex(this.navCtrl.length() - 3))
+        .then(()=>{
+          this.navParams.get('getTemplate')(this.template);
+        });
   }
 
   public checkDisabled() {

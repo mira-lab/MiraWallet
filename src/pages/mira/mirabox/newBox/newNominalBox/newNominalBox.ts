@@ -20,7 +20,8 @@ import {SmartTemplatesProvider} from "../../../../../providers/mirabox/smartbox-
 export class NewNominalBoxPage {
   private config;
   public inProgress: boolean = false;
-  public selectedTemplate:string = "Not Selected";
+  public selectedTemplate:any;
+
   constructor(private bwcProvider: BwcProvider,
               private miraBoxProvider: MiraBoxProvider,
               private miraStorageProvider: MiraStorageProvider,
@@ -56,19 +57,18 @@ export class NewNominalBoxPage {
     return JSON.parse(wallet.export())
   }
   public openTemplatesPage(){
-    this.navCtrl.push(SmartTemplatesPage);
-  }
-  public ionViewWillEnter() {
-    if(this.boxType=="Smart") {
-      if (this.smartTemplatesProvider.selectedTemplate)
-        this.selectedTemplate = this.smartTemplatesProvider.selectedTemplate.name + " " + this.smartTemplatesProvider.selectedTemplate.version;
-      else
-        this.selectedTemplate = "Not Selected";
+    let callback = (template) => {
+      return new Promise((resolve, reject) => {
+        console.log(template);
+        this.selectedTemplate = template;
+        if(this.selectedTemplate) {
+          resolve();
+        }else{
+          reject();
+        }
+      })
     }
-  }
-  public ionViewWillLeave(){
-    if(this.boxType=="Smart")
-      this.smartTemplatesProvider.deleteSelectedTemplate();
+    this.navCtrl.push(SmartTemplatesPage, {getTemplate: callback});
   }
   public async createBox() {
     let self = this;
@@ -168,7 +168,7 @@ export class NewNominalBoxPage {
   //tododaniil make it with real mirabox and add changing settings to viewer
   public testSmart() {
     if (this.boxType == "Smart") {
-      this.smartTemplatesProvider.createSmartBoxHandler("xrts", "0x7125B514c135a89a8776a4336C20b4bb183Fb97D", "12wq")
+      this.smartTemplatesProvider.createSmartBoxHandler("xrts", "0x7125B514c135a89a8776a4336C20b4bb183Fb97D", "12wq", this.selectedTemplate)
         .then(()=>console.log("ok"));
     }
   }
