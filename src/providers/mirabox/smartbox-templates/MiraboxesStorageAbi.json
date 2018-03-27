@@ -1,0 +1,73 @@
+[
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "newAclAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setACL",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "document",
+        "type": "bytes32"
+      },
+      {
+        "name": "contractAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setMiraboxContract",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "changeOwner",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "document",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getMiraboxContract",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  }
+]

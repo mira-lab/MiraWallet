@@ -7,12 +7,54 @@
         "type": "bytes32"
       },
       {
-        "name": "user",
-        "type": "address"
+        "name": "templateName",
+        "type": "bytes32"
+      }
+    ],
+    "name": "addKey",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "document",
+        "type": "bytes32"
       },
       {
         "name": "setPin",
         "type": "bytes32"
+      }
+    ],
+    "name": "changeOwner",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "document",
+        "type": "bytes32"
+      },
+      {
+        "name": "user",
+        "type": "address"
       },
       {
         "name": "allowChangeOwner",
@@ -20,6 +62,48 @@
       }
     ],
     "name": "changeOwnerByAdmin",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "document",
+        "type": "bytes32"
+      },
+      {
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "checkKeyAccess",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "document",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getMiraBoxOpened",
     "outputs": [
       {
         "name": "",
@@ -72,67 +156,12 @@
     "constant": false,
     "inputs": [
       {
-        "name": "document",
-        "type": "bytes32"
-      }
-    ],
-    "name": "getMiraBoxOpened",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "document",
-        "type": "bytes32"
-      },
-      {
-        "name": "user",
+        "name": "newStorageAddress",
         "type": "address"
       }
     ],
-    "name": "checkPermissions",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "document",
-        "type": "bytes32"
-      },
-      {
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "name": "pin",
-        "type": "bytes32"
-      }
-    ],
-    "name": "checkKeyAccess",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
+    "name": "setMiraboxesStorage",
+    "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
@@ -141,34 +170,7 @@
     "constant": false,
     "inputs": [
       {
-        "name": "document",
-        "type": "bytes32"
-      },
-      {
-        "name": "accessPin",
-        "type": "bytes32"
-      },
-      {
-        "name": "setPin",
-        "type": "bytes32"
-      }
-    ],
-    "name": "changeOwner",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "factory_address",
+        "name": "newFactoryAddress",
         "type": "address"
       }
     ],
@@ -177,6 +179,21 @@
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "factoryAddress",
+        "type": "address"
+      },
+      {
+        "name": "storageAddress",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor"
   },
   {
     "constant": false,
@@ -198,57 +215,14 @@
     "type": "function"
   },
   {
-    "constant": false,
+    "constant": true,
     "inputs": [
       {
-        "name": "document",
-        "type": "bytes32"
-      },
-      {
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "name": "pin",
-        "type": "bytes32"
-      },
-      {
-        "name": "templateName",
+        "name": "documentid",
         "type": "bytes32"
       }
     ],
-    "name": "addKey",
-    "outputs": [
-      {
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "document",
-        "type": "bytes32"
-      },
-      {
-        "name": "oldPin",
-        "type": "bytes32"
-      },
-      {
-        "name": "newPin",
-        "type": "bytes32"
-      },
-      {
-        "name": "allowChangeOwner",
-        "type": "bool"
-      }
-    ],
-    "name": "changePin",
+    "name": "askOpen",
     "outputs": [
       {
         "name": "",
@@ -256,18 +230,26 @@
       }
     ],
     "payable": false,
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
+    "constant": true,
     "inputs": [
       {
-        "name": "factory",
-        "type": "address"
+        "name": "document",
+        "type": "bytes32"
+      }
+    ],
+    "name": "checkPermissions",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
       }
     ],
     "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "constructor"
+    "stateMutability": "view",
+    "type": "function"
   }
 ]

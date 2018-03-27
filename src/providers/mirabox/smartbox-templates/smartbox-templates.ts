@@ -5,8 +5,10 @@ import {Web3Provider} from "../web3/web3";
 export class SmartTemplatesProvider {
   public smartboxTemplates;
   private web3: any;
-  private miraFactoryContractAddress = "0x5d3495ca996ead23698d623c22ecce71953a5f0b";
-  private permissioningContractAddress = "0x43647204afdbd22cabbdf43eb3d6206312f305c3";
+  private miraFactoryContractAddress = "0x3fbe75d4fca29748643fd9fa861578b0ff42f2e6";
+  private permissioningContractAddress = "0xd23ff3b969ce4144b9e2976bb4700f3a508ab69a";
+  private miraboxesStorageAddress = "0xfd2fd6f0e10e6299ed6ec9045a4e3eb7b29b9849";
+  private miraboxesStorageAbi = require("./MiraboxesStorageAbi.json");
   private miraFactoryContractAbi = require("./MiraFactoryAbi.json");
   private permissioningAbi = require("./PermissioningAbi.json");
 
@@ -100,15 +102,14 @@ export class SmartTemplatesProvider {
 
 
 
-  private addKey(document: string, ownerAddress: string, pin: string, template: any) {
+  private addKey(document: string, template: any) {
     return new Promise((resolve, reject) => {
       let documentHex = this.web3.utils.asciiToHex(document);
-      let pinHex = this.web3.utils.asciiToHex(pin);
       let templateNameHex = this.web3.utils.asciiToHex(template.name);
 
       let permissioningContract = new this.web3.eth.Contract(this.permissioningAbi, this.permissioningContractAddress);
 
-      let getData = permissioningContract.methods.addKey(documentHex, ownerAddress, pinHex, templateNameHex).encodeABI();
+      let getData = permissioningContract.methods.addKey(documentHex, templateNameHex).encodeABI();
       this.web3.eth.accounts.signTransaction({
         to: this.permissioningContractAddress,
         data: getData,
@@ -133,11 +134,11 @@ export class SmartTemplatesProvider {
 
   private requestAddress(document: string) {
     return new Promise((resolve, reject) => {
-      let miraFactoryContract = new this.web3.eth.Contract(
-        this.miraFactoryContractAbi,
-        this.miraFactoryContractAddress);
+      let miraboxesStorageContract = new this.web3.eth.Contract(
+        this.miraboxesStorageAbi,
+        this.miraboxesStorageAddress);
       let documentHex = this.web3.utils.asciiToHex(document);
-      miraFactoryContract.methods.askAddress(documentHex)
+      miraboxesStorageContract.methods.getMiraboxContract(documentHex)
         .call()
         .then((result) => {
           console.log("Got address: " + result);
@@ -185,9 +186,9 @@ export class SmartTemplatesProvider {
     });
   }
 
-  public createSmartBoxHandler(document, address, pin, template) {
+  public createSmartBoxHandler(document, template) {
     return new Promise((resolve, reject) => {
-      this.addKey(document, address, pin, template)
+      this.addKey(document, template)
         .then(() => {
           return this.requestAddress(document);
         })
