@@ -94,7 +94,97 @@ export class MiraBoxProvider {
           self.NODE_T)
       });
   }
+  createMiraBoxItem(wallet: WalletType,
+     walletName: string,
+     copayerName: string,
+     walletMeta: object = {}): Promise<MiraBoxItem> {
+      let self = this;
 
+      let createWalletPromise: Promise<EncryptedGeneratedWallet>;
+
+
+      let derivedParam = wallet.network == BtcNetwork.Live
+        ? "m/44'/0'/0'/0/0"
+        : "m/44'/1'/0'/0/0";
+      switch (wallet.coin) {
+        //to implement differentTypes of wallets
+        case Coin.BTC:
+          createWalletPromise = this.generateNewEncodedBtcWallet(walletName, copayerName, wallet.network);
+          break;
+        case Coin.BCH:
+          createWalletPromise = this.generateNewEncodedBtcWallet(walletName, copayerName, wallet.network);
+          break;
+        default:
+          throw 'unknown coin';
+      }
+      return createWalletPromise.then(function (encryptedWallet: EncryptedGeneratedWallet) {
+        return self.encodeWalletPasswordWithSecretStore(encryptedWallet.password)
+          .then(function (encryptedPasswordResult: EncryptedResult) {
+            let HDPrivateKey = self.bwcProvider.getBitcore().HDPrivateKey;
+            let hdPrivateKey = new HDPrivateKey(encryptedWallet.decryptedWallet.xPrivKey);
+            let derived = hdPrivateKey.derive(derivedParam);
+            let address = derived.privateKey.toAddress(wallet.network).toString();
+
+            let boxItem: MiraBoxItem = {
+              data: encryptedWallet.encryptedWallet,
+              hash: encryptedPasswordResult.storageId,
+              key: encryptedPasswordResult.encrypted,
+              headers: {
+                type: wallet,
+                pubType: 'xpub',
+                pub: encryptedWallet.decryptedWallet.xPubKey,
+                address: address
+              },
+              meta: walletMeta
+            };
+            return boxItem;
+          });
+      });
+  }
+  createMiraBox(miraBoxType : MiraBoxType, boxDescription: string, boxCreator: MiraBoxCreator){
+    return new MiraBox(
+      miraBoxType,
+      boxCreator,
+      [],
+      boxDescription
+    );
+  }
+  createSmartMiraBox(wallet: WalletType,
+                       walletName: string,
+                       copayerName: string,
+                       boxDescription: string,
+                       boxCreator: MiraBoxCreator,
+                       walletMeta: object = {}): Promise<MiraBox> {
+    return new Promise<MiraBox>(()=> {
+      let smartMiraBox = this.createMiraBox(MiraBoxType.Smart, boxDescription, boxCreator);
+      this.createMiraBoxItem(wallet, walletName, copayerName, walletMeta)
+        .then((miraBoxItem)=>{
+          smartMiraBox.addBoxItem(miraBoxItem);
+          return smartMiraBox;
+        })
+    });
+  }
+  createMultiMiraBox(boxDescription: string, boxCreator: MiraBoxCreator){
+    return this.createMiraBox(MiraBoxType.Multi, boxDescription, boxCreator);
+  }
+  _createNominalMiraBox(wallet: WalletType,
+                     walletName: string,
+                     copayerName: string,
+                     boxDescription: string,
+                     boxCreator: MiraBoxCreator,
+                     walletMeta: object = {}): Promise<MiraBox> {
+    return new Promise<MiraBox>(()=> {
+      let smartMiraBox = this.createMiraBox(MiraBoxType.Nominal, boxDescription, boxCreator);
+      this.createMiraBoxItem(wallet, walletName, copayerName, walletMeta)
+        .then((miraBoxItem)=>{
+          smartMiraBox.addBoxItem(miraBoxItem);
+          return smartMiraBox;
+        })
+    });
+  }
+  test(){
+    return 1;
+  }
   createNominalMiraBox(wallet: WalletType,
                        walletName: string,
                        copayerName: string,
@@ -150,7 +240,6 @@ export class MiraBoxProvider {
         });
     });
   }
-
 
   private static generateHash(data: string) {
     return ethUtil.sha3(data + new Date().toISOString())

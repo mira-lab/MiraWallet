@@ -203,4 +203,35 @@ export class SmartTemplatesProvider {
         });
     });
   }
+  public askOpen(templateAbi, contractAddress){
+    return new Promise((resolve, reject)=>{
+      let templateContract = new this.web3.eth.Contract(templateAbi, contractAddress);
+      templateContract.methods.askOpen()
+          .call()
+          .then((result) => {
+            if(result == true){
+              resolve(true);
+            }else{
+              resolve(false);
+            }
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+  }
+  public askStatus(documentHash, templateAbi){
+    return new Promise((resolve, reject)=>{
+      this.requestAddress(documentHash)
+        .then((contractAddress)=>{
+          return this.askOpen(templateAbi, contractAddress);
+        })
+        .then((askOpenResult)=>{
+          resolve(askOpenResult);
+        })
+        .catch((err)=>{
+          reject(err);
+        })
+    })
+  }
 }

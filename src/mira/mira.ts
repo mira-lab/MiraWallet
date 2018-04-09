@@ -110,7 +110,10 @@ export class MiraBox {
   getBoxItems(): MiraBoxItem[] {
     return this.boxItems;
   }
-
+  addBoxItem(miraBoxItem: MiraBoxItem) {
+    this.boxItems.push(miraBoxItem);
+    return miraBoxItem;
+  }
   getDescription(): string {
     return this.description;
   }
