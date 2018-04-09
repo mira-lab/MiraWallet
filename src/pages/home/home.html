@@ -98,81 +98,22 @@
     </button>
   </div>
 
-  <ion-card *ngIf="walletsBtc && walletsBtc[0]">
+  <ion-card  *ngIf="wallets && wallets[0]">
     <ion-card-header>
       <ion-row>
         <ion-col class="title">
-          <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="18" />
-          <span translate>Bitcoin Wallets</span>
+          <span translate>Wallets</span>
         </ion-col>
-        <ion-col text-right class="icons-add-reorder" *ngIf="!showReorderBtc">
-          <div class="reorder-icon" (click)="reorderBtc()" *ngIf="walletsBtc.length > 1">
-            <ion-icon name="reorder"></ion-icon>
-          </div>
+        <ion-col class="icons-add-reorder" text-right>
           <div class="add-icon" (click)="goToAddView()">
             <ion-icon name="add-circle"></ion-icon>
           </div>
         </ion-col>
-        <ion-col text-right class="icons-add-reorder" *ngIf="showReorderBtc" (click)="reorderBtc()">
-          {{'Done'|translate}}
-        </ion-col>
       </ion-row>
     </ion-card-header>
 
-    <ion-list reorder="{{showReorderBtc}}" (ionItemReorder)="reorderWalletsBtc($event)">
-      <button ion-item *ngFor="let wallet of walletsBtc" (click)="goToWalletDetails(wallet)">
-        <ion-icon item-start>
-          <img *ngIf="wallet.network == 'testnet'" src="assets/img/app/wallet-blue.svg"
-               class="icon-wallet" />
-          <img *ngIf="wallet.network != 'testnet'" src="assets/img/app/wallet-blue.svg"
-               class="icon-wallet" />
-        </ion-icon>
-        <h2>{{wallet.credentials.walletName}}</h2>
-        <p>
-          <span *ngIf="!wallet.isComplete()" translate>
-            Incomplete
-          </span>
-          <span *ngIf="wallet.isComplete()">
-            <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
-              + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '')
-              : '')}}
-            </span>
-            <span *ngIf="wallet.scanning" translate>Scanning funds</span>
-            <span *ngIf="wallet.balanceHidden && !wallet.scanning">[{{'Balance Hidden' | translate}}]</span>
-            <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
-            <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
-                      name="timer"></ion-icon>
-            <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
-          </span>
-        </p>
-      </button>
-    </ion-list>
-  </ion-card>
-
-  <ion-card  *ngIf="walletsBch && walletsBch[0]">
-    <ion-card-header>
-      <ion-row>
-        <ion-col class="title">
-          <img src="assets/img/app/bitcoin-cash-wallets.svg" alt="Bitcoin Cash Wallets" width="22" />
-          <span translate>Bitcoin Cash Wallets</span>
-        </ion-col>
-        <ion-col class="icons-add-reorder" *ngIf="!showReorderBch" text-right>
-          <div class="reorder-icon" (click)="reorderBch()" *ngIf="walletsBch.length > 1">
-            <ion-icon name="reorder"></ion-icon>
-          </div>
-          <div class="add-icon" (click)="goToAddView('bch')">
-            <ion-icon name="add-circle"></ion-icon>
-          </div>
-        </ion-col>
-        <ion-col text-right class="icons-add-reorder" *ngIf="showReorderBch" (click)="reorderBch()">
-          {{'Done'|translate}}
-        </ion-col>
-      </ion-row>
-    </ion-card-header>
-
-    <ion-list reorder="{{showReorderBch}}" (ionItemReorder)="reorderWalletsBch($event)">
-      <button ion-item *ngFor="let wallet of walletsBch" (click)="goToWalletDetails(wallet)" detail-push>
+    <ion-list>
+      <button ion-item *ngFor="let wallet of wallets" (click)="goToWalletDetails(wallet)" detail-push>
         <ion-icon item-start>
           <img *ngIf="wallet.network == 'testnet'" src="assets/img/app/wallet-blue.svg"
                class="icon-wallet" />
