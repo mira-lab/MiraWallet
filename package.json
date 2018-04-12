@@ -148,7 +148,7 @@
     "codecov": "^3.0.0",
     "fs-extra": "^4.0.3",
     "html-loader": "^0.5.4",
-    "ionic": "3.19.1",
+    "ionic": "3.20.0",
     "jasmine-core": "^2.8.0",
     "jasmine-spec-reporter": "^4.2.1",
     "karma": "^2.0.0",
