@@ -149,42 +149,7 @@ export class MiraBoxProvider {
       boxDescription
     );
   }
-  createSmartMiraBox(wallet: WalletType,
-                       walletName: string,
-                       copayerName: string,
-                       boxDescription: string,
-                       boxCreator: MiraBoxCreator,
-                       walletMeta: object = {}): Promise<MiraBox> {
-    return new Promise<MiraBox>(()=> {
-      let smartMiraBox = this.createMiraBox(MiraBoxType.Smart, boxDescription, boxCreator);
-      this.createMiraBoxItem(wallet, walletName, copayerName, walletMeta)
-        .then((miraBoxItem)=>{
-          smartMiraBox.addBoxItem(miraBoxItem);
-          return smartMiraBox;
-        })
-    });
-  }
-  createMultiMiraBox(boxDescription: string, boxCreator: MiraBoxCreator){
-    return this.createMiraBox(MiraBoxType.Multi, boxDescription, boxCreator);
-  }
-  _createNominalMiraBox(wallet: WalletType,
-                     walletName: string,
-                     copayerName: string,
-                     boxDescription: string,
-                     boxCreator: MiraBoxCreator,
-                     walletMeta: object = {}): Promise<MiraBox> {
-    return new Promise<MiraBox>(()=> {
-      let smartMiraBox = this.createMiraBox(MiraBoxType.Nominal, boxDescription, boxCreator);
-      this.createMiraBoxItem(wallet, walletName, copayerName, walletMeta)
-        .then((miraBoxItem)=>{
-          smartMiraBox.addBoxItem(miraBoxItem);
-          return smartMiraBox;
-        })
-    });
-  }
-  test(){
-    return 1;
-  }
+
   createNominalMiraBox(wallet: WalletType,
                        walletName: string,
                        copayerName: string,

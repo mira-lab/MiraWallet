@@ -42,6 +42,7 @@ import {NewBoxPage} from "../mira/mirabox/newBox/newBox";
 import {MiraStorageProvider} from "../../providers/mirabox/mirastorage";
 import {MiraBox} from "../../mira/mira";
 import {BoxListPage} from "../mira/mirabox/boxList/boxList";
+import {NewMiraBoxPage} from "../mira/mirabox/newMiraBox/newMiraBox";
 
 @Component({
   selector: 'page-home',
@@ -337,7 +338,8 @@ export class HomePage {
   }
 
   public goToMiraboxAdd(): void {
-    this.navCtrl.push(NewBoxPage);
+    //this.navCtrl.push(NewBoxPage);
+    this.navCtrl.push(NewMiraBoxPage);
   }
   public openNotificationModal(n: any) {
     let wallet = this.profileProvider.getWallet(n.walletId);

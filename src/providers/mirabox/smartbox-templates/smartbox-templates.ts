@@ -100,6 +100,35 @@ export class SmartTemplatesProvider {
     return parsedSettings;
   }
 
+  public setMiraboxContract(document: string, contractAddress: string){
+    return new Promise((resolve, reject) => {
+
+      let documentHex = this.web3.utils.asciiToHex(document);
+
+      let miraboxesStorageContract = new this.web3.eth.Contract(this.miraboxesStorageAddress, this.miraFactoryContractAbi);
+
+      let getData = miraboxesStorageContract.methods.setMiraboxContract(documentHex, contractAddress).encodeABI();
+      this.web3.eth.accounts.signTransaction({
+        to: this.permissioningContractAddress,
+        data: getData,
+        gas: 3000000
+      }, '0xdf0d6892474da2f19726f481b8baf698eabdd6b52b9fe2ad5c045b1367809239')
+        .then(result => {
+          this.web3.eth.sendSignedTransaction(result.rawTransaction)
+            .on('receipt', (result) => {
+              console.log("Got receipt from setMiraBoxContract:");
+              console.log(result);
+              resolve();
+            })
+            .on('error', (err) => {
+              reject(err);
+            })
+        })
+        .catch((err) => {
+          reject(err);
+        })
+    });
+  }
 
 
   private addKey(document: string, template: any) {

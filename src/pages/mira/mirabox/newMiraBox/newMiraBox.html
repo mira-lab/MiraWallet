@@ -1,0 +1,113 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>New MiraBox</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content no-bounce>
+  <ion-list>
+    <ion-item>
+      <ion-input placeholder="MiraBox Name" [(ngModel)]="miraBoxName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Description" [(ngModel)]="miraBoxDescription"></ion-input>
+    </ion-item>
+  </ion-list>
+  <img *ngIf="boxType == miraBoxType.Nominal" src="assets/img/mirabox/nominalbox.svg" alt="MiraBoxes" width="100"/>
+  <img *ngIf="boxType == miraBoxType.Multi" src="assets/img/mirabox/multibox.svg" alt="MiraBoxes" width="100"/>
+  <img *ngIf="boxType == miraBoxType.Smart" src="assets/img/mirabox/smartbox.svg" alt="MiraBoxes" width="100"/>
+  <ion-list>
+    <ion-item>
+      <ion-label>Currencies:</ion-label>
+    </ion-item>
+    <ion-row *ngFor="let currencyInput of currencyInputs">
+      <ion-col>
+        <ion-select [(ngModel)]="currencyInput.value">
+          <ion-option value="btc">BTC</ion-option>
+          <ion-option value="bch">BCH</ion-option>
+          <ion-option value="eth">ETH</ion-option>
+        </ion-select>
+      </ion-col>
+      <ion-col>
+        <ion-input placeholder="0.00" [(ngModel)]="currencyInput.amount"></ion-input>
+      </ion-col>
+      <ion-col align-self-center>
+        <ion-icon *ngIf="currencyInputs.length > 1" name="close" class="icon-pointer"
+                  (click)="deleteCurrencyInput(currencyInput)"></ion-icon>
+      </ion-col>
+    </ion-row>
+    <ion-item text-right (click)="addCurrencyInput()">
+      <button round ion-button style="text-transform: none;" color="dark">add more +</button>
+    </ion-item>
+  </ion-list>
+  <ion-list>
+    <ion-item>
+      <ion-label>With what conditions can be opened:</ion-label>
+    </ion-item>
+    <ion-row align-items-center justify-content-end>
+      <ion-col>
+        <ion-label>Time</ion-label>
+      </ion-col>
+      <ion-col (click)="addSearchElement('time')">
+        <ion-icon class="icon-pointer" name="add-circle"></ion-icon>
+      </ion-col>
+      <ion-col>
+        <ion-label>Exchange Rate</ion-label>
+      </ion-col>
+      <ion-col (click)="addSearchElement('rate')">
+        <ion-icon class="icon-pointer" name="add-circle"></ion-icon>
+      </ion-col>
+      <ion-col>
+        <ion-label>Weather</ion-label>
+      </ion-col>
+      <ion-col (click)="addSearchElement('weather')">
+        <ion-icon class="icon-pointer" name="add-circle"></ion-icon>
+      </ion-col>
+      <ion-col>
+        <ion-label>Recipient</ion-label>
+      </ion-col>
+      <ion-col (click)="addSearchElement('recipient')">
+        <ion-icon class="icon-pointer" name="add-circle"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-list>
+  <ion-card *ngIf="showSearch">
+    <ion-searchbar></ion-searchbar>
+    <ion-list>
+      <ion-row *ngFor="let template of smartTemplates" (click)="_showTemplateSettings(template)">
+        <ion-col>
+          <ion-label>{{template.name}}</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label align-self-end>{{template.version}}</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+  </ion-card>
+  <ion-card *ngIf="showTemplateSettings">
+    <ion-list>
+      <ion-item *ngFor="let setting of selectedTemplate.settings">
+        <ion-label color="primary" stacked>{{setting.name}}</ion-label>
+        <ion-input placeholder="{{setting.type}}" [(ngModel)]="setting.value"></ion-input>
+      </ion-item>
+      <ion-item>
+        <button (click)="addSmartTemplate(selectedTemplate)" ion-button outline color="dark">Accept</button>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+  <ion-grid>
+    <ion-row *ngFor="let template of selectedTemplates">
+      <ion-col>
+        <ion-label>{{ template.name}} {{template.version}}</ion-label>
+      </ion-col>
+      <ion-col *ngFor="let setting of template.settings">
+        <ion-label>{{ setting.value }}</ion-label>
+      </ion-col>
+      <ion-col align-self-center>
+        <ion-icon name="close" class="icon-pointer" (click)="deleteSelectedTemplate(template)"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div text-center>
+    <button ion-button>Create</button>
+  </div>
+</ion-content>

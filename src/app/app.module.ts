@@ -63,6 +63,7 @@ import { MiraBoxListItem } from "../pages/mira/mirabox/boxListItem/boxListItem";
 import { BoxListPage } from "../pages/mira/mirabox/boxList/boxList";
 import { NominalBoxOpeningViewer } from "../pages/mira/mirabox/miraboxViewer/nominalBoxViewer/boxOpening/boxOpening";
 import { SmartTemplatesPage} from "../pages/mira/mirabox/newBox/newNominalBox/templates/smartTemplates";
+import { NewMiraBoxPage } from "../pages/mira/mirabox/newMiraBox/newMiraBox";
 
 // Integrations: Amazon
 import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
@@ -335,6 +336,7 @@ pages = pages.concat([
   WalletImportComponent,
   SmartTemplatesPage,
   TemplateViewerPage,
+  NewMiraBoxPage,
 ]);
 
 let providers: any = [
