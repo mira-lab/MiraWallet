@@ -2237,3 +2237,43 @@ msgstr ""
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-из-{{wallet.n}}"
 
+msgid "Address book"
+msgstr "Телефоннная книга"
+
+msgid "Send feedback"
+msgstr "Оставить отзыв"
+
+msgid "Help and support"
+msgstr "Помощь и поддержка" 
+
+msgid "Share {{ appName }}"
+msgstr "Поделиться {{ appName }}"
+
+msgid "Notification" 
+msgstr "Уведомления"
+
+msgid "Alternative currency" 
+msgstr "Альтернативная валюта" 
+
+msgid "Bitcoin network fee policy" 
+msgstr "Настройки сети Bitcoin" 
+
+msgid "Lock" 
+msgstr "Блокировка" 
+
+msgid "Backup needed" 
+msgstr "" 
+
+msgid "Add contact" 
+msgstr "Добавить контакт" 
+
+msgid "" 
+msgstr ""
+
+msgid "" 
+msgstr ""
+
+msgid "" 
+msgstr "" 
+
+

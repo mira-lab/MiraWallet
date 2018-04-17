@@ -53,7 +53,7 @@ export class MercadoLibreCardDetailsPage {
   }
 
   public openSupportWebsite(): void {
-    let url = 'https://help.bitpay.com/requestHelp';
+    let url = 'https://miralab.io';
     let optIn = true;
     let title = null;
     let message = 'Help and support information is available at the website.'; //TODO: getTextCatalog
