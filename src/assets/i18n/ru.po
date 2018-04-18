@@ -2267,8 +2267,8 @@ msgstr ""
 msgid "Add contact" 
 msgstr "Добавить контакт" 
 
-msgid "" 
-msgstr ""
+msgid "How do you like Mira?" 
+msgstr "Нравится ли вам Мира?"
 
 msgid "" 
 msgstr ""

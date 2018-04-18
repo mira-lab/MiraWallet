@@ -107,8 +107,11 @@
         </ion-col>
         <ion-col class="icons-add-reorder" text-right>
           <div class="add-icon" (click)="goToAddView()">
-            <ion-icon name="add-circle"></ion-icon>
-          </div>
+			<button ion-button icon-left small outline>
+			<ion-icon name="add"></ion-icon>
+			<span translae>new</span>
+			</button>	    
+	     </div>
         </ion-col>
       </ion-row>
     </ion-card-header>
@@ -198,7 +201,10 @@
         </ion-col>
         <ion-col class="icons-add-reorder" text-right>
           <div class="add-icon" (click)="goToMiraboxAdd()">
-            <ion-icon name="add-circle"></ion-icon>
+            <button ion-button icon-left small outline>
+			<ion-icon name="add"></ion-icon>
+			<span translae>new</span>
+			</button>	 
           </div>
         </ion-col>
       </ion-row>
