@@ -2,6 +2,7 @@
   <ion-navbar>
     <ion-title>
       <img class="home-logo" src="assets/img/app/logo-negative.svg">
+      
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -106,8 +107,11 @@
         </ion-col>
         <ion-col class="icons-add-reorder" text-right>
           <div class="add-icon" (click)="goToAddView()">
-            <ion-icon name="add-circle"></ion-icon>
-          </div>
+			<button ion-button icon-left small outline>
+			<ion-icon name="add"></ion-icon>
+			<span translate>new</span>
+			</button>	    
+	     </div>
         </ion-col>
       </ion-row>
     </ion-card-header>
@@ -197,7 +201,10 @@
         </ion-col>
         <ion-col class="icons-add-reorder" text-right>
           <div class="add-icon" (click)="goToMiraboxAdd()">
-            <ion-icon name="add-circle"></ion-icon>
+            <button ion-button icon-left small outline>
+			<ion-icon name="add"></ion-icon>
+			<span translate>new</span>
+			</button>	 
           </div>
         </ion-col>
       </ion-row>
@@ -208,7 +215,7 @@
     </ion-list>
 
     <button ion-button (click)="gotoAllBoxes()" block outline icon-end>
-      View all
+      <span translate>View all</span>
       <ion-icon name="albums"></ion-icon>
     </button>
 

@@ -21,14 +21,14 @@
         <ion-icon item-start>
           <img src="assets/img/app/help-and-support-blue.svg" alt="Address Book" style="width: 25px;" />
         </ion-icon>
-        {{'Help &amp; support' | translate}}
+        {{'Help and support' | translate}}
       </ion-item>
 
       <ion-item (click)="openSendFeedbackPage()">
         <ion-icon item-start>
           <img src="assets/img/app/feedback-blue.svg" alt="Address Book" style="width: 25px;" />
         </ion-icon>
-        Send feedback
+      {{'Send feedback' | translate}}
       </ion-item>
 
       <ion-item *ngIf="isCordova && !isWindowsPhoneApp" (click)="openFeedbackCompletePage()">
@@ -47,7 +47,7 @@
         <ion-icon item-start>
           <img src="assets/img/app/bitcoin-cash-blue.svg" alt="Bitcoin Cash Wallets" style="width: 25px;" />
         </ion-icon>
-        Bitcoin Cash
+        {{'Bitcoin Cash' | translate}}
       </button>
 
       <button ion-item (click)="openNotificationsPage()">
