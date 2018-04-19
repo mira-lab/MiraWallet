@@ -153,8 +153,8 @@ export class NewMiraBoxPage {
       miraBoxItemsArray.map((miraBoxItem)=>{
         miraBox.addBoxItem(miraBoxItem);
       });
-
-      let contractAddress = await this.smartTemplatesProvider.createSmartBoxHandler(miraBoxItemsArray[0].hash, this.selectedTemplates[0]);
+      console.log(miraBox);
+      /*let contractAddress = await this.smartTemplatesProvider.createSmartBoxHandler(miraBoxItemsArray[0].hash, this.selectedTemplates[0]);
       if(miraBoxItemsArray.length > 1) {
         let assignContractPromises = miraBoxItemsArray.map((miraBoxItem, index) => {
           if (index != 0) {
@@ -163,9 +163,11 @@ export class NewMiraBoxPage {
         });
         await Promise.all(assignContractPromises);
       }
+      */
       miraBox.createSignature(signPrivateKey);
 
       await self.miraStorageProvider.storeMiraBox(miraBox);
+      console.log(miraBox);
 
       //filling mirabox with coin
       /*
@@ -204,7 +206,7 @@ export class NewMiraBoxPage {
       }*/
       //finishing
       console.log('Successfully stored in storage');
-      self.navCtrl.popAll().catch(e => {
+      self.navCtrl.pop().catch(e => {
         console.log(e);
       });
     }

@@ -7,7 +7,7 @@ export class SmartTemplatesProvider {
   private web3: any;
   private miraFactoryContractAddress = "0x3fbe75d4fca29748643fd9fa861578b0ff42f2e6";
   private permissioningContractAddress = "0xd23ff3b969ce4144b9e2976bb4700f3a508ab69a";
-  private miraboxesStorageAddress = "0xfd2fd6f0e10e6299ed6ec9045a4e3eb7b29b9849";
+  private miraboxesStorageAddress = "0xf834f6ba33576696129077ec07f4e38bd93c8273";
   private miraboxesStorageAbi = require("./MiraboxesStorageAbi.json");
   private miraFactoryContractAbi = require("./MiraFactoryAbi.json");
   private permissioningAbi = require("./PermissioningAbi.json");
