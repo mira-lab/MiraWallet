@@ -1890,10 +1890,10 @@ msgid "Transactions without fee are not supported."
 msgstr ""
 
 msgid "Transfer to Bitcoin Cash Wallet"
-msgstr ""
+msgstr "Отправить в Bitcoin Cash кошелек"
 
 msgid "Transfer to Bitcoin Wallet"
-msgstr ""
+msgstr "Отправить в Bitcoin кошелек"
 
 msgid "Transfer to Contact"
 msgstr ""
@@ -2090,14 +2090,8 @@ msgstr "Внимание!"
 msgid "Warning: this transaction has unconfirmed inputs"
 msgstr "Предупреждение: эта транзакция имеет неподтвержденные входы"
 
-msgid "We are always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
-msgstr ""
-
-msgid "We will confirm on the next screen."
-msgstr ""
-
 msgid "We'd love to do better. How could we improve your experience?"
-msgstr ""
+msgstr "Мы стараемся делать лучшее. Как мы можем улучшить приложение?"
 
 msgid "What do you call this wallet?"
 msgstr "Как вы называете этот кошелёк?"
@@ -2112,25 +2106,22 @@ msgid "Why?"
 msgstr "Почему?"
 
 msgid "Withdraw"
-msgstr ""
-
-msgid "Without encryption, a thief or another application on this device may be able to access your funds."
-msgstr ""
+msgstr "Перевод"
 
 msgid "Would you be willing to rate {{appName}} in the app store?"
-msgstr ""
+msgstr "Хотите оценить приложение в AppStore"
 
 msgid "Would you like to protect this wallet with a password?"
-msgstr ""
+msgstr "Желаете ли вы защитить этот кошелек паролем?"
 
 msgid "Wrong encrypt password"
-msgstr ""
+msgstr "Неправильный пароль для расшифровки"
 
 msgid "Wrong number of recovery words:"
 msgstr "Неподходящее количество слов в ключевом словосочетании:"
 
 msgid "Wrong password"
-msgstr ""
+msgstr "Неверный пароль"
 
 msgid "Yes"
 msgstr "Да"
@@ -2208,31 +2199,31 @@ msgid "me"
 msgstr "мне"
 
 msgid "no password"
-msgstr ""
+msgstr "нет пароля"
 
 msgid "password mismatch"
-msgstr ""
+msgstr "пропущен пароль"
 
 msgid "preparing..."
 msgstr "Подготавливается..."
 
 msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
-msgstr ""
+msgstr "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
 
 msgid "{{btx.feeRateStr}} of the total amount"
-msgstr ""
+msgstr "от общего числа"
 
 msgid "{{tx.feeRateStr}} of the total amount"
-msgstr ""
+msgstr "... от общего числа"
 
 msgid "{{tx.txp[wallet.id].feeRatePerStr}} of total amount"
-msgstr ""
+msgstr "... от общего количества"
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} транзакций загружено"
 
 msgid "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
-msgstr ""
+msgstr "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-из-{{wallet.n}}"
@@ -2270,10 +2261,239 @@ msgstr "Добавить контакт"
 msgid "How do you like Mira?" 
 msgstr "Нравится ли вам Мира?"
 
-msgid "" 
-msgstr ""
+msgid "Almost done!<br> Let's check!"
+msgstr "Почти готово!<br> Давайте проверим"
 
-msgid "" 
-msgstr "" 
+msgid "About Mira"
+msgstr "О проекте Mira"
 
+msgid "Add a password"
+msgstr "Добавить пароль"
 
+msgid "Add Contact"
+msgstr "Добавить контакт"
+
+msgid "Add Wallet"
+msgstr "Добавить кошелек"
+
+msgid "Address book"
+msgstr "Aдресная книга"
+
+msgid "Alternative currency"
+msgstr "Альтернативная валюта"
+
+msgid "Bitcoin network fee policy"
+msgstr "Тарифная политика сети Bitcoin"
+
+msgid "Bitcoin transactions include a fee collected by miners on the network."
+msgstr "Биткойн транзакции включают комиссию, взимаемую майнерами в сети."
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Choose a backup file from your computer"
+msgstr "Выберете резервный файл "
+
+msgid "Commit hash"
+msgstr "Подтвердить hash"
+
+msgid "Contribute Translations"
+msgstr "Поддержать транзакцию "
+
+msgid "Create a new wallet"
+msgstr "Создать новый кошелек"
+
+msgid "Create general wallet"
+msgstr "Создать основной кошелек"
+
+msgid "Create personal wallet"
+msgstr "Создать личный кошелек"
+
+msgid "Create shared wallet"
+msgstr "Создать открытый кошелек"
+
+msgid "Create wallet"
+msgstr "Создать кошелек"
+
+msgid "Debug"
+msgstr "Отладка"
+
+msgid "Disabled"
+msgstr "Отключена"
+
+msgid "Economy"
+msgstr "Экономичность"
+
+msgid "File"
+msgstr "Файл"
+
+msgid "Go Back"
+msgstr "Назад"
+
+msgid "Help &amp; support"
+msgstr "Помощь &amp; поддержка"
+
+msgid "Help and support information is available at the website."
+msgstr "С более подробной информацией можно ознакомиться на сайте"
+
+msgid "Hide advanced options"
+msgstr "Скрыть дополнительное"
+
+msgid "If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format."
+msgstr "Если функция Bitcoin Cash включена, адреса будут показаны с использованием стиля Mira, а не в новом формате cashaddr."
+
+msgid "If enabled, the "Next Steps Card" will appear in the Home tab."
+msgstr "Если включено, в разделе «Домой» появится «Карта последующих шагов»."
+
+msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
+msgstr "Если функция Bitcoin Cash включена, список последних транзакций во всех кошельках появится в разделе "Домой"."
+
+msgid "Import the wallet"
+msgstr "Импортировать кошелек"
+
+msgid "Import wallet"
+msgstr "Импортировать кошелек"
+
+msgid "Info"
+msgstr "Информация"
+
+msgid "Join to the general wallet"
+msgstr "Присоединиться к открытому кошельку"
+
+msgid "Join wallet"
+msgstr "Присоединиться к кошельку"
+
+msgid "Lock"
+msgstr "Блокировка"
+
+msgid "New personal wallet"
+msgstr "Создать личный кошелек"
+
+msgid "No wallet"
+msgstr "Нет доступных кошельков"
+
+msgid "No wallets eligible for Bitcoin Cash support"
+msgstr "Нет кошельков, поддерживающих Bitcoin Cash"
+
+msgid "Normal"
+msgstr "Нормально"
+
+msgid "Notification"
+msgstr "Уведомления"
+
+msgid "Open"
+msgstr "Открыть"
+
+msgid "Open Crowdin"
+msgstr "Открыть Crowdin"
+
+msgid "Open GitHub"
+msgstr "Открыть GitHub"
+
+msgid "Open GitHub Project"
+msgstr "Открыть проект на GitHub"
+
+msgid "Open Translation Community"
+msgstr "Открыть сообщество переводов"
+
+msgid "Password"
+msgstr "Пароль"
+
+msgid "PIN"
+msgstr "ПИН"
+
+msgid "Priority"
+msgstr "Приоритетность"
+
+msgid "Random"
+msgstr "Случайный"
+
+msgid "Required numbers of signatures"
+msgstr "Необходимое количество подписей"
+
+msgid "Scanner not supported"
+msgstr "Сканирование не поддерживается"
+
+msgid "Search your currency"
+msgstr "Выбрать валюту"
+
+msgid "Send"
+msgstr "Отправить"
+
+msgid "Send feedback"
+msgstr "Отправить отзыв"
+
+msgid "Show advanced options"
+msgstr "Дополнительно"
+
+msgid "Show Next Steps Card"
+msgstr "Показать «Карту последующих шагов»"
+
+msgid "Single address"
+msgstr "Единый адрес"
+
+msgid "Specify Recovery Phrase"
+msgstr "Указать восстанавливающую фразу"
+
+msgid "Super Economy"
+msgstr "Супер-экономичность"
+
+msgid "Terms of use"
+msgstr "Условия использования"
+
+msgid "Testnet"
+msgstr "Тестовая сеть"
+
+msgid "Total numbers of copayers"
+msgstr "Общее число пользователей"
+
+msgid "Type the recovery phraseusually 12 words)"
+msgstr "Введите контрольную фразуобычно 12 слов)"
+
+msgid "Urgent"
+msgstr "Срочно"
+
+msgid "Use Bitcoin Cash Copay Style Addresses"
+msgstr "Использовать адреса для Bitcoin Cash в Mira формате"
+
+msgid "Wallet invitation"
+msgstr "Приглашение"
+
+msgid "Wallet key"
+msgstr "Ключ к кошельку"
+
+msgid "Wallet name"
+msgstr "Имя кошелька"
+
+msgid "Wallet service URL"
+msgstr "URL-адрес сервиса кошелька"
+
+msgid "Warning"
+msgstr "Предупреждение"
+
+msgid "We're always looking for ways to improve Mira. How could we improve your experience?"
+msgstr "Мы всегда ищем возможности улучшить сервис Mira. Как мы могли бы повысить удобство и эффективность работы для вас?"
+
+msgid "We’re always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
+msgstr "Вы всегда можете предложить исправления или помочь нам сделать это приложение доступным на вашем родном языке, присоединившись к нашему сообществу в Crowdin."
+
+msgid "Words"
+msgstr "Слова"
+
+msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
+msgstr "Вы можете внести свой вклад, зарегистрировавшись на нашем веб-сайте в сообществе Crowdin. Мы с нетерпением ждем вас! "
+
+msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
+msgstr "Посетив наш проект на GitHub, вы можете увидеть последние разработки и внести свой вклад в это приложение с открытым исходным кодом."
+
+msgid "Your name"
+msgstr "Ваше имя"
+
+msgid "Personal Wallet [BTC]"
+msgstr "Выбрать кошелек"
+
+msgid "Get test coins (100000 sat)"
+msgstr "Получить тестовые токены (100 000 sat)"
+
+msgid "new"
+msgstr "создать"
