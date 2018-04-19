@@ -2,8 +2,8 @@
 
   <ion-navbar>
     <ion-buttons end>
-      <button ion-button color="primary" (click)="createDefaultWallet()" class="onboardNav" translate>
-        Skip
+      <button ion-button (click)="createDefaultWallet()" class="onboardNav" translate>
+        START NOW
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -13,7 +13,7 @@
 <ion-content class="welcome">
   <ion-slides pager="true" (ionSlideDidChange)="slideChanged()">
 
-    <ion-slide style="height: 100%">
+    <!--ion-slide style="height: 100%">
       <ion-row justify-content-center align-items-center style="height: 80%">
 
         <div class="onboardBlock">
@@ -25,12 +25,10 @@
           <button ion-button block (click)="slideNext()" class="miraMainButton" translate>OK</button>
         </div>
       </ion-row>
-    </ion-slide>
+    </ion-slide-->
 
 
-
-
-    <ion-slide>
+    <!--ion-slide>
       <ion-row justify-content-center align-items-center style="height: 80%">
 
         <div class="onboardBlock">
@@ -49,12 +47,10 @@
         </div>
 
       </ion-row>
-    </ion-slide>
+    </ion-slide-->
 
 
-
-
-    <ion-slide>
+    <!--ion-slide>
       <ion-row justify-content-center align-items-center style="height: 80%">
 
         <div class="onboardBlock">
@@ -70,7 +66,7 @@
         </div>
 
       </ion-row>
-    </ion-slide>
+    </ion-slide-->
 
 
 
@@ -115,7 +111,7 @@
         </div>
 
       <div class="bottom-absolute">
-        <button ion-button block (click)="slideNext()" class="miraMainButton" translate>
+        <button ion-button block (click)="slideNext()" translate>
           OK
         </button>
       </div>
@@ -164,7 +160,7 @@
         </div>
 
         <div class="bottom-absolute">
-          <button ion-button block (click)="createDefaultWallet()" translate class="miraMainButton" >
+          <button ion-button block (click)="createDefaultWallet()" translate >
             Create Wallet
           </button>
         </div><!-- onboardBlock -->

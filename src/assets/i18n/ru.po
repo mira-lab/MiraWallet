@@ -1623,7 +1623,7 @@ msgid "Set up a password"
 msgstr "Задайте пароль"
 
 msgid "Settings"
-msgstr "Параметры"
+msgstr "Настройки"
 
 msgid "ShapeShift is not available at this moment. Please, try again later."
 msgstr ""
@@ -2253,7 +2253,7 @@ msgid "Lock"
 msgstr "Блокировка" 
 
 msgid "Backup needed" 
-msgstr "" 
+msgstr "Нужен бекап" 
 
 msgid "Add contact" 
 msgstr "Добавить контакт" 
@@ -2304,7 +2304,7 @@ msgid "Create a new wallet"
 msgstr "Создать новый кошелек"
 
 msgid "Create general wallet"
-msgstr "Создать основной кошелек"
+msgstr "Создать открытый кошелек"
 
 msgid "Create personal wallet"
 msgstr "Создать личный кошелек"
