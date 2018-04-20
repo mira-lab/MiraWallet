@@ -20,13 +20,6 @@ export class ParityNode {
   }
   
   
-  getRpcPort(): number {
-    return this.nodeCommonRpcPort;
-  }
-
-  getSecretStoreRpcPort(): number {
-    return this.nodeSecretStoreRpcPort;
-  }
 }
 
 export class EthereumAccount {
