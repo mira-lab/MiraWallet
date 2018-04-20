@@ -31,9 +31,9 @@ export class MiraBoxProvider {
   readonly BWS_INSTANCE_URL = 'https://bws.bitpay.com/bws/api';
 
   private parityNode = new ParityNode(
-    'http://94.130.94.162',
-    8545,
-    8083);
+    'https://rpc.miralab.io',
+    'https://store.miralab.io'
+    );
   /*
     private ethereumAccount = new EthereumAccount(
       '0x00a329c0648769a73afac7f9381e08fb43dbea72',

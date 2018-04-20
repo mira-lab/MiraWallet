@@ -4,16 +4,22 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 const secp256k1 = require('secp256k1');
 
 export class ParityNode {
-  constructor(private nodeAddress: string,
-              private nodeCommonRpcPort: number = 8545,
-              private nodeSecretStoreRpcPort: number = 8082) {
+  constructor(
+        private nodeUrl: string,
+        private secretStoreUrl: string,
+  ) {
 
   }
 
-  getNodeAddress(): string {
-    return this.nodeAddress;
+  getNodeUlr(): string {
+    return this.nodeUrl;
   }
 
+  getSecretStoreUrl(): string {
+    return this.secretStoreUrl;
+  }
+  
+  
   getRpcPort(): number {
     return this.nodeCommonRpcPort;
   }
@@ -83,7 +89,7 @@ class ParitySecretStore {
     let encodeHexData: string = new Buffer(encodeData).toString('hex');
 
     return new Promise(function (resolve, reject) {
-      let url = `${parityNode.getNodeAddress()}:${parityNode.getSecretStoreRpcPort()}/${storageId}/${hexSignature}/${nodeT}`;
+      let url = `${parityNode.getSecretStoreUrl()}/${storageId}/${hexSignature}/${nodeT}`;
       self.httpClient.post(url, encodeHexData)
         .subscribe(
           (response: string) => {
@@ -99,7 +105,7 @@ class ParitySecretStore {
 
         return new Promise((resolve, reject) => {
           self.httpClient.post(
-            `${parityNode.getNodeAddress()}:${parityNode.getRpcPort()}`,
+            `${parityNode.getNodeUlr()}`,
             {
               "jsonrpc": "2.0",
               "method": "secretstore_encrypt",
@@ -133,7 +139,7 @@ class ParitySecretStore {
     let hexSignature = ParitySecretStore.getSignature(storageId, ethereumAccount.getPrivateKey());
 
     return new Promise(function (resolve, reject) {
-      let url = `${parityNode.getNodeAddress()}:${parityNode.getSecretStoreRpcPort()}/shadow/${storageId}/${hexSignature}`;
+      let url = `${parityNode.getSecretStoreUrl()}/shadow/${storageId}/${hexSignature}`;
       self.httpClient.get(url)
         .subscribe(
           (shadowKeys: {
@@ -154,7 +160,7 @@ class ParitySecretStore {
       }) => {
         return new Promise<any>(function (resolve, reject) {
           self.httpClient.post(
-            `${parityNode.getNodeAddress()}:${parityNode.getRpcPort()}/`,
+            `${parityNode.getNodeUlr()}/`,
             {
               "jsonrpc": "2.0",
               "method": "secretstore_shadowDecrypt",
@@ -190,7 +196,7 @@ class ParityPersonal {
   public unlockRequestPromise(parityNode: ParityNode, ethAccount: EthereumAccount): Promise<boolean> {
     let _this = this;
     return new Promise(function (resolve, reject) {
-      let url = `${parityNode.getNodeAddress()}:${parityNode.getRpcPort()}`;
+      let url = `${parityNode.getNodeUlr()}`;
       console.log(url);
       _this.httpClient.post(
         url,
@@ -224,7 +230,7 @@ class ParityAccounts {
     let _this = this;
     return new Promise(function (resolve, reject) {
       _this.httpClient.post(
-        `${parityNode.getNodeAddress()}:${parityNode.getRpcPort()}`,
+        `${parityNode.getNodeUlr()}`,
         {
           'method': 'parity_exportAccount',
           'params': [
