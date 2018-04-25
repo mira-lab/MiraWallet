@@ -115,7 +115,7 @@ export class MiraBoxProvider {
         createWalletPromise = this.generateNewEncodedBtcWallet(walletName, copayerName, wallet.network);
         break;
       case Coin.BCH:
-        createWalletPromise = this.generateNewEncodedBtcWallet(walletName, copayerName, wallet.network);
+        createWalletPromise = this.generateNewEncodedBchWallet(walletName, copayerName);
         break;
       default:
         throw 'unknown coin';
@@ -171,6 +171,38 @@ export class MiraBoxProvider {
         copayerName,
         1, 1,
         {network: network},
+        function (err, secret) {
+          if (err) {
+            return reject(err);
+          }
+          //Exporting wallet
+          let exportedWallet = client.export();
+
+          //AES encrypting it with generated password
+          let encryptPassword = self.generatePassword(16);
+          let encryptedWallet = self.bwcProvider.getSJCL().encrypt(encryptPassword, exportedWallet);
+          resolve({
+            decryptedWallet: JSON.parse(exportedWallet),
+            encryptedWallet: encryptedWallet,
+            password: encryptPassword
+          });
+        });
+    });
+  }
+
+  generateNewEncodedBchWallet(walletName: string,
+                              copayerName: string): Promise<EncryptedGeneratedWallet> {
+    let self = this;
+    return new Promise(function (resolve, reject) {
+      let client = new self.bwcProvider.Client({
+        baseUrl: self.BWS_INSTANCE_URL,
+        verbose: false,
+      });
+      client.createWallet(
+        walletName,
+        copayerName,
+        1, 1,
+        {coin: 'bch'},
         function (err, secret) {
           if (err) {
             return reject(err);
