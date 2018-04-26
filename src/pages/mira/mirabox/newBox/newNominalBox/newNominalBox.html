@@ -22,8 +22,17 @@
     </ion-item>
     <ion-item>
       <ion-label>Source wallet:</ion-label>
-      <ion-select [(ngModel)]="signWalletIdx">
+      <ion-select [(ngModel)]="walletType">
+        <ion-option value="{{ coin.BTC }}">BTC</ion-option>
+        <ion-option value="{{ coin.BCH }}">BCH</ion-option>
+      </ion-select>
+      <ion-select *ngIf="walletType == coin.BTC" [(ngModel)]="signWalletIdx">
         <ion-option *ngFor="let wallet of btcWallets; let i=index" [selected]="i==0" [value]="i">
+          {{wallet.name}}
+        </ion-option>
+      </ion-select>
+      <ion-select *ngIf="walletType == coin.BCH" [(ngModel)]="signWalletIdx">
+        <ion-option *ngFor="let wallet of bchWallets; let i=index" [selected]="i==0" [value]="i">
           {{wallet.name}}
         </ion-option>
       </ion-select>
@@ -42,6 +51,7 @@
       </ion-select>
     </ion-item>
   </ion-list>
+  <button ion-button (click)="test()">TEST</button>
 </ion-content>
 
 <ion-footer>

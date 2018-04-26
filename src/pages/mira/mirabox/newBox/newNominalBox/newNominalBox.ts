@@ -18,7 +18,7 @@ import {OnGoingProcessProvider} from "../../../../../providers/on-going-process/
 export class NewNominalBoxPage {
   private config;
   public inProgress: boolean = false;
-
+  public coin = Coin;
   constructor(private bwcProvider: BwcProvider,
               private miraBoxProvider: MiraBoxProvider,
               private miraStorageProvider: MiraStorageProvider,
@@ -31,6 +31,7 @@ export class NewNominalBoxPage {
     this.config = this.configProvider.get();
 
     this.btcWallets = this.profileProvider.getWallets({coin: 'btc'});
+    this.bchWallets = this.profileProvider.getWallets({coin: 'bch'});
   }
 
   public walletType: Coin = Coin.BTC;
@@ -39,7 +40,10 @@ export class NewNominalBoxPage {
   public creatorName: string = "Anonymous";
   public amount: number = 0.001;
 
+
+
   public btcWallets;
+  public bchWallets;
 
   public signWalletIdx = 0;
   public sourceWalletIdx = 0;
@@ -55,10 +59,17 @@ export class NewNominalBoxPage {
       this.ongoingProcessProvider.set('miraBoxCreation');
 
       let HDPrivateKey = this.bwcProvider.getBitcore().HDPrivateKey;
-
-
+      let sourceWalletExported;
+      switch (this.walletType) {
+        case Coin.BCH:
+          sourceWalletExported = NewNominalBoxPage.exportWallet(this.bchWallets[this.sourceWalletIdx]);
+          break;
+        case Coin.BTC:
+          sourceWalletExported = NewNominalBoxPage.exportWallet(this.btcWallets[this.sourceWalletIdx]);
+          break;
+      }
       let signWalletExported = NewNominalBoxPage.exportWallet(this.btcWallets[this.signWalletIdx]);
-      let sourceWalletExported = NewNominalBoxPage.exportWallet(this.btcWallets[this.sourceWalletIdx]);
+
 
       if (!signWalletExported || !signWalletExported.xPrivKey) {
         alert('You have to select wallet');
@@ -97,8 +108,16 @@ export class NewNominalBoxPage {
 
       //filling mirabox with coin
 
-      let sourceWallet = this.btcWallets[this.sourceWalletIdx];
+      let sourceWallet;
 
+      switch (this.walletType) {
+        case Coin.BCH:
+          sourceWallet = NewNominalBoxPage.exportWallet(this.bchWallets[this.sourceWalletIdx]);
+          break;
+        case Coin.BTC:
+          sourceWallet = NewNominalBoxPage.exportWallet(this.btcWallets[this.sourceWalletIdx]);
+          break;
+      }
       let recipientAddress = miraBox.getBoxItems()[0].headers.address;
 
       let Unit = this.bwcProvider.getBitcore().Unit;
