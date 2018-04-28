@@ -156,7 +156,8 @@ export class NewNominalBoxPage {
         console.log(e);
       });
     }
-    catch {
+    catch (err){
+      console.log("Error:" + err);
       this.ongoingProcessProvider.unset();
     }
     finally {
