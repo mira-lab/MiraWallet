@@ -59,6 +59,8 @@ export class NewNominalBoxPage {
       this.ongoingProcessProvider.set('miraBoxCreation');
 
       let HDPrivateKey = this.bwcProvider.getBitcore().HDPrivateKey;
+
+      let signWalletExported = NewNominalBoxPage.exportWallet(this.btcWallets[this.signWalletIdx]);
       let sourceWalletExported;
       switch (this.walletType) {
         case Coin.BCH:
@@ -68,8 +70,6 @@ export class NewNominalBoxPage {
           sourceWalletExported = NewNominalBoxPage.exportWallet(this.btcWallets[this.sourceWalletIdx]);
           break;
       }
-      let signWalletExported = NewNominalBoxPage.exportWallet(this.btcWallets[this.signWalletIdx]);
-
 
       if (!signWalletExported || !signWalletExported.xPrivKey) {
         alert('You have to select wallet');
@@ -112,10 +112,10 @@ export class NewNominalBoxPage {
 
       switch (this.walletType) {
         case Coin.BCH:
-          sourceWallet = NewNominalBoxPage.exportWallet(this.bchWallets[this.sourceWalletIdx]);
+          sourceWallet = this.bchWallets[this.sourceWalletIdx];
           break;
         case Coin.BTC:
-          sourceWallet = NewNominalBoxPage.exportWallet(this.btcWallets[this.sourceWalletIdx]);
+          sourceWallet = this.btcWallets[this.sourceWalletIdx];
           break;
       }
       let recipientAddress = miraBox.getBoxItems()[0].headers.address;
