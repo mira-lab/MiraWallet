@@ -22,7 +22,8 @@ interface EncryptedGeneratedWallet {
     xPrivKey: string
   },
   encryptedWallet: object,
-  password: string
+  password: string,
+  address: string,
 }
 
 @Injectable()
@@ -123,11 +124,12 @@ export class MiraBoxProvider {
     return createWalletPromise.then(function (encryptedWallet: EncryptedGeneratedWallet) {
       return self.encodeWalletPasswordWithSecretStore(encryptedWallet.password)
         .then(function (encryptedPasswordResult: EncryptedResult) {
+          /*
           let HDPrivateKey = self.bwcProvider.getBitcore().HDPrivateKey;
           let hdPrivateKey = new HDPrivateKey(encryptedWallet.decryptedWallet.xPrivKey);
           let derived = hdPrivateKey.derive(derivedParam);
           let address = derived.privateKey.toAddress(wallet.network).toString();
-
+          */
           let boxItem: MiraBoxItem = {
             data: encryptedWallet.encryptedWallet,
             hash: encryptedPasswordResult.storageId,
@@ -136,7 +138,7 @@ export class MiraBoxProvider {
               type: wallet,
               pubType: 'xpub',
               pub: encryptedWallet.decryptedWallet.xPubKey,
-              address: address
+              address: encryptedWallet.address,
             },
             meta: walletMeta
           };
@@ -181,11 +183,14 @@ export class MiraBoxProvider {
           //AES encrypting it with generated password
           let encryptPassword = self.generatePassword(16);
           let encryptedWallet = self.bwcProvider.getSJCL().encrypt(encryptPassword, exportedWallet);
-          resolve({
-            decryptedWallet: JSON.parse(exportedWallet),
-            encryptedWallet: encryptedWallet,
-            password: encryptPassword
-          });
+          client.createAddress((err, x) => {
+              resolve({
+                decryptedWallet: JSON.parse(exportedWallet),
+                encryptedWallet: encryptedWallet,
+                password: encryptPassword,
+                address: x.address
+              });
+          })
         });
     });
   }
@@ -213,11 +218,14 @@ export class MiraBoxProvider {
           //AES encrypting it with generated password
           let encryptPassword = self.generatePassword(16);
           let encryptedWallet = self.bwcProvider.getSJCL().encrypt(encryptPassword, exportedWallet);
-          resolve({
-            decryptedWallet: JSON.parse(exportedWallet),
-            encryptedWallet: encryptedWallet,
-            password: encryptPassword
-          });
+          client.createAddress((err, x) => {
+              resolve({
+                decryptedWallet: JSON.parse(exportedWallet),
+                encryptedWallet: encryptedWallet,
+                password: encryptPassword,
+                address: x.address
+              });
+          })
         });
     });
   }

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {PlatformProvider} from "../../../../../providers/platform/platform";
 import {MiraBoxExportProvider} from "../../../../../providers/mirabox/mirabox-export";
 import {ModalController, NavController, NavParams} from "ionic-angular";
-import {MiraBox, MiraBoxItem} from "../../../../../mira/mira";
+import {MiraBox, MiraBoxItem, Coin} from "../../../../../mira/mira";
 import {NominalBoxOpeningViewer} from "./boxOpening/boxOpening";
 import {BwcProvider} from "../../../../../providers/bwc/bwc";
 import {InputPasswordModal} from "../../inputPasswordModal/inputPasswordModal";
@@ -97,10 +97,14 @@ export class NominalBoxViewer {
   public updateBalance(boxItem: MiraBoxItem) {
     let self = this;
     let url;
-    if (boxItem.headers.type.network == BtcNetwork.Live)
-      url = `https://insight.bitpay.com/api/addr/${boxItem.headers.address}/balance`;
-    else
-      url = `https://test-insight.bitpay.com/api/addr/${boxItem.headers.address}/balance`;
+    if(boxItem.headers.type.coin == Coin.BTC) {
+      if (boxItem.headers.type.network == BtcNetwork.Live)
+        url = `https://insight.bitpay.com/api/addr/${boxItem.headers.address}/balance`;
+      else
+        url = `https://test-insight.bitpay.com/api/addr/${boxItem.headers.address}/balance`;
+    } else if (boxItem.headers.type.coin == Coin.BCH){
+      url = `https://bch-insight.bitpay.com/api/addr/${boxItem.headers.address}/balance`;
+    }
     let xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.send();
