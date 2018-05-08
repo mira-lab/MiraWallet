@@ -2,11 +2,12 @@ import {Component} from '@angular/core';
 import {PlatformProvider} from "../../../../../providers/platform/platform";
 import {MiraBoxExportProvider} from "../../../../../providers/mirabox/mirabox-export";
 import {ModalController, NavController, NavParams} from "ionic-angular";
-import {MiraBox, MiraBoxItem, Coin} from "../../../../../mira/mira";
+import {MiraBox, MiraBoxItem, Coin, Status} from "../../../../../mira/mira";
 import {NominalBoxOpeningViewer} from "./boxOpening/boxOpening";
 import {BwcProvider} from "../../../../../providers/bwc/bwc";
 import {InputPasswordModal} from "../../inputPasswordModal/inputPasswordModal";
 import {BtcNetwork} from "../../../../../providers/mirabox/mirabox";
+import {MiraStorageProvider} from "../../../../../providers/mirabox/mirastorage";
 
 @Component({
   selector: 'nominalBoxViewer',
@@ -17,9 +18,10 @@ export class NominalBoxViewer {
   public miraBox: MiraBox;
   public currentBalance: number;
   public boxItemAddress;
-
+  public miraBoxStatus: Status;
   constructor(private platformProvider: PlatformProvider,
               private miraBoxExportProvider: MiraBoxExportProvider,
+              private miraStorageProvider: MiraStorageProvider,
               private bwcProvider: BwcProvider,
               private navCtrl: NavController,
               private modalCtrl: ModalController,
@@ -27,6 +29,9 @@ export class NominalBoxViewer {
     this.isCordova = this.platformProvider.isCordova;
     this.miraBox = navParams.data;
     this.updateBalance(this.miraBox.getBoxItems()[0]);
+    this.miraStorageProvider.getMiraBoxStatus(this.miraBox.getGuid()).then((status:Status)=>{
+       this.miraBoxStatus = status;
+    })
   }
 
 
@@ -47,6 +52,13 @@ export class NominalBoxViewer {
       });
       inputPassword.present();
     });
+  }
+
+  public makest(){
+    //this.miraStorageProvider.makeStatusForAll().then(()=>{console.log("XXX Done XXX")})
+    this.miraStorageProvider.getMiraBoxStatusArray().then((result: any)=>{
+      console.log(result);
+    }, (err)=>{console.log('rejected');});
   }
 
   public encodeMiraBox(miraBox: MiraBox, password: string): string {
@@ -72,6 +84,8 @@ export class NominalBoxViewer {
           downloadAnchorNode.setAttribute("download", self.getMiraBoxFileName());
           downloadAnchorNode.click();
         }
+        this.miraStorageProvider.updateMiraBoxStatus(self.miraBox.getGuid(), Status.Exported)
+          .then(()=>{console.log('MiraBox Status Updated to '+ Status.Exported)});
       })
       .catch(console.log);
 
@@ -86,8 +100,11 @@ export class NominalBoxViewer {
         let encodedMiraBox = self.encodeMiraBox(self.miraBox, password);
         self.miraBoxExportProvider
           .ShareSocial(encodedMiraBox, this.miraBox.getGuid());
+        this.miraStorageProvider.updateMiraBoxStatus(self.miraBox.getGuid(), Status.Sent)
+          .then(()=>{console.log('MiraBox Status Updated to '+ Status.Sent)});
       })
       .catch(console.log);
+
   }
 
   public async gotoFillWithCoin() {
