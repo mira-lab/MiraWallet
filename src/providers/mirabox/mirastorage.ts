@@ -129,7 +129,7 @@ export class MiraStorageProvider {
   public storeMiraBoxStatusArray(miraBoxStatusArray: Array<MiraBoxStatus>): Promise<void> {
       return this.storage.set(Keys.MIRA_BOX_STATUS_REGISTRY, miraBoxStatusArray);
   }
-  public getMiraBoxStatusArray(){
+  public getMiraBoxStatusArray(): Promise<Array<MiraBoxStatus>>{
     return this.storage.get(Keys.MIRA_BOX_STATUS_REGISTRY)
       .then((miraBoxStatusArray: Array<MiraBoxStatus>) => {
         return miraBoxStatusArray;
@@ -139,11 +139,8 @@ export class MiraStorageProvider {
     let self = this;
     return new Promise<void>(resolve => {
       self.getMiraBoxStatusArray().then((miraBoxStatusArray: Array<MiraBoxStatus>) => {
-        if(!miraBoxStatusArray){
-          let miraBoxStatusArray = new Array<MiraBoxStatus>();
-        }
         if(miraBoxStatusArray && miraBoxStatusArray.filter(status => status.guid === miraBoxStatus.guid).length > 0){
-          resolve();
+          return resolve();
         }
         miraBoxStatusArray.push(miraBoxStatus);
         self.storeMiraBoxStatusArray(miraBoxStatusArray).then(resolve);
@@ -155,7 +152,7 @@ export class MiraStorageProvider {
     return new Promise<void>(resolve => {
       self.getMiraBoxStatusArray().then((miraBoxStatusArray: Array<MiraBoxStatus>) => {
         if(!miraBoxStatusArray || miraBoxStatusArray.filter(status => status.guid === guid).length == 0){
-          resolve();
+          return resolve();
         }
         miraBoxStatusArray.splice(self.findIndex(miraBoxStatusArray, 'guid', guid), 1);
         return self.storeMiraBoxStatusArray(miraBoxStatusArray);
@@ -163,10 +160,10 @@ export class MiraStorageProvider {
     });
   }
   public updateMiraBoxStatus(guid: string, newStatus: Status): Promise<void>{
-    return new Promise<void>(resolve => {
+    return new Promise<void>((resolve, reject) => {
       this.getMiraBoxStatusArray().then((miraBoxStatusArray: Array<MiraBoxStatus>) => {
         if (!miraBoxStatusArray || miraBoxStatusArray.filter(status => status.guid === guid).length == 0) {
-          resolve();
+          return reject();
         }
         miraBoxStatusArray[this.findIndex(miraBoxStatusArray, 'guid', guid)].status = newStatus;
         return this.storeMiraBoxStatusArray(miraBoxStatusArray);
@@ -175,15 +172,12 @@ export class MiraStorageProvider {
   }
   public getMiraBoxStatus(guid: string){
     return new Promise((resolve, reject)=>{
-
       this.getMiraBoxStatusArray().then((miraBoxStatusArray: Array<MiraBoxStatus>) => {
         console.log(miraBoxStatusArray.filter(status => status.guid == guid).length);
         if (!miraBoxStatusArray || (miraBoxStatusArray.filter(status => status.guid == guid).length == 0)) {
-          console.log("HERE FUCK")
-          reject('There is no status found for this guid!');
+          return reject('There is no status found for this guid!');
         }
-        console.log("NOT HERE");
-        resolve(miraBoxStatusArray[this.findIndex(miraBoxStatusArray, 'guid', guid)].status);
+        return resolve(miraBoxStatusArray[this.findIndex(miraBoxStatusArray, 'guid', guid)].status);
       });
     });
   }
@@ -191,12 +185,17 @@ export class MiraStorageProvider {
     let self = this;
     return new Promise(resolve => {
       self.getMiraBoxGuidSet().then((set: Set<string>) => {
-        let addStatusPromises = [];
-        for(let _guid of Array.from(set.keys())){
-          addStatusPromises.push(self.addToMiraBoxStatusArray({guid: _guid, status: Status.Idle}));
-        }
-        Promise.all(addStatusPromises).then(()=> {resolve()});
-      });
+        self.getMiraBoxStatusArray().then((statusArray)=>{
+          let addStatusPromises = [];
+          let guidList: string[] = Array.from(set);
+          addStatusPromises = guidList.map((item)=>{
+            if(self.findIndex(statusArray, 'guid', item) == -1) {
+              return self.addToMiraBoxStatusArray({guid: item, status: Status.Idle});
+            }
+          });
+          Promise.all(addStatusPromises).then(()=> {resolve()});
+        })
+      })
     });
   }
   private findIndex(array, attr, value) {

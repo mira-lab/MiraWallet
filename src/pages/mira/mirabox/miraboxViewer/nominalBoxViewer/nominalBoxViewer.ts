@@ -19,6 +19,7 @@ export class NominalBoxViewer {
   public currentBalance: number;
   public boxItemAddress;
   public miraBoxStatus: Status;
+
   constructor(private platformProvider: PlatformProvider,
               private miraBoxExportProvider: MiraBoxExportProvider,
               private miraStorageProvider: MiraStorageProvider,
@@ -29,11 +30,18 @@ export class NominalBoxViewer {
     this.isCordova = this.platformProvider.isCordova;
     this.miraBox = navParams.data;
     this.updateBalance(this.miraBox.getBoxItems()[0]);
-    this.miraStorageProvider.getMiraBoxStatus(this.miraBox.getGuid()).then((status:Status)=>{
-       this.miraBoxStatus = status;
-    })
+    this.getMiraBoxStatus();
   }
 
+  private getMiraBoxStatus() {
+    this.miraStorageProvider.getMiraBoxStatus(this.miraBox.getGuid())
+      .then((status: Status) => {
+          this.miraBoxStatus = status;
+        },
+        (err) => {
+          console.log("Get status failed with error: " + err);
+        })
+  }
 
   private setPassword(): Promise<string> {
     let self = this;
@@ -54,13 +62,15 @@ export class NominalBoxViewer {
     });
   }
 
-  public makest(){
-    //this.miraStorageProvider.makeStatusForAll().then(()=>{console.log("XXX Done XXX")})
-    this.miraStorageProvider.getMiraBoxStatusArray().then((result: any)=>{
-      console.log(result);
-    }, (err)=>{console.log('rejected');});
-  }
+  public makest() {
+    this.miraStorageProvider.makeStatusForAll().then(()=>{console.log("Done making status for all!")})
 
+  }
+  public getArr(){
+    this.miraStorageProvider.getMiraBoxStatusArray().then((result: any) => {
+      console.log(result);
+    });
+  }
   public encodeMiraBox(miraBox: MiraBox, password: string): string {
     return this.bwcProvider.getSJCL().encrypt(password, this.miraBox.toString());
   }
@@ -85,7 +95,9 @@ export class NominalBoxViewer {
           downloadAnchorNode.click();
         }
         this.miraStorageProvider.updateMiraBoxStatus(self.miraBox.getGuid(), Status.Exported)
-          .then(()=>{console.log('MiraBox Status Updated to '+ Status.Exported)});
+          .then(() => {
+            console.log('MiraBox Status Updated to ' + Status.Exported)
+          });
       })
       .catch(console.log);
 
@@ -101,7 +113,9 @@ export class NominalBoxViewer {
         self.miraBoxExportProvider
           .ShareSocial(encodedMiraBox, this.miraBox.getGuid());
         this.miraStorageProvider.updateMiraBoxStatus(self.miraBox.getGuid(), Status.Sent)
-          .then(()=>{console.log('MiraBox Status Updated to '+ Status.Sent)});
+          .then(() => {
+            console.log('MiraBox Status Updated to ' + Status.Sent)
+          });
       })
       .catch(console.log);
 
@@ -114,12 +128,12 @@ export class NominalBoxViewer {
   public updateBalance(boxItem: MiraBoxItem) {
     let self = this;
     let url;
-    if(boxItem.headers.type.coin == Coin.BTC) {
+    if (boxItem.headers.type.coin == Coin.BTC) {
       if (boxItem.headers.type.network == BtcNetwork.Live)
         url = `https://insight.bitpay.com/api/addr/${boxItem.headers.address}/balance`;
       else
         url = `https://test-insight.bitpay.com/api/addr/${boxItem.headers.address}/balance`;
-    } else if (boxItem.headers.type.coin == Coin.BCH){
+    } else if (boxItem.headers.type.coin == Coin.BCH) {
       url = `https://bch-insight.bitpay.com/api/addr/${boxItem.headers.address}/balance`;
     }
     let xhr = new XMLHttpRequest();
