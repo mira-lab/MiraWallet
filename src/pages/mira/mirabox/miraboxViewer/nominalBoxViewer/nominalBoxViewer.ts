@@ -8,6 +8,9 @@ import {BwcProvider} from "../../../../../providers/bwc/bwc";
 import {InputPasswordModal} from "../../inputPasswordModal/inputPasswordModal";
 import {BtcNetwork} from "../../../../../providers/mirabox/mirabox";
 import {MiraStorageProvider} from "../../../../../providers/mirabox/mirastorage";
+import {WalletProvider} from "../../../../../providers/wallet/wallet";
+import {TxFormatProvider} from "../../../../../providers/tx-format/tx-format";
+
 
 @Component({
   selector: 'nominalBoxViewer',
@@ -18,6 +21,8 @@ export class NominalBoxViewer {
   public miraBox: MiraBox;
   public currentBalance: number;
   public boxItemAddress;
+  public miraBoxBchAddress;
+  public coin = Coin;
   public miraBoxStatus: Status;
 
   constructor(private platformProvider: PlatformProvider,
@@ -26,13 +31,23 @@ export class NominalBoxViewer {
               private bwcProvider: BwcProvider,
               private navCtrl: NavController,
               private modalCtrl: ModalController,
+              private walletProvider: WalletProvider,
+              private txFormatProvider: TxFormatProvider,
               navParams: NavParams) {
     this.isCordova = this.platformProvider.isCordova;
     this.miraBox = navParams.data;
     this.updateBalance(this.miraBox.getBoxItems()[0]);
+    this.getBchAddress();
     this.updateStatus();
   }
 
+  private getBchAddress(){
+    if(this.walletProvider.useLegacyAddress()){
+      this.miraBoxBchAddress = this.miraBox.getBoxItems()[0].headers.address;
+    }else{
+      this.miraBoxBchAddress = this.txFormatProvider.toCashAddress(this.miraBox.getBoxItems()[0].headers.address);
+    }
+  }
   private updateStatus() {
     this.miraStorageProvider.getMiraBoxStatus(this.miraBox.getGuid())
       .then((status: Status) => {

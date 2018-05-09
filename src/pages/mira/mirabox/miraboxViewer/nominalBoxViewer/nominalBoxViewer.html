@@ -33,9 +33,13 @@
         <ion-label>Currency</ion-label>
         <ion-label>{{miraBox.getBoxItems()[0].headers.type.coin}}</ion-label>
       </ion-item>
-      <ion-item>
+      <ion-item *ngIf="miraBox.getBoxItems()[0].headers.type.coin != coin.BCH">
         <ion-label>Address</ion-label>
         <ion-label copy-to-clipboard="{{ miraBox.getBoxItems()[0].headers.address }}">{{miraBox.getBoxItems()[0].headers.address}}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="miraBox.getBoxItems()[0].headers.type.coin == coin.BCH">
+        <ion-label>Address</ion-label>
+        <ion-label copy-to-clipboard="{{ miraBoxBchAddress }}">{{ miraBoxBchAddress }}</ion-label>
       </ion-item>
       <ion-item>
         <ion-label>Last Action</ion-label>
