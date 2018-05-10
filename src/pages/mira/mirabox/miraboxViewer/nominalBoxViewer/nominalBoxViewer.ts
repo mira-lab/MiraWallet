@@ -30,10 +30,10 @@ export class NominalBoxViewer {
     this.isCordova = this.platformProvider.isCordova;
     this.miraBox = navParams.data;
     this.updateBalance(this.miraBox.getBoxItems()[0]);
-    this.getMiraBoxStatus();
+    this.updateMiraBoxStatus();
   }
 
-  private getMiraBoxStatus() {
+  private updateMiraBoxStatus() {
     this.miraStorageProvider.getMiraBoxStatus(this.miraBox.getGuid())
       .then((status: Status) => {
           this.miraBoxStatus = status;
@@ -96,7 +96,8 @@ export class NominalBoxViewer {
         }
         this.miraStorageProvider.updateMiraBoxStatus(self.miraBox.getGuid(), Status.Exported)
           .then(() => {
-            console.log('MiraBox Status Updated to ' + Status.Exported)
+            console.log('MiraBox Status Updated to ' + Status.Exported);
+            this.updateMiraBoxStatus();
           });
       })
       .catch(console.log);
@@ -115,6 +116,7 @@ export class NominalBoxViewer {
         this.miraStorageProvider.updateMiraBoxStatus(self.miraBox.getGuid(), Status.Sent)
           .then(() => {
             console.log('MiraBox Status Updated to ' + Status.Sent)
+            this.updateMiraBoxStatus();
           });
       })
       .catch(console.log);

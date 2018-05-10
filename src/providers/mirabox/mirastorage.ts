@@ -139,7 +139,9 @@ export class MiraStorageProvider {
     let self = this;
     return new Promise<void>(resolve => {
       self.getMiraBoxStatusArray().then((miraBoxStatusArray: Array<MiraBoxStatus>) => {
-        if(miraBoxStatusArray && miraBoxStatusArray.filter(status => status.guid === miraBoxStatus.guid).length > 0){
+        if(!miraBoxStatusArray){
+          miraBoxStatusArray = new Array<MiraBoxStatus>();
+        }else if(miraBoxStatusArray.filter(status => status.guid === miraBoxStatus.guid).length > 0){
           return resolve();
         }
         miraBoxStatusArray.push(miraBoxStatus);
