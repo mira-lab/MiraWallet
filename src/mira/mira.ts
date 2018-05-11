@@ -1,9 +1,10 @@
 import * as Message from 'bitcore-message';
 import * as BWC from 'bitcore-wallet-client';
 export enum Status{
-  Exported = "exported",
-  Sent = "sent",
-  Idle = "idle",
+  Exported = "Exported",
+  Sent = "Sent",
+  Idle = "Idle",
+  Err = "No actions found",
 }
 export interface MiraBoxStatus{
   guid: string,

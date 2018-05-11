@@ -30,16 +30,17 @@ export class NominalBoxViewer {
     this.isCordova = this.platformProvider.isCordova;
     this.miraBox = navParams.data;
     this.updateBalance(this.miraBox.getBoxItems()[0]);
-    this.updateMiraBoxStatus();
+    this.updateStatus();
   }
 
-  private updateMiraBoxStatus() {
+  private updateStatus() {
     this.miraStorageProvider.getMiraBoxStatus(this.miraBox.getGuid())
       .then((status: Status) => {
           this.miraBoxStatus = status;
         },
         (err) => {
           console.log("Get status failed with error: " + err);
+          this.miraBoxStatus = Status.Err;
         })
   }
 
@@ -62,15 +63,6 @@ export class NominalBoxViewer {
     });
   }
 
-  public makest() {
-    this.miraStorageProvider.makeStatusForAll().then(()=>{console.log("Done making status for all!")})
-
-  }
-  public getArr(){
-    this.miraStorageProvider.getMiraBoxStatusArray().then((result: any) => {
-      console.log(result);
-    });
-  }
   public encodeMiraBox(miraBox: MiraBox, password: string): string {
     return this.bwcProvider.getSJCL().encrypt(password, this.miraBox.toString());
   }
@@ -97,8 +89,8 @@ export class NominalBoxViewer {
         this.miraStorageProvider.updateMiraBoxStatus(self.miraBox.getGuid(), Status.Exported)
           .then(() => {
             console.log('MiraBox Status Updated to ' + Status.Exported);
-            this.updateMiraBoxStatus();
-          });
+            this.updateStatus();
+          }, ()=>{console.log("Error updating mirabox status!")})
       })
       .catch(console.log);
 
@@ -115,9 +107,9 @@ export class NominalBoxViewer {
           .ShareSocial(encodedMiraBox, this.miraBox.getGuid());
         this.miraStorageProvider.updateMiraBoxStatus(self.miraBox.getGuid(), Status.Sent)
           .then(() => {
-            console.log('MiraBox Status Updated to ' + Status.Sent)
-            this.updateMiraBoxStatus();
-          });
+            console.log('MiraBox Status Updated to ' + Status.Sent);
+            this.updateStatus();
+          }, ()=>{console.log("Error updating mirabox status!")})
       })
       .catch(console.log);
 
