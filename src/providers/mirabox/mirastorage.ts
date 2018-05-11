@@ -5,11 +5,12 @@ import {File} from "@ionic-native/file";
 import {Logger} from "../logger/logger";
 import {PlatformProvider} from "../platform/platform";
 import {IStorage} from "../persistence/storage/istorage";
-import {MiraBox} from "../../mira/mira";
+import {MiraBox, Status, MiraBoxStatus} from "../../mira/mira";
 
 const Keys = {
   MIRA_BOX: (miraBoxGuid: string) => `mira-box-${miraBoxGuid}`,
   MIRA_BOX_REGISTRY: 'mira-box-registry',
+  MIRA_BOX_STATUS_REGISTRY: 'mira-box-status-registry',
 };
 
 @Injectable()
@@ -45,7 +46,11 @@ export class MiraStorageProvider {
           return resolve();
         }
         set.add(miraBoxGuid);
-        self.storeMiraBoxGuidSet(set).then(resolve);
+        let statusPromise = self.addToMiraBoxStatusArray({guid: miraBoxGuid, status: Status.Idle});
+        let storeMiraBoxPromise = self.storeMiraBoxGuidSet(set);
+        Promise.all([statusPromise, storeMiraBoxPromise]).then(() => {
+          resolve()
+        });
       });
     });
   }
@@ -58,7 +63,11 @@ export class MiraStorageProvider {
           return resolve();
         }
         set.delete(miraBoxGuid);
-        return self.storeMiraBoxGuidSet(set);
+        let removeFromStatusPromise = this.removeFromMiraBoxStatusArray(miraBoxGuid);
+        let storeGuidSetPromise = self.storeMiraBoxGuidSet(set);
+        Promise.all([removeFromStatusPromise, storeGuidSetPromise]).then(() => {
+          resolve();
+        });
       });
     });
   }
@@ -114,4 +123,87 @@ export class MiraStorageProvider {
       });
   }
 
+  public storeMiraBoxStatusArray(miraBoxStatusArray: Array<MiraBoxStatus>): Promise<void> {
+    return this.storage.set(Keys.MIRA_BOX_STATUS_REGISTRY, miraBoxStatusArray);
+  }
+
+  public getMiraBoxStatusArray(): Promise<Array<MiraBoxStatus>> {
+    return this.storage.get(Keys.MIRA_BOX_STATUS_REGISTRY)
+      .then((miraBoxStatusArray: Array<MiraBoxStatus>) => {
+        return miraBoxStatusArray;
+      });
+  }
+
+  private addToMiraBoxStatusArray(miraBoxStatus: MiraBoxStatus): Promise<void> {
+    let self = this;
+    return new Promise<void>(resolve => {
+      self.getMiraBoxStatusArray().then((miraBoxStatusArray: Array<MiraBoxStatus>) => {
+        if (!miraBoxStatusArray) {
+          miraBoxStatusArray = new Array<MiraBoxStatus>();
+        } else if (miraBoxStatusArray.filter(status => status.guid === miraBoxStatus.guid).length > 0) {
+          return resolve();
+        }
+        miraBoxStatusArray.push(miraBoxStatus);
+        self.storeMiraBoxStatusArray(miraBoxStatusArray).then(resolve);
+      });
+    });
+  }
+
+  public removeFromMiraBoxStatusArray(guid: string): Promise<void> {
+    let self = this;
+    return new Promise<void>(resolve => {
+      self.getMiraBoxStatusArray().then((miraBoxStatusArray: Array<MiraBoxStatus>) => {
+        if (!miraBoxStatusArray || miraBoxStatusArray.filter(status => status.guid === guid).length == 0) {
+          return resolve();
+        }
+        miraBoxStatusArray.splice(self.findIndex(miraBoxStatusArray, 'guid', guid), 1);
+        return self.storeMiraBoxStatusArray(miraBoxStatusArray);
+      });
+    });
+  }
+
+  public updateMiraBoxStatus(guid: string, newStatus: Status): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.getMiraBoxStatusArray().then((miraBoxStatusArray: Array<MiraBoxStatus>) => {
+        if (!miraBoxStatusArray) {
+          miraBoxStatusArray = new Array<MiraBoxStatus>();
+        }
+        if (miraBoxStatusArray.filter(status => status.guid === guid).length == 0) {
+          this.addToMiraBoxStatusArray({guid: guid, status: newStatus})
+            .then(() => {
+              resolve()
+            });
+          return;
+        }
+        miraBoxStatusArray[this.findIndex(miraBoxStatusArray, 'guid', guid)].status = newStatus;
+        this.storeMiraBoxStatusArray(miraBoxStatusArray)
+          .then(() => {
+            resolve()
+          }, () => {
+            reject()
+          })
+        return;
+      });
+    });
+  }
+
+  public getMiraBoxStatus(guid: string) {
+    return new Promise((resolve, reject) => {
+      this.getMiraBoxStatusArray().then((miraBoxStatusArray: Array<MiraBoxStatus>) => {
+        if (!miraBoxStatusArray || (miraBoxStatusArray.filter(status => status.guid == guid).length == 0)) {
+          return reject('There is no status found for this guid!');
+        }
+        return resolve(miraBoxStatusArray[this.findIndex(miraBoxStatusArray, 'guid', guid)].status);
+      });
+    });
+  }
+
+  private findIndex(array, attr, value) {
+    for (let i = 0; i < array.length; i += 1) {
+      if (array[i][attr] === value) {
+        return i;
+      }
+    }
+    return -1;
+  }
 }
