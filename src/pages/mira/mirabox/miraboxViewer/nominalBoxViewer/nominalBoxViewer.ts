@@ -42,10 +42,12 @@ export class NominalBoxViewer {
   }
 
   private getBchAddress(){
-    if(this.walletProvider.useLegacyAddress()){
-      this.miraBoxBchAddress = this.miraBox.getBoxItems()[0].headers.address;
-    }else{
-      this.miraBoxBchAddress = this.txFormatProvider.toCashAddress(this.miraBox.getBoxItems()[0].headers.address);
+    if(this.miraBox.getBoxItems()[0].headers.type.coin == Coin.BCH) {
+      if (this.walletProvider.useLegacyAddress()) {
+        this.miraBoxBchAddress = this.miraBox.getBoxItems()[0].headers.address;
+      } else {
+        this.miraBoxBchAddress = this.txFormatProvider.toCashAddress(this.miraBox.getBoxItems()[0].headers.address);
+      }
     }
   }
   private updateStatus() {
