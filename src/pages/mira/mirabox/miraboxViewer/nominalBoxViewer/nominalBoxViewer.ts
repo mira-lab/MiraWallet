@@ -24,7 +24,8 @@ export class NominalBoxViewer {
   public miraBoxBchAddress;
   public coin = Coin;
   public miraBoxStatus: Status;
-
+  public ethAccount;
+  public ethAccountPassword;
   constructor(private platformProvider: PlatformProvider,
               private miraBoxExportProvider: MiraBoxExportProvider,
               private miraStorageProvider: MiraStorageProvider,
@@ -165,7 +166,15 @@ export class NominalBoxViewer {
 
   public gotoOpenMiraBox() {
     // noinspection JSIgnoredPromiseFromCall
-    this.navCtrl.push(NominalBoxOpeningViewer, this.miraBox);
+    if(this.ethAccount && this.ethAccountPassword) {
+      this.navCtrl.push(NominalBoxOpeningViewer, {
+        mirabox: this.miraBox,
+        ethAccount: this.ethAccount,
+        ethAccountPassword: this.ethAccountPassword
+      });
+    }else{
+      alert('Ethereum account and password fields can\'t be empty!');
+    }
   }
 
 

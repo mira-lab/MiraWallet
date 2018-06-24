@@ -61,6 +61,19 @@
       </button>
     </ion-col>
   </ion-row>
+  <ion-card>
+    <ion-list>
+      <ion-item-divider color="light">Enter ethereum account and its password:</ion-item-divider>
+      <ion-item>
+        <ion-label>Ethereum account:</ion-label>
+        <ion-input type="text" [(ngModel)]="ethAccount"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Password:</ion-label>
+        <ion-input type="password" [(ngModel)]="ethAccountPassword"></ion-input>
+      </ion-item>
+    </ion-list>
+  </ion-card>
   <ion-row>
     <ion-col>
       <button ion-button (click)="gotoOpenMiraBox()" block outline icon-end>

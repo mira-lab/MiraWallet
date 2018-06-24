@@ -284,4 +284,36 @@ export class MiraBoxProvider {
       });
 
   }
+  _openMiraBox(miraBox: MiraBox, ethAccount:string, ethAccountPassword:string): Promise<DecodedWallet[]> {
+    console.log(ethAccount);
+    console.log(ethAccountPassword);
+    let self = this;
+    let userEthereumAccount = new EthereumAccount(ethAccount, ethAccountPassword);
+    return this.getEthereumAccountPrivateKeyPromise(this.parityNode, userEthereumAccount)
+      .then(ethereumPrivateKey => {
+        userEthereumAccount.setPrivateKey(ethereumPrivateKey);
+
+        let promiseList: Promise<any>[] = [];
+        for (let miraBoxItem of miraBox.getBoxItems()) {
+          let promise = new Promise<DecodedWallet>(function (resolve, reject) {
+            self.parityProvider.secretStore.shadowDecode(
+              self.parityNode,
+              userEthereumAccount,
+              miraBoxItem.hash,
+              miraBoxItem.key)
+              .then(function (decryptedPassword) {
+                let decryptedWallet = self.bwcProvider.getSJCL().decrypt(decryptedPassword, miraBoxItem.data);
+                let encryptedWallet: DecodedWallet = {
+                  decryptedWallet: JSON.parse(decryptedWallet),
+                  miraBoxItem: miraBoxItem
+                };
+                resolve(encryptedWallet);
+              })
+          });
+          promiseList.push(promise);
+        }
+        return Promise.all(promiseList);
+      });
+
+  }
 }

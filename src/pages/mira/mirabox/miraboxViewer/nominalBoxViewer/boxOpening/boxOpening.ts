@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavParams} from "ionic-angular";
+import {NavController, NavParams} from "ionic-angular";
 import {MiraBox} from "../../../../../../mira/mira";
 import {DecodedWallet, MiraBoxProvider} from "../../../../../../providers/mirabox/mirabox";
 
@@ -9,19 +9,27 @@ import {DecodedWallet, MiraBoxProvider} from "../../../../../../providers/mirabo
 })
 export class NominalBoxOpeningViewer {
   public miraBox: MiraBox;
-
+  public ethAccount;
+  public ethAccountPassword;
   constructor(navParams: NavParams,
-              private miraBoxProvider: MiraBoxProvider) {
-    this.miraBox = navParams.data;
+              private miraBoxProvider: MiraBoxProvider,
+              private navCtrl:NavController) {
+    this.miraBox = navParams.data.mirabox;
+    this.ethAccount = navParams.data.ethAccount;
+    this.ethAccountPassword = navParams.data.ethAccountPassword;
   }
 
-  public decryptedWallets:DecodedWallet[] = [];
-
+  public decryptedWallets: DecodedWallet[] = [];
   ngOnInit() {
     let self = this;
-    this.miraBoxProvider.openMiraBox(this.miraBox)
-      .then(function (wallets:DecodedWallet[]) {
+    this.miraBoxProvider._openMiraBox(this.miraBox, this.ethAccount, this.ethAccountPassword)
+      .then(function (wallets: DecodedWallet[]) {
         self.decryptedWallets = wallets;
+      })
+      .catch((err) => {
+        this.navCtrl.pop();
+        alert("Something went wrong!");
       });
+
   }
 }
