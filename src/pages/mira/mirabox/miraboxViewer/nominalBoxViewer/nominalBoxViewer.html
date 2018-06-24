@@ -20,6 +20,10 @@
         <ion-label>Description</ion-label>
         <ion-label>{{miraBox.getDescription()}}</ion-label>
       </ion-item>
+      <ion-item>
+        <ion-label>Hash</ion-label>
+        <ion-label copy-to-clipboard="{{ miraBox.getBoxItems()[0].hash }}">{{miraBox.getBoxItems()[0].hash}}</ion-label>
+      </ion-item>
     </ion-list>
   </ion-card>
   <ion-card>

@@ -285,8 +285,6 @@ export class MiraBoxProvider {
 
   }
   _openMiraBox(miraBox: MiraBox, ethAccount:string, ethAccountPassword:string): Promise<DecodedWallet[]> {
-    console.log(ethAccount);
-    console.log(ethAccountPassword);
     let self = this;
     let userEthereumAccount = new EthereumAccount(ethAccount, ethAccountPassword);
     return this.getEthereumAccountPrivateKeyPromise(this.parityNode, userEthereumAccount)
@@ -309,6 +307,9 @@ export class MiraBoxProvider {
                 };
                 resolve(encryptedWallet);
               })
+              .catch((err)=>{
+                reject(err);
+              });
           });
           promiseList.push(promise);
         }
