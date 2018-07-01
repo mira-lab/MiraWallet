@@ -1,6 +1,9 @@
 import {Injectable} from "@angular/core";
 import {EncryptedResult, EthereumAccount, ParityNode, ParityProvider} from "../secret-store/secret-store";
-import {MiraBoxCreator, MiraBox, MiraBoxType, MiraBoxItem, WalletType, Coin} from "../../mira/mira";
+import {
+  MiraBoxCreator, MiraBox, MiraBoxType, MiraBoxItem, WalletType, Coin,
+  MiraBoxEthereumPair
+} from "../../mira/mira";
 import {BwcProvider} from "../bwc/bwc";
 
 const ethKey = require('keythereum');
@@ -101,7 +104,9 @@ export class MiraBoxProvider {
                        copayerName: string,
                        boxDescription: string,
                        boxCreator: MiraBoxCreator,
-                       walletMeta: object = {}): Promise<MiraBox> {
+                       ethereumPair: MiraBoxEthereumPair = {address:'', privateKey:''},
+                       walletMeta: object = {}
+                       ): Promise<MiraBox> {
     let self = this;
 
     let createWalletPromise: Promise<EncryptedGeneratedWallet>;
@@ -147,7 +152,9 @@ export class MiraBoxProvider {
             MiraBoxType.Nominal,
             boxCreator,
             [boxItem],
-            boxDescription
+            boxDescription,
+            undefined,
+            ethereumPair
           );
         });
     });

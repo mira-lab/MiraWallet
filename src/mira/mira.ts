@@ -32,7 +32,8 @@ interface MiraBoxJsonInterface {
   'guid': string,
   'description': string,
   'creator': MiraBoxCreator,
-  'boxItems': MiraBoxItem[]
+  'boxItems': MiraBoxItem[],
+  'ethereumPair': MiraBoxEthereumPair
 }
 
 export interface MiraBoxCreator {
@@ -58,6 +59,11 @@ export interface MiraBoxItem {
   data
 }
 
+export interface MiraBoxEthereumPair {
+  address: string,
+  privateKey: string
+}
+
 export class MiraBox {
   private guid: string;
   private miraBoxStringValue: string;
@@ -67,7 +73,8 @@ export class MiraBox {
               private creator: MiraBoxCreator,
               private boxItems: MiraBoxItem[],
               private description: string = '',
-              private version: string = '1') {
+              private version: string = '1',
+              private ethereumPair: MiraBoxEthereumPair = {address: '', privateKey: ''}) {
     this.generateGuid();
     this.stringify();
   }
@@ -100,7 +107,8 @@ export class MiraBox {
       'guid': this.guid,
       'description': this.description,
       'creator': this.creator,
-      'boxItems': this.boxItems
+      'boxItems': this.boxItems,
+      'ethereumPair': this.ethereumPair
     };
   }
 
@@ -110,6 +118,10 @@ export class MiraBox {
 
   getType(): MiraBoxType {
     return this.type;
+  }
+
+  getEthereumPair(): MiraBoxEthereumPair{
+    return this.ethereumPair;
   }
 
   getCreator(): MiraBoxCreator {
@@ -134,7 +146,8 @@ export class MiraBox {
       jsonObj.creator,
       jsonObj.boxItems,
       jsonObj.description,
-      jsonObj.version)
+      jsonObj.version,
+      jsonObj.ethereumPair)
       .setGuid(jsonObj.guid)
       .stringify();
   }

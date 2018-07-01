@@ -51,6 +51,38 @@
       </ion-select>
     </ion-item>
   </ion-list>
+  <button ion-button (click)="showAdvOpts = !showAdvOpts" outline block icon-end>
+    <span *ngIf="!showAdvOpts">Show advanced options</span>
+    <span *ngIf="showAdvOpts">Hide advanced options</span>
+    <ion-icon name="options"></ion-icon>
+  </button>
+  <div *ngIf="showAdvOpts">
+    <ion-list>
+      <ion-item>
+        <ion-label>Register with:</ion-label>
+        <ion-select [(ngModel)]="registerWithType" (ionChange)="registerSelectChange()">
+          <ion-option value="{{ 'privatekey' }}">Private Key</ion-option>
+          <ion-option value="{{ 'address' }}">Ethereum Address</ion-option>
+        </ion-select>
+      </ion-item>
+      <div *ngIf="registerWithType == 'privatekey'">
+        <ion-item>
+          <ion-label>Private Key</ion-label>
+          <ion-input [(ngModel)]="ethPrivateKey" (ionChange)="updateEthAddress()"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="ethPrivateKey">
+          <ion-label>Ethereum address</ion-label>
+          <ion-input [(ngModel)]="ethAddress" [disabled]="true"></ion-input>
+        </ion-item>
+      </div>
+      <div *ngIf="registerWithType == 'address'">
+        <ion-item>
+          <ion-label>Ethereum address</ion-label>
+          <ion-input [(ngModel)]="ethAddress"></ion-input>
+        </ion-item>
+      </div>
+    </ion-list>
+  </div>
 </ion-content>
 
 <ion-footer>

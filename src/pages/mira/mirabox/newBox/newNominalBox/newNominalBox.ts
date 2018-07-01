@@ -9,6 +9,8 @@ import {WalletProvider} from "../../../../../providers/wallet/wallet";
 import {ConfigProvider} from "../../../../../providers/config/config";
 import {TxConfirmNotificationProvider} from "../../../../../providers/tx-confirm-notification/tx-confirm-notification";
 import {OnGoingProcessProvider} from "../../../../../providers/on-going-process/on-going-process";
+import {Web3Provider} from "../../../../../providers/web3/web3";
+import {MiraboxRegisterProvider} from "../../../../../providers/mirabox/miraboxRegister/miraboxRegister";
 
 
 @Component({
@@ -27,11 +29,15 @@ export class NewNominalBoxPage {
               private configProvider: ConfigProvider,
               private walletProvider: WalletProvider,
               private profileProvider: ProfileProvider,
-              private ongoingProcessProvider: OnGoingProcessProvider) {
+              private ongoingProcessProvider: OnGoingProcessProvider,
+              private web3Provider: Web3Provider,
+              private miraboxRegisterProvider: MiraboxRegisterProvider) {
     this.config = this.configProvider.get();
 
     this.btcWallets = this.profileProvider.getWallets({coin: 'btc'});
     this.bchWallets = this.profileProvider.getWallets({coin: 'bch'});
+    this.web3 = this.web3Provider.getWeb3();
+    this.generatePrivateKey();
   }
 
   public walletType: Coin = Coin.BTC;
@@ -40,7 +46,13 @@ export class NewNominalBoxPage {
   public creatorName: string = "Miralab";
   public amount: number = 0.001;
 
-
+  public showAdvOpts: boolean = false;
+  public ethAddress: string = '';
+  public ethPrivateKey: string = '';
+  private ethAccount;
+  private web3;
+  public isEthAddressFieldDisabled: boolean = false;
+  public registerWithType: string = 'privatekey';
 
   public btcWallets;
   public bchWallets;
@@ -48,12 +60,47 @@ export class NewNominalBoxPage {
   public signWalletIdx = 0;
   public sourceWalletIdx = 0;
 
+
   private static exportWallet(wallet) {
     return JSON.parse(wallet.export())
   }
 
+  private generatePrivateKey(){
+    this.ethAccount = this.web3.eth.accounts.create();
+    this.ethPrivateKey = this.ethAccount.privateKey;
+    this.ethAddress = this.ethAccount.address;
+    this.isEthAddressFieldDisabled = true;
+  }
+
+  public updateEthAddress(){
+    try{
+      this.ethAccount = this.web3.eth.accounts.privateKeyToAccount(this.ethPrivateKey);
+      this.ethAddress = this.ethAccount.address;
+      this.isEthAddressFieldDisabled = true;
+    } catch(err){
+      this.ethAddress = '';
+      this.isEthAddressFieldDisabled = false;
+    }
+  }
+  public registerSelectChange(){
+    if(this.registerWithType == 'address'){
+      this.ethPrivateKey = '';
+      this.ethAddress = '';
+    }else{
+      this.ethPrivateKey = this.ethAccount.privateKey;
+      this.ethAddress = this.ethAccount.address;
+    }
+  }
   public async createBox() {
     let self = this;
+    if(!this.ethPrivateKey && !this.ethAddress){
+      if(this.registerWithType == 'address') {
+        alert('Address  field can\'t be empty!');
+      }else{
+        alert('Private key field can\'t be empty!');
+      }
+      return;
+    }
     this.inProgress=true;
     try {
       this.ongoingProcessProvider.set('miraBoxCreation');
@@ -89,7 +136,6 @@ export class NewNominalBoxPage {
         coin: sourceWalletExported.coin,
         network: sourceWalletExported.network
       };
-
       this.ongoingProcessProvider.set('miraBoxCreation', false);
       //creating mirabox
       let miraBox: MiraBox = await this.miraBoxProvider.createNominalMiraBox(
@@ -100,12 +146,18 @@ export class NewNominalBoxPage {
         {
           name: self.creatorName,
           publicKey: signPublicKey
+        },
+        {
+          address: self.ethAddress,
+          privateKey: self.ethPrivateKey
         }
       );
       miraBox.createSignature(signPrivateKey);
+
       //storing mirabox
       await self.miraStorageProvider.storeMiraBox(miraBox);
-
+      //register mirabox with eth address
+      await self.miraboxRegisterProvider.registerMirabox(miraBox.getBoxItems()[0].hash, this.ethAddress);
       //filling mirabox with coin
 
       let sourceWallet;
