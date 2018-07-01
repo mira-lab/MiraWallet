@@ -29,13 +29,34 @@ export class MiraboxImportComponent {
     if (input) {
       let reader = new FileReader();
       reader.onload = function (e: any) {
+        if (self.isAESEncrypted(e.target.result)) {
         self
           .openEncodedMiraBox(e.target.result)
           .catch(reason => {
             console.log(reason)
           });
+        }else{
+          self
+            .openMiraBox(e.target.result)
+            .catch(reason => {
+              console.log(reason)
+            });
+        }
       };
       reader.readAsText(input);
+    }
+  }
+  public isAESEncrypted(fileString: string): boolean{
+    const aesEncryptedProperties = [
+      'iv', 'v', 'iter', 'ks', 'ts',
+      'mode', 'adata', 'cipher', 'salt', 'ct'
+    ];
+    try{
+      let parsedObj = JSON.parse(fileString);
+      return aesEncryptedProperties.every(aesProperty => parsedObj.hasOwnProperty(aesProperty));
+    }
+    catch(err){
+      return false;
     }
   }
 
@@ -45,7 +66,11 @@ export class MiraboxImportComponent {
       this.miraboxImportProvider
         .importMirabox()
         .then((encodedMiraBox: string) => {
-          return self.openEncodedMiraBox(encodedMiraBox);
+          if(this.isAESEncrypted(encodedMiraBox)) {
+            return self.openEncodedMiraBox(encodedMiraBox);
+          }else{
+            return self.openMiraBox(encodedMiraBox);
+          }
         })
         .catch(reason => {
           console.log(reason)
@@ -55,7 +80,22 @@ export class MiraboxImportComponent {
       fileDialog.click();
     }
   }
-
+  private openMiraBox(miraBoxString: string): Promise<any>{
+    return new Promise<MiraBox>((resolve, reject) => {
+      try{
+        let miraBox = MiraBox.fromString(miraBoxString);
+        return resolve(miraBox);
+      }
+      catch(err){
+        return reject(err);
+      }
+    }).then((miraBox: MiraBox)=>{
+      return this.miraStorageProvider
+        .storeMiraBox(miraBox)
+        .then(() => { this.navCtrl.push(NominalBoxViewer, miraBox );
+      });
+    })
+  }
   private openEncodedMiraBox(encodedMiraBox: string): Promise<any> {
     let self = this;
     return new Promise<MiraBox>(function (resolve, reject) {

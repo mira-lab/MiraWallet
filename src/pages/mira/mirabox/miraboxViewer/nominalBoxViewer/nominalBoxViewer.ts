@@ -18,6 +18,7 @@ import {TxFormatProvider} from "../../../../../providers/tx-format/tx-format";
 })
 export class NominalBoxViewer {
   public isCordova: boolean;
+  public isEncrypted: boolean = false;
   public miraBox: MiraBox;
   public currentBalance: number;
   public boxItemAddress;
@@ -91,27 +92,43 @@ export class NominalBoxViewer {
 
   download() {
     let self = this;
-    this.setPassword()
-      .then(password => {
-        let encodedMiraBox = self.encodeMiraBox(self.miraBox, password);
-        if (this.platformProvider.isCordova) {
-          this.miraBoxExportProvider.createFile(encodedMiraBox, self.getMiraBoxFileName());
-        }
-        else {
-          let dataStr = "data:application/text;charset=utf-8," + encodedMiraBox;
-          let downloadAnchorNode = document.getElementById("not-cordova-download");
-          downloadAnchorNode.setAttribute("href", dataStr);
-          downloadAnchorNode.setAttribute("download", self.getMiraBoxFileName());
-          downloadAnchorNode.click();
-        }
-        this.miraStorageProvider.updateMiraBoxStatus(self.miraBox.getGuid(), Status.Exported)
-          .then(() => {
-            console.log('MiraBox Status Updated to ' + Status.Exported);
-            this.updateStatus();
-          }, ()=>{console.log("Error updating mirabox status!")})
-      })
-      .catch(console.log);
-
+    if(this.isEncrypted){
+      this.setPassword()
+        .then(password => {
+          let encodedMiraBox = self.encodeMiraBox(self.miraBox, password);
+          if (this.platformProvider.isCordova) {
+            this.miraBoxExportProvider.createFile(encodedMiraBox, self.getMiraBoxFileName());
+          }
+          else {
+            let dataStr = "data:application/text;charset=utf-8," + encodedMiraBox;
+            let downloadAnchorNode = document.getElementById("not-cordova-download");
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", self.getMiraBoxFileName());
+            downloadAnchorNode.click();
+          }
+          this.miraStorageProvider.updateMiraBoxStatus(self.miraBox.getGuid(), Status.Exported)
+            .then(() => {
+              console.log('MiraBox Status Updated to ' + Status.Exported);
+              this.updateStatus();
+            }, ()=>{console.log("Error updating mirabox status!")})
+        })
+        .catch(console.log);
+    }
+    if (this.platformProvider.isCordova) {
+      this.miraBoxExportProvider.createFile(self.miraBox.toString(), self.getMiraBoxFileName());
+    }
+    else {
+      let dataStr = "data:application/text;charset=utf-8," + self.miraBox.toString();
+      let downloadAnchorNode = document.getElementById("not-cordova-download");
+      downloadAnchorNode.setAttribute("href", dataStr);
+      downloadAnchorNode.setAttribute("download", self.getMiraBoxFileName());
+      downloadAnchorNode.click();
+    }
+    this.miraStorageProvider.updateMiraBoxStatus(self.miraBox.getGuid(), Status.Exported)
+      .then(() => {
+        console.log('MiraBox Status Updated to ' + Status.Exported);
+        this.updateStatus();
+      }, ()=>{console.log("Error updating mirabox status!")})
   }
 
 
