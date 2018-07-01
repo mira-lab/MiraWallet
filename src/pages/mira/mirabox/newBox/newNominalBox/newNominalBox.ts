@@ -35,9 +35,9 @@ export class NewNominalBoxPage {
   }
 
   public walletType: Coin = Coin.BTC;
-  public walletName: string = 'It is wallet name';
-  public boxDescription: string = "No description";
-  public creatorName: string = "Anonymous";
+  public walletName: string = 'Mirabox';
+  public boxDescription: string = "Gift from Miralab";
+  public creatorName: string = "Miralab";
   public amount: number = 0.001;
 
 
